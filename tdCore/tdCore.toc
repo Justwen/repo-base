@@ -1,4 +1,4 @@
-## Interface: 80000
+## Interface: 80300
 ## Title: tdCore
 ## Author: ldz5
 ## Version: 50100.06
@@ -6,6 +6,6 @@
 
 load.xml
 
-## Title: |cff880303[有爱]|r tdCore 背包整理依赖
+## Title: |cff880303[爱不易]|r tdCore 背包整理依赖
 ## Notes-zhCN: 背包整理核心程序.
 ## X-Vendor: AbyUI

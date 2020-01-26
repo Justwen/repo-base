@@ -1,8 +1,8 @@
-## Interface: 80000
+## Interface: 80300
 ## Title: HandyNotes_LunarFestival
 ## Notes: Displays the locations of Lunar Festival elders.
 ## Author: Ethan Centaurai
-## Version: v1.4.5
+## Version: v1.6.2
 ## X-Category: Map & Minimap
 ## SavedVariables: HandyNotes_LunarFestivalDB
 ## RequiredDeps: HandyNotes
@@ -10,5 +10,5 @@
 Core.lua
 Data.lua
 
-## Title-zhCN: |cff880303[有爱]|r HandyNotes春节长者
+## Title-zhCN: |cff880303[爱不易]|r HandyNotes春节长者
 ## X-Vendor: AbyUI

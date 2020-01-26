@@ -1,10 +1,7 @@
---[[
-    This handles the creation and configuration of the minimap/DataBroker button
---]]
-
-local AddonName = ...
-local Addon = _G[AddonName]
+-- lancher.lua - The Dominos minimap button
+local AddonName, Addon = ...
 local Launcher = Addon:NewModule('Launcher')
+local L = LibStub('AceLocale-3.0'):GetLocale(AddonName)
 local DBIcon = LibStub('LibDBIcon-1.0')
 
 function Launcher:OnInitialize()
@@ -24,15 +21,12 @@ function Launcher:GetSettings()
 end
 
 function Launcher:CreateDataBrokerObject()
-    local L = LibStub('AceLocale-3.0'):GetLocale(AddonName)
-    local iconPath = ([[Interface\Addons\%s\%s]]):format(AddonName, AddonName)
-
 	return LibStub('LibDataBroker-1.1'):NewDataObject(AddonName, {
 		type = 'launcher',
 
-		icon = iconPath,
+		icon = ([[Interface\Addons\%s\%s]]):format(AddonName, AddonName),
 
-		OnClick = function(self, button)
+		OnClick = function(_, button)
 			if button == 'LeftButton' then
 				if IsShiftKeyDown() then
 					Addon:ToggleBindingMode()
@@ -47,22 +41,39 @@ function Launcher:CreateDataBrokerObject()
 		OnTooltipShow = function(tooltip)
 			if not tooltip or not tooltip.AddLine then return end
 
-			tooltip:AddLine(AddonName)
+			GameTooltip_SetTitle(tooltip, AddonName)
 
 			if Addon:Locked() then
-				tooltip:AddLine(L.ConfigEnterTip)
+				GameTooltip_AddInstructionLine(tooltip, L.ConfigEnterTip)
 			else
-				tooltip:AddLine(L.ConfigExitTip)
+				GameTooltip_AddInstructionLine(tooltip, L.ConfigExitTip)
 			end
 
 			if Addon:IsBindingModeEnabled() then
-				tooltip:AddLine(L.BindingExitTip)
+				GameTooltip_AddInstructionLine(tooltip, L.BindingExitTip)
 			else
-				tooltip:AddLine(L.BindingEnterTip)
+				GameTooltip_AddInstructionLine(tooltip, L.BindingEnterTip)
 			end
 
 			if Addon:IsConfigAddonEnabled() then
-				tooltip:AddLine(L.ShowOptionsTip)
+				GameTooltip_AddInstructionLine(tooltip, L.ShowOptionsTip)
+			end
+
+			if Addon:IsBuild("Classic") then
+				GameTooltip_AddBlankLinesToTooltip(tooltip, 1)
+
+				local _, _, latencyHome, latencyWorld = GetNetStats()
+				local latency = latencyHome > latencyWorld and latencyHome or latencyWorld
+				local latencyColor
+				if (latency > PERFORMANCEBAR_MEDIUM_LATENCY) then
+					latencyColor = CreateColor(1, 0, 0)
+				elseif (latency > PERFORMANCEBAR_LOW_LATENCY) then
+					latencyColor = CreateColor(1, 1, 0)
+				else
+					latencyColor = CreateColor(0, 1, 0)
+				end
+
+				GameTooltip_AddNormalLine(tooltip, ("%s |c%s%s%s|r"):format(MAINMENUBAR_LATENCY_LABEL, latencyColor:GenerateHexColor(), latency, MILLISECONDS_ABBR))
 			end
 		end
 	})

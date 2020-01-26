@@ -1,6 +1,10 @@
 local addonName, addon = ...
 local hbd = LibStub("HereBeDragons-2.0")
 
+if addon.CLASSIC then
+    return
+end
+
 local enableClicks = true       -- True if waypoint-clicking is enabled to set points
 local enableClosest = true      -- True if 'Automatic' quest waypoints are enabled
 local modifier                  -- A string representing click-modifiers "CAS", etc.
@@ -81,7 +85,7 @@ local function ObjectivesChanged()
 
         if x and y then
             local dist = hbd:GetZoneDistance(map, px, py, map, x, y)
-            if dist < closestdist then
+            if dist and (dist < closestdist) then
                 closest = watchIndex
                 closestdist = dist
             end
@@ -142,6 +146,7 @@ local eventFrame = CreateFrame("Frame")
 eventFrame:RegisterEvent("QUEST_POI_UPDATE")
 eventFrame:RegisterEvent("QUEST_LOG_UPDATE")
 
+
 eventFrame:SetScript("OnEvent", function(self, event, ...)
     if event == "QUEST_POI_UPDATE" then
         ObjectivesChanged()
@@ -156,7 +161,7 @@ local function poi_OnClick(self, button)
         return
     end
 
-    if button == "LeftButton" then
+    if button == "RightButton" then
         for i = 1, #modifier do
             local mod = modifier:sub(i, i)
             local func = modTbl[mod]
@@ -172,7 +177,7 @@ local function poi_OnClick(self, button)
     SetCVar("questPOI", 1)
 
     -- Run our logic, and set a waypoint for this button
-    local m = C_Map.GetBestMapForUnit("player")
+    local m
 
     QuestPOIUpdateIcons()
 
@@ -182,6 +187,12 @@ local function poi_OnClick(self, button)
     if questIndex and questIndex ~= 0 then
         title = GetQuestLogTitle(questIndex)
         completed, x, y = QuestPOIGetIconInfo(self.questID)
+        -- If the WorldMap is open, use the map's MapID, else guess the current players' map
+        if WorldMapFrame:IsShown() then
+            m = WorldMapFrame:GetMapID()
+        else
+            m = C_Map.GetBestMapForUnit("player")
+        end
     else
         -- Must be a World Quest
         title = C_TaskQuest.GetQuestInfoByQuestID(self.questID)
@@ -197,7 +208,10 @@ local function poi_OnClick(self, button)
     if not x or not y then
         -- No coordinate information for this quest/objective
         local header = "|cFF33FF99TomTom|r"
-        print(L["%s: No coordinate information found for '%s' at this map level"]:format(header, title or self.questID))
+        if TomTom.profile.general.announce then
+            local msg = L["%s: No coordinate information found for '%s' at this map level"]:format(header, title or self.questID)
+            ChatFrame1:AddMessage(msg)
+        end
         return
     end
 
@@ -226,14 +240,11 @@ local function poi_OnClick(self, button)
     SetCVar("questPOI", cvar and 1 or 0)
 end
 
----LFO: Something needs to replace this!
----hooksecurefunc("TaskPOI_OnClick", function(self, button)
----    poi_OnClick(self, button)
----end)
----
----hooksecurefunc("QuestPOIButton_OnClick", function(self, button)
----    poi_OnClick(self, button)
----end)
+
+hooksecurefunc("QuestPOIButton_OnClick", function(self, button)
+    poi_OnClick(self, button)
+end)
+
 
 function TomTom:EnableDisablePOIIntegration()
     enableClicks= TomTom.profile.poi.enable

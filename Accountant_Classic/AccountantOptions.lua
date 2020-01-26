@@ -36,15 +36,15 @@ function AccountantOptions_OnShow()
 	AccountantSliderButtonPosText:SetText(ACCLOC_BUTPOS);
 	AccountantOptionsFrameWeekLabel:SetText(ACCLOC_STARTWEEK);
 
-	AccountantOptionsFrameToggleButton:SetChecked(Accountant_SaveData[GetCVar("realmName")][UnitName("player")]["options"].showbutton);
-	AccountantSliderButtonPos:SetValue(Accountant_SaveData[GetCVar("realmName")][UnitName("player")]["options"].buttonpos);
+	AccountantOptionsFrameToggleButton:SetChecked(Accountant_SaveData[GetRealmName()][UnitName("player")]["options"].showbutton);
+	AccountantSliderButtonPos:SetValue(Accountant_SaveData[GetRealmName()][UnitName("player")]["options"].buttonpos);
 	UIDropDownMenu_Initialize(AccountantOptionsFrameWeek, AccountantOptionsFrameWeek_Init);
 	UIDropDownMenu_SetSelectedID(AccountantOptionsFrameWeek, Accountant_SaveData[Accountant_Server][Accountant_Player]["options"].weekstart);
 end
 
 function AccountantOptions_OnHide(self)
 	if(MYADDONS_ACTIVE_OPTIONSFRAME == self) then
-		ShowUIPanel(myAddOnsFrame);
+		myAddOnsFrame:Show();
 	end
 end
 

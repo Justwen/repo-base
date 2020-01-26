@@ -84,6 +84,7 @@ local function ConvertDebuffListTable(source, target, order)
 
 		if str then
 			prefix, suffix = select(3, string.find( str, "(%w+)[%s%p]*(.*)"))
+
 			if prefix then
 				if TidyPlatesHubPrefixList[prefix] then
 					item = suffix
@@ -98,8 +99,7 @@ local function ConvertDebuffListTable(source, target, order)
 				if order then order[item] = index end
 			end
 		end
-	end
-
+    end
 end
 
 local function AddHubFunction(functionTable, menuTable, functionPointer, functionDescription, functionKey )

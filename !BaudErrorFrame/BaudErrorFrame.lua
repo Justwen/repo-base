@@ -62,6 +62,7 @@ EventFuncs = {
         end
     end,
 
+    --[[ abyui 8.2.0 by hook DisplayInterfaceActionBlockedMessage
     ADDON_ACTION_BLOCKED = function(AddOn, FuncName)
         if Config.Taint then
             BaudErrorFrameAdd(format("插件[%s]对接口'%s'的调用导致界面行为失效", AddOn, FuncName), 4);
@@ -73,6 +74,7 @@ EventFuncs = {
             BaudErrorFrameAdd(format("宏代码对接口'%s'的调用导致界面行为失效", FuncName), 4);
         end
     end,
+    --]]
 
     ADDON_ACTION_FORBIDDEN = function(AddOn,FuncName)
         if Config.Taint then
@@ -103,6 +105,13 @@ function BaudErrorFrame_OnLoad(self)
         EventFuncs[event](...);
     end);
     seterrorhandler(BaudErrorFrameHandler);
+    if DisplayInterfaceActionBlockedMessage then
+        hooksecurefunc("DisplayInterfaceActionBlockedMessage", function()
+            if Config.Taint then
+                BaudErrorFrameAdd(date("%H:%M:%S") .. " 插件导致界面行为失效", 4);
+            end
+        end)
+    end
 
     UIParent:UnregisterEvent("MACRO_ACTION_BLOCKED");
     UIParent:UnregisterEvent("ADDON_ACTION_BLOCKED");
@@ -160,7 +169,7 @@ function BaudErrorFrameMinimapButton_Create()
     })
     LibStub("LibDBIcon-1.0"):Register("BaudErrorFrame", ldb, BaudErrorFrameConfig);
 
-    local count = LibDBIcon10_BaudErrorFrame:CreateFontString("BaudErrorFrameMinimapCount", "OVERLAY", "GameFontRedSmall")
+    local count = LibDBIcon10_BaudErrorFrame:CreateFontString("BaudErrorFrameMinimapCount", "OVERLAY", "GameFontGreenSmall")
     count:SetPoint("CENTER", -1, 2)
 end
 
@@ -232,6 +241,7 @@ function BaudErrorFrame_OnShow(self)
     BaudErrorFrameMinimapCount:SetText("");
     BaudErrorFrame.lastCount = #ErrorList;
     PlaySound(SOUNDKIT and SOUNDKIT.GS_TITLE_OPTION_EXIT or "gsTitleOptionExit");
+    self:ClearAllPoints()
     self:SetPoint("CENTER");
     BaudErrorFrameScrollBar_Update();
 end

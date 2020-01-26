@@ -1,4 +1,4 @@
-## Interface: 80000
+## Interface: 80300
 ## Title: Accountant Classic
 ## Notes: 统计个人金钱花费和收入，以表格的形式呈现。
 ## Author: Arith Hsu
@@ -23,5 +23,5 @@ Accountant.xml
 AccountantButton.xml
 AccountantOptions.xml
 
-## Title: |cff880303[有爱]|r Accountant 收支统计
+## Title: |cff880303[爱不易]|r Accountant 收支统计
 ## X-Vendor: AbyUI

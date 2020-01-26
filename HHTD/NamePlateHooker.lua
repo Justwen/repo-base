@@ -3,7 +3,7 @@ H.H.T.D. World of Warcraft Add-on
 Copyright (c) 2009-2018 by John Wellesz (hhtd@2072productions.com)
 All rights reserved
 
-Version 2.4.7
+Version 2.4.9.4
 
 In World of Warcraft healers have to die. This is a cruel truth that you're
 taught very early in the game. This add-on helps you influence this unfortunate
@@ -60,6 +60,7 @@ local Marker_Textures = {
 
 -- upvalues {{{
 local GetCVarBool           = _G.GetCVarBool;
+local GetCVar               = _G.GetCVar;
 local GetTime               = _G.GetTime;
 local pairs                 = _G.pairs;
 local ipairs                = _G.ipairs;
@@ -160,6 +161,52 @@ function NPH:GetOptions () -- {{{
                         return GetCVarBool("nameplateShowFriends");
                     end,
                 },
+                FNPC_Nameplate = {
+                        type = 'toggle',
+                        name = L["OPT_CM_FNPC_NAMEPLATE"],
+                        desc = L["OPT_CM_FNPC_NAMEPLATE_DESC"],
+                        width = 'double',
+                        order = 13.3,
+                        set = function (info, value)
+                            SetCVar("nameplateShowFriendlyNPCs", value and 1 or 0);
+                        end,
+                        get = function()
+                            return GetCVarBool("nameplateShowFriendlyNPCs");
+                        end,
+                    },
+                    AlwaysShowNameplates = {
+                        type = 'toggle',
+                        name = _G.UNIT_NAMEPLATES_AUTOMODE or L["OPT_ALWAYS_SHOW_NAMEPLATES"],
+                        desc = _G.OPTION_TOOLTIP_UNIT_NAMEPLATES_AUTOMODE or L["OPT_ALWAYS_SHOW_NAMEPLATES_DESC"],
+                        width = 'double',
+                        order = 13.4,
+                        set = function (info, value)
+                            SetCVar("nameplateShowAll", value and 1 or 0);
+                        end,
+                        get = function()
+                            return GetCVarBool("nameplateShowAll");
+                        end,
+                    },
+                    NamePlateMaxDistance = {
+                        type = "range",
+                        name = L["OPT_NPH_MAX_NAMEPLATE_DISTANCE"],
+                        desc = L["OPT_NPH_MAX_NAMEPLATE_DISTANCE_DESC"],
+                        min = 1,
+                        max = 100,
+                        softMax = 100,
+                        step = 1,
+                        bigStep = 1,
+                        order = 13.4,
+                        isPercent = false,
+                        width=1.5,
+
+                        set = function (info, value)
+                            SetCVar("nameplateMaxDistance", value);
+                        end,
+                        get = function (info)
+                            return tonumber(GetCVar("nameplateMaxDistance"));
+                        end,
+                    },
                 Header100 = {
                     type = 'header',
                     name = L["OPT_NPH_MARKER_SETTINGS"],
@@ -346,7 +393,7 @@ function NPH:HHTD_HEALER_GONE(selfevent, isFriend, healer)
     end
     --]=]
 
-    
+
     local plateByGuid;
     if self.db.global.sPve then
         plateByGuid = self:GetPlateByGUID(healer.guid);
@@ -406,7 +453,7 @@ end
 -- }}}
 
 --[===[@alpha@
-local callbacks_consisistency_check = {};    
+local callbacks_consisistency_check = {};
 --@end-alpha@]===]
 
 
@@ -447,7 +494,7 @@ function NPH:LNR_ON_NEW_PLATE(selfevent, plate, data)
 
     -- Check if this name plate is of interest -- XXX
     if HHTD.Registry_by_Name[isFriend][plateName] then
-       
+
         if not self.db.global.sPve or HHTD.Registry_by_GUID[isFriend][data.GUID] then
             self:AddCrossToPlate(plate, isFriend, plateName, data.GUID, HHTD.Registry_by_Name[isFriend][plateName]);
         end
@@ -624,9 +671,9 @@ do
     local function MakeFontString() -- ONCE
         local f = Plate:CreateFontString();
         f:SetFont(SmallFontName, 12.2, "THICKOUTLINE, MONOCHROME");
-        
+
         f:SetTextColor(1, 1, 1, 1);
-        
+
         return f;
     end
 
@@ -671,7 +718,7 @@ do
     end
 
     local function AddElements () -- ONCEx
-        
+
         PlateAdditions.texture, PlateAdditions.rankFont = Plate:CreateTexture(), MakeFontString();
 
         SetTextureParams(PlateAdditions);
@@ -802,7 +849,7 @@ do
 
             Plate           = plate;
             PlateAdditions  = plate.HHTD and plate.HHTD.NPH;
-            
+
             PopulatePlateData(plate);
             SetRank();
 

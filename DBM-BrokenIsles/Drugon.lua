@@ -1,12 +1,11 @@
 local mod	= DBM:NewMod(1789, "DBM-BrokenIsles", nil, 822)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 17077 $"):sub(12, -3))
+mod:SetRevision("20200110163156")
 mod:SetCreatureID(110378)
 mod:SetEncounterID(1949)
 mod:SetReCombatTime(20)
 mod:SetZone()
---mod:SetMinSyncRevision(11969)
 
 mod:RegisterCombat("combat")
 
@@ -23,7 +22,6 @@ local warnAvalanche				= mod:NewTargetAnnounce(219542, 3)
 local warnSnowPlow				= mod:NewTargetAnnounce(219602, 4)
 
 local specWarnAvalanche			= mod:NewSpecialWarningYou(219542, nil, nil, nil, 1, 2)
-local yellAvalanche				= mod:NewYell(219542)
 local specWarnSnowCrash			= mod:NewSpecialWarningDodge(219493, "Melee", nil, nil, 4, 2)
 local specWarnSnowPlow			= mod:NewSpecialWarningRun(219602, nil, nil, nil, 4, 2)
 local specWarnSnowPlowOver		= mod:NewSpecialWarningFades(219602, nil, nil, nil, 1, 2)
@@ -42,7 +40,6 @@ function mod:AvaTarget(targetname, uId)
 	if targetname == UnitName("player") then
 		specWarnAvalanche:Show()
 		specWarnAvalanche:Play("runaway")
-		yellAvalanche:Yell()
 	else
 		warnAvalanche:Show(targetname)
 	end

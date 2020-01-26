@@ -1,4 +1,4 @@
-﻿## Interface: 80000
+﻿## Interface: 80300
 ## X-Min-Interface: 80000
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Baradin Hold|r
 ## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Baradinfestung|r
@@ -20,15 +20,13 @@
 ## X-DBM-Mod-MapID: 757
 ## X-DBM-Mod-Sort: 806
 ## X-DBM-Mod-MinCoreRevision: 12473
+## X-Curse-Project-ID: 43971
+## X-WoWI-ID: 21469
+## Version: r205
+
 localization.en.lua
-localization.de.lua
-localization.es.lua
-localization.fr.lua
-localization.kr.lua
-localization.ru.lua
 localization.tw.lua
 localization.cn.lua
-localization.br.lua
 Argaloth.lua
 Occuthar.lua
 Alizabal.lua

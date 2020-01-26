@@ -57,35 +57,35 @@
 
 local AURA_GROUPS = {
 
-	["BLOODLUST"] = {	-- ��Ѫ����
+	["BLOODLUST"] = {	-- 嗜血加速
 
-		2825,		-- �����˾����Ѫ
-		32182,		-- �����˾��Ӣ��
-		80353,		-- ��ʦ��ʱ��Ť��
-		160452,		-- ����������֮��
-		90355,		-- ����Ȯ��Զ�ſ���
-		57723,		-- ��ƣ����
-		57724,		-- ��������
-		80354,		-- ʱ�մ�λ
+		2825,		-- 萨满祭司：嗜血
+		32182,		-- 萨满祭司：英勇
+		80353,		-- 法师：时间扭曲
+		160452,		-- 虚空鳐：虚空之风
+		90355,		-- 熔岩犬：远古狂乱
+		57723,		-- 精疲力尽
+		57724,		-- 心满意足
+		80354,		-- 时空错位
 	},
 
-	["ICE_BLOCK"] = {	-- ��ʦ
+	["ICE_BLOCK"] = {	-- 法师
 
-		27619,		-- ��������
-		41425,		-- ����
+		27619,		-- 寒冰屏障
+		41425,		-- 低温
 	},
 
-	["DEVINE_SHIELD"] = {	-- ʥ��ʿ
+	["DEVINE_SHIELD"] = {	-- 圣骑士
 
-		642,		-- ʥ����
-		1022,		-- ����֮��
-		25771,		-- ����
+		642,		-- 圣盾术
+		1022,		-- 保护之手
+		25771,		-- 自律
 	},
 
-	["POWERWORD_SHIELD"] = {-- ��ʦ
+	["POWERWORD_SHIELD"] = {-- 牧师
 
-		17,		-- ����������
-		6788,		-- �������
+		17,		-- 真言术：盾
+		6788,		-- 虚弱灵魂
 	},
 }
 
@@ -94,11 +94,11 @@ local select = select
 local GetSpellInfo = GetSpellInfo
 local pairs = pairs
 local ipairs = ipairs
-local UnitBuff = UnitBuff
-local UnitDebuff = UnitDebuff
+local UnitBuff = Pre80API.UnitBuff
+local UnitDebuff = Pre80API.UnitDebuff
 
 local LIBNAME = "LibBuffGroups-1.0"
-local VERSION = 1.21
+local VERSION = 1.31
 
 local lib = _G[LIBNAME]
 if lib and lib.version >= VERSION then return end
@@ -182,7 +182,7 @@ local function FindAura(list, unit, exclude)
 				return name, icon, count, dispelType, duration, expires, caster
 			end
 
-			name, icon, count, dispelType, duration, expires, caster = UnitDebuff(unit, aura)
+			name, icon, count, dispelType, duration, expires, caster = UnitBuff(unit, aura)
 			if name then
 				return name, icon, count, dispelType, duration, expires, caster, 1
 			end
@@ -204,7 +204,7 @@ function lib:UnitAura(unit, aura, group)
 		return name, icon, count, dispelType, duration, expires, caster
 	end
 
-	name, icon, count, dispelType, duration, expires, caster = UnitDebuff(unit, aura)
+	name, icon, count, dispelType, duration, expires, caster = UnitBuff(unit, aura)
 	if name then
 		return name, icon, count, dispelType, duration, expires, caster, 1
 	end

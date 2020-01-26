@@ -100,11 +100,11 @@ local function getItemLink(id, combineName)
 end
 
 
-local GetTradeSkillLine = C_TradeSkillUI.GetTradeSkillLine
-local IsTradeSkillReady = C_TradeSkillUI.IsTradeSkillReady
-local IsTradeSkillLinked = C_TradeSkillUI.IsTradeSkillLinked
-local IsTradeSkillGuild = C_TradeSkillUI.IsTradeSkillGuild
-local IsNPCCrafting = C_TradeSkillUI.IsNPCCrafting
+local GetTradeSkillLine
+local IsTradeSkillReady
+local IsTradeSkillLinked
+local IsTradeSkillGuild
+local IsNPCCrafting
 
 
 function TradeskillInfo:OnInitialize()
@@ -120,23 +120,23 @@ function TradeskillInfo:OnInitialize()
 			TooltipUsedIn = true,
 			TooltipUsableBy = true,
 			TooltipColorUsableBy = true,
-			TooltipKnownBy     = { R = true, A = true, B = true, D = true, E = true, J = true, L = true, T = true, W = false, X = false, Z = true, Y = true, I = true },
-			TooltipLearnableBy = { R = true, A = true, B = true, D = true, E = true, J = true, L = true, T = true, W = false, X = false, Z = true, Y = true, I = true },
-			TooltipAvailableTo = { R = true, A = true, B = true, D = true, E = true, J = true, L = true, T = true, W = false, X = false, Z = true, Y = true, I = true },
+			TooltipKnownBy     = { R = true, A = true, B = true, D = true, E = true, J = true, L = true, T = true, W = false, Z = true, Y = true, I = true },
+			TooltipLearnableBy = { R = true, A = true, B = true, D = true, E = true, J = true, L = true, T = true, W = false, Z = true, Y = true, I = true },
+			TooltipAvailableTo = { R = true, A = true, B = true, D = true, E = true, J = true, L = true, T = true, W = false, Z = true, Y = true, I = true },
 			TooltipMarketValue = true,
 			TooltipID = false,
 			TooltipStack = false,
 
-			ColorSource			= { r = 0.75, g = 0.75, b = 0.25 },
+			ColorSource		= { r = 0.75, g = 0.75, b = 0.25 },
 			ColorRecipeSource	= { r = 0.75, g = 0.75, b = 0.25 },
 			ColorRecipePrice	= { r = 1, g = 1, b = 1 },
-			ColorUsedIn			= { r = 1, g = 1, b = 1 },
+			ColorUsedIn		= { r = 1, g = 1, b = 1 },
 			ColorUsableBy		= { r = 1, g = 1, b = 1 },
 			ColorKnownBy		= { r = 1, g = 0, b = 0 },
 			ColorLearnableBy	= { r = 0.25, g = 0.75, b = 0.25 },
 			ColorAvailableTo	= { r = 1, g = 0.5, b = 0.25 },
-			ColorID				= { r = 0.75, g = 0.5, b = 0.5 },
-			ColorStack			= { r = 1, g = 1, b = 1 },
+			ColorID			= { r = 0.75, g = 0.5, b = 0.5 },
+			ColorStack		= { r = 1, g = 1, b = 1 },
 			ColorMarketValue	= { r = 0.8, g = 0.9, b = 0 },
 
 			ColorAHRecipes = true,
@@ -168,6 +168,19 @@ function TradeskillInfo:OnInitialize()
 			},
 		},
 	}, "Default")
+
+	-- disable on Classic.
+	if WOW_PROJECT_ID == WOW_PROJECT_CLASSIC then
+		self:Print("WoW Classic detected. TradeSkillInfo is designed for Retail servers and will not work on Classic servers. Please download TradeSkillInfo_Classic when it becomes available.")
+		self:SetEnabledState(false)
+		return
+	else
+		GetTradeSkillLine = C_TradeSkillUI.GetTradeSkillLine
+		IsTradeSkillReady = C_TradeSkillUI.IsTradeSkillReady
+		IsTradeSkillLinked = C_TradeSkillUI.IsTradeSkillLinked
+		IsTradeSkillGuild = C_TradeSkillUI.IsTradeSkillGuild
+		IsNPCCrafting = C_TradeSkillUI.IsNPCCrafting
+	end
 
 	self:RegisterChatCommand("tsi", "ChatCommand")
 	self:RegisterChatCommand("tradeskillinfo", "ChatCommand")
@@ -332,7 +345,7 @@ end
 
 function TradeskillInfo:HookTradeSkillUI()
 	if TradeSkillFrame and not self:IsHooked("TradeSkillFrame_SetSelection") then
-		self:SecureHook(TradeSkillFrame.DetailsFrame, "SetSelectedRecipeID", "TradeSkillFrame_SetSelection")
+		self:SecureHook(TradeSkillFrame.DetailsFrame, "RefreshDisplay", "TradeSkillFrame_SetSelection")
 
 		-- add our text fields
 		local fsSkillText = TradeSkillFrame.DetailsFrame:CreateFontString("TradeskillInfoSkillText", "BACKGROUND", "GameFontHighlightSmall")
@@ -364,7 +377,7 @@ function TradeskillInfo:UpdateKnownRecipes()
 end
 
 function TradeskillInfo:UpdateSkills()
-	local prof1, prof2, _, _, cook, firstAid = GetProfessions()
+	local prof1, prof2, _, _, cook = GetProfessions()
 	local userData = self.db.realm[self.vars.playername]
 	local name, rank
 
@@ -380,11 +393,6 @@ function TradeskillInfo:UpdateSkills()
 
 	if cook then
 		name, _, rank = GetProfessionInfo(cook)
-		userData.skills[self.vars.skillnames[name]] = rank
-	end
-
-	if firstAid then
-		name, _, rank = GetProfessionInfo(firstAid)
 		userData.skills[self.vars.skillnames[name]] = rank
 	end
 end
@@ -446,20 +454,15 @@ function TradeskillInfo:TradeSkillFrame_SetSelection(id)
 	if not TradeSkillFrame.DetailsFrame.selectedRecipeID then return end
 
 	local recipeInfo = C_TradeSkillUI.GetRecipeInfo(TradeSkillFrame.DetailsFrame.selectedRecipeID)
+	if not recipeInfo then return end
+
 	local spellId = recipeInfo.recipeID
+	local appendText = ""
 
 	if self:CombineExists(spellId) then
-		local yPos = 50
-
 		if self:ShowingSkillLevel() then
 			-- insert skill required
-			if TradeskillInfoSkillText then
-				TradeskillInfoSkillText:SetText(L["Skill Level"] .. ": " .. self:GetColoredDifficulty(spellId))
-				TradeskillInfoSkillText:Show()
-				yPos = yPos + 4 + TradeskillInfoSkillText:GetHeight()
-			end
-		else
-			TradeskillInfoSkillText:Hide()
+			appendText = appendText .. "|cFFFFD200" .. L["Skill Level"] .. ": |r" .. self:GetColoredDifficulty(spellId) .. "|n"
 		end
 
 		if self:ShowingSkillProfit() then
@@ -475,15 +478,27 @@ function TradeskillInfo:TradeSkillFrame_SetSelection(id)
 			end
 
 			-- insert item value and reagent costs
-			TradeskillInfoProfitText:SetText(profitLabel .. ": " .. string.format("%s - %s = %s", self:GetMoneyString(value), self:GetMoneyString(cost), self:GetMoneyString(profit)))
---			TradeskillInfoProfitText:SetPoint("TOPLEFT", 5, -yPos)
-			TradeskillInfoProfitText:Show()
-			yPos = yPos + 4 + TradeskillInfoProfitText:GetHeight()
-		else
-			TradeskillInfoProfitText:Hide()
+			appendText = appendText .. "|cFFFFD200" .. profitLabel .. ": |r" .. string.format("%s - %s = %s", self:GetMoneyString(value), self:GetMoneyString(cost), self:GetMoneyString(profit))
 		end
 
---		TradeSkillDescription:SetPoint("TOPLEFT", 5, -yPos)
+		-- no, I don't like this either.
+		local numReagents = C_TradeSkillUI.GetRecipeNumReagents(TradeSkillFrame.DetailsFrame.selectedRecipeID)
+
+		if numReagents > 0 then
+			TradeSkillFrame.DetailsFrame.Contents.SourceText:SetPoint("TOP", TradeSkillFrame.DetailsFrame.Contents.Reagents[numReagents], "BOTTOM", 0, -15)
+		else
+			TradeSkillFrame.DetailsFrame.Contents.SourceText:SetPoint("TOP", TradeSkillFrame.DetailsFrame.Contents.ReagentLabel, "TOP")
+		end
+
+		local origText = TradeSkillFrame.DetailsFrame.Contents.SourceText:GetText()
+
+		if not origText or #origText == 0 then
+			TradeSkillFrame.DetailsFrame.Contents.SourceText:SetText(appendText)
+		else
+			TradeSkillFrame.DetailsFrame.Contents.SourceText:SetText(origText .. "|n|n" .. appendText)
+		end
+
+		TradeSkillFrame.DetailsFrame.Contents.SourceText:Show()
 	end
 end
 
@@ -1891,7 +1906,6 @@ local defaultNames = {
 	[2108] = L["Leatherworking"],
 	[3908] = L["Tailoring"],
 	[2550] = L["Cooking"],
-	[3273] = L["First Aid"],
 	[2575] = L["Mining"],
 	[8613] = L["Skinning"],
 	[170691] = L["Herbalism"],

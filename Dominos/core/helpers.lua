@@ -1,7 +1,6 @@
 -- functions I call at least three(ish) times
 
-local AddonName = ...
-local Addon = _G[AddonName]
+local AddonName, Addon = ...
 
 -- create a frame, and then hide it
 function Addon:CreateHiddenFrame(...)
@@ -76,6 +75,7 @@ do
 
         if not fade then
             fade = fader_Create(frame)
+            faders[frame] = fade
         end
 
         fade(toAlpha, duration)

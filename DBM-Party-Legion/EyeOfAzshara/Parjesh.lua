@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod(1480, "DBM-Party-Legion", 3, 716)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 17077 $"):sub(12, -3))
+mod:SetRevision("20190522211359")
 mod:SetCreatureID(91784)
 mod:SetEncounterID(1810)
 mod:SetZone()
@@ -15,11 +15,11 @@ mod:RegisterEventsInCombat(
 
 --Notes: Boss always casts 191900 (Crashing wave) few seconds before impaling spear. It doesn't really need it's own warning
 --TODO, interrupt warnings for adds maybe.
-local warnImpalingSpear				= mod:NewTargetAnnounce(192094, 4)
+local warnImpalingSpear				= mod:NewTargetNoFilterAnnounce(192094, 4)
 
 local specWarnReinforcements		= mod:NewSpecialWarningSwitch(196563, "Tank", nil, nil, 1, 2)
 local specWarnCrashingwave			= mod:NewSpecialWarningDodge(191900, nil, nil, nil, 2, 2)
-local specWarnImpalingSpear			= mod:NewSpecialWarningMoveTo(192094, nil, nil, nil, 3, 6)
+local specWarnImpalingSpear			= mod:NewSpecialWarningMoveTo(192094, nil, nil, nil, 3, 8)
 local yellImpalingSpear				= mod:NewYell(192094)
 local specWarnRestoration			= mod:NewSpecialWarningInterrupt(197502, "HasInterrupt", nil, nil, 1, 2)
 
@@ -38,7 +38,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnImpalingSpear:Show(DBM_ADDS)
 			yellImpalingSpear:Yell()
-			specWarnImpalingSpear:Play("192094")
+			specWarnImpalingSpear:Play("behindmob")
 		else
 			warnImpalingSpear:Show(args.destName)
 		end

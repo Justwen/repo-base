@@ -63,15 +63,21 @@ TNI:LNR_RegisterCallback("LNR_ERROR_FATAL_INCOMPATIBILITY", "OnError_FatalIncomp
 ------
 local CurrentNameplate
 
+local function SetAndSavePoint(nameplate)
+    texture:SetPoint(CONFIG.TEXTURE_POINT, nameplate, CONFIG.ANCHOR_POINT, CONFIG.OFFSET_X, CONFIG.OFFSET_Y)
+    texture.p1, texture.rel, texture.p2, texture.x, texture.y = CONFIG.TEXTURE_POINT, nameplate, CONFIG.ANCHOR_POINT, CONFIG.OFFSET_X, CONFIG.OFFSET_Y
+end
+
 function TNI:UpdateIndicator(nameplate)
 	CurrentNameplate = nameplate
 	texture:ClearAllPoints()
 
 	if nameplate then
 		texture:Show()
-		texture:SetPoint(CONFIG.TEXTURE_POINT, nameplate, CONFIG.ANCHOR_POINT, CONFIG.OFFSET_X, CONFIG.OFFSET_Y)
+        SetAndSavePoint(nameplate)
 	else
 		texture:Hide()
+        texture.p1, texture.rel, texture.p2, texture.x, texture.y = nil, nil, nil, nil, nil
 	end
 end
 
@@ -116,18 +122,21 @@ end)
 --[[------------------------------------------------------------
 163ui copy for WorldFlightMap
 ---------------------------------------------------------------]]
+local bounceOffset = 15
+local bounceDuration = 0.2
 local function BounceAnimation(self) -- SetLooping('BOUNCE') is producing broken animations, so we're just simulating what it's supposed to do
 	local tx, bounce = self.tx, self.bounce
-    local p1, rel, p2, x, y = tx:GetPoint()
+    if tx:IsProtected() then return end
+    local p1, rel, p2, x, y = texture.p1, texture.rel, texture.p2, texture.x, texture.y
     if p1 then tx:ClearAllPoints() end
 	if self.up then
-		if p1 then tx:SetPoint(p1, rel, p2, CONFIG.OFFSET_X, CONFIG.OFFSET_Y + 10) end
+		if p1 then tx:SetPoint(p1, rel, p2, CONFIG.OFFSET_X, CONFIG.OFFSET_Y + bounceOffset) end
 		bounce:SetSmoothing('OUT')
     else
         if p1 then tx:SetPoint(p1, rel, p2, CONFIG.OFFSET_X, CONFIG.OFFSET_Y) end
 		bounce:SetSmoothing('IN')
 	end
-	bounce:SetOffset(0, self.up and -10 or 10)
+	bounce:SetOffset(0, self.up and -bounceOffset or bounceOffset)
 	self.up = not self.up
 	self:Play()
 end
@@ -138,8 +147,8 @@ local group = texture:CreateAnimationGroup()
 group.tx = texture
 
 local bounce = group:CreateAnimation('Translation')
-bounce:SetOffset(0, 10)
-bounce:SetDuration(0.5)
+bounce:SetOffset(0, bounceOffset)
+bounce:SetDuration(bounceDuration)
 bounce:SetSmoothing('IN')
 group.bounce = bounce
 group.up = true
@@ -178,12 +187,16 @@ function TNI:SetOptions()
     --local ANCHOR_POINT  = "TOP"
     CONFIG.OFFSET_X = U1GetCfgValue(addon, "x")
     CONFIG.OFFSET_Y = U1GetCfgValue(addon, "y")
+    bounceOffset = U1GetCfgValue(addon, "anim/bounce_off")
+    bounceDuration = U1GetCfgValue(addon, "anim/bounce_dur")
+    bounce:SetOffset(0, bounceOffset)
+    bounce:SetDuration(bounceDuration)
 
     texture:SetTexture(CONFIG.TEXTURE_PATH)
     texture:SetSize(CONFIG.TEXTURE_WIDTH, CONFIG.TEXTURE_HEIGHT)
-    local nameplate = select(2, texture:GetPoint())
+    local nameplate = texture.rel
     if nameplate then
-        texture:SetPoint(CONFIG.TEXTURE_POINT, nameplate, CONFIG.ANCHOR_POINT, CONFIG.OFFSET_X, CONFIG.OFFSET_Y)
+        SetAndSavePoint(nameplate)
     end
 
     if U1GetCfgValue(addon, "anim") then

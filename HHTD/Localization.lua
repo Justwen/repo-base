@@ -3,7 +3,7 @@ H.H.T.D. World of Warcraft Add-on
 Copyright (c) 2009-2018 by John Wellesz (hhtd@2072productions.com)
 All rights reserved
 
-Version 2.4.7
+Version 2.4.9.4
 
 In World of Warcraft healers have to die. This is a cruel truth that you're
 taught very early in the game. This add-on helps you influence this unfortunate
@@ -40,7 +40,7 @@ do
     local L = LibStub("AceLocale-3.0"):NewLocale("H.H.T.D.", "enUS", true, true);
 
     if L then
-L["ACTIVE"] = "Active!"
+        L["ACTIVE"] = "Active!"
 L["Announcer"] = "Announcer"
 L["Announcer_DESC"] = "This module allows you to manage chat and sound alerts"
 L["AUTO_RAID_PARTY_INSTANCE"] = "Auto: Raid Warning / Raid / Instance / Party"
@@ -148,6 +148,12 @@ L["OPT_NPH_MARKER_X_OFFSET"] = "Horizontal offset"
 L["OPT_NPH_MARKER_X_OFFSET_DESC"] = "Move markers horizontally"
 L["OPT_NPH_MARKER_Y_OFFSET"] = "Vertical offset"
 L["OPT_NPH_MARKER_Y_OFFSET_DESC"] = "Move markers vertically"
+L["OPT_NPH_MAX_NAMEPLATE_DISTANCE"] = "Maximum distance of nameplates"
+L["OPT_NPH_MAX_NAMEPLATE_DISTANCE_DESC"] = [=[Set the maximum distance at which to display nameplates.
+
+(H.H.T.D. requires nameplates in order to display its symbols on top of them)
+
+This setting might have an impact on performances depending on your computer.]=]
 L["OPT_NPH_WARNING1"] = [=[WARNING: *Enemies*' nameplates are currently disabled. HHTD cannot add its symbol on enemies.
         You can enable nameplates display through the WoW UI's options or by using the assigned key-stroke.]=]
 L["OPT_NPH_WARNING2"] = [=[WARNING: *Allies*' nameplates are currently disabled. HHTD cannot add its symbol on allies.
@@ -217,6 +223,7 @@ L["YOU_GOT_HIM"] = "You got %shim|r!"
 L["YOU_GOT_IT"] = "You got %sit|r!"
 
 
+        
 
     end
 
@@ -226,7 +233,7 @@ do
     local L = LibStub("AceLocale-3.0"):NewLocale("H.H.T.D.", "frFR");
 
     if L then
-L["ACTIVE"] = "Actif !"
+        L["ACTIVE"] = "Actif !"
 L["Announcer"] = "Annonceur"
 L["Announcer_DESC"] = "Ce module permet de gérer différents type d'alertes."
 L["AUTO_RAID_PARTY_INSTANCE"] = "Automatique: Alerte de Raid / Raid / Instance / Groupe"
@@ -334,6 +341,12 @@ L["OPT_NPH_MARKER_X_OFFSET"] = "Offset horizontale"
 L["OPT_NPH_MARKER_X_OFFSET_DESC"] = "Déplacer les marqueurs horizontalement"
 L["OPT_NPH_MARKER_Y_OFFSET"] = "Offset verticale"
 L["OPT_NPH_MARKER_Y_OFFSET_DESC"] = "Déplacer les marqueurs verticalement"
+L["OPT_NPH_MAX_NAMEPLATE_DISTANCE"] = "Distance maximale des barres"
+L["OPT_NPH_MAX_NAMEPLATE_DISTANCE_DESC"] = [=[Règle la distance maximale d'affichage des barres d'info.
+
+(H.H.T.D. a besoin des barres d'info pour y mettre ses symbols)
+
+Ce réglage peut avoir un impacte sur les performances en fonction de votre ordinateur.]=]
 L["OPT_NPH_WARNING1"] = [=[ATTENTION : Les barres d'infos des unités ennemies sont désactivées. HHTD ne peut pas ajouter sa croix rouge.
 Vous pouvez activer les barres d'infos dans les options d'interface de WoW ou en utilisant le raccourcis.]=]
 L["OPT_NPH_WARNING2"] = [=[ATTENTION : Les barres d'infos des unités alliées sont désactivées. HHTD ne peut pas ajouter son symbole de soigneur.
@@ -409,7 +422,7 @@ do
     local L = LibStub("AceLocale-3.0"):NewLocale("H.H.T.D.", "deDE");
 
     if L then
-L["ACTIVE"] = "Aktiv!"
+        L["ACTIVE"] = "Aktiv!"
 L["Announcer"] = "Melder"
 L["Announcer_DESC"] = "Dieses Modul erlaubt dir Chat-Warnungen und Alarmtöne einzustellen"
 L["AUTO_RAID_PARTY_INSTANCE"] = "Auto: Schlachtzugswarnung / Schlachtzug / Instanz / Gruppe"
@@ -447,9 +460,9 @@ L["OPT_A_HEALER_PROTECTION"] = "Einstellungen Heilerschutz"
 L["OPT_A_HUD_WARNING"] = "HUD-Warnung"
 L["OPT_A_HUD_WARNING_DESC"] = "Zeigt eine Warnung in deinem Blickfeld an, sobald ein verbündeter Heiler angegriffen wird."
 --[[Translation missing --]]
---[[ L["OPT_ALWAYS_SHOW_NAMEPLATES"] = ""--]] 
+L["OPT_ALWAYS_SHOW_NAMEPLATES"] = "Always show nameplates"
 --[[Translation missing --]]
---[[ L["OPT_ALWAYS_SHOW_NAMEPLATES_DESC"] = ""--]] 
+L["OPT_ALWAYS_SHOW_NAMEPLATES_DESC"] = "By default nameplates are hidden outside of combat"
 L["OPT_ANNOUNCE"] = "Mitteilungen anzeigen"
 L["OPT_ANNOUNCE_DESC"] = "HHTD wird Mitteilungen anzeigen, wenn du auf einen feindlichen Heiler zielst oder die Maus über ihn bewegst."
 L["OPT_CLEAR_LOGS"] = "Protokolle löschen"
@@ -502,9 +515,10 @@ L["OPT_LOGS"] = "Protokolle"
 L["OPT_LOGS_DESC"] = "Zeigt erkannte Heiler und Statistik an."
 L["OPT_MODULES"] = "Module"
 --[[Translation missing --]]
---[[ L["OPT_NPH_DISPLAY_HEALER_RANK"] = ""--]] 
+L["OPT_NPH_DISPLAY_HEALER_RANK"] = "Display healers' rank"
 --[[Translation missing --]]
---[[ L["OPT_NPH_DISPLAY_HEALER_RANK_DESC"] = ""--]] 
+L["OPT_NPH_DISPLAY_HEALER_RANK_DESC"] = [=[Add a number representing each healer's rank.
+The lower the number the better the healer.]=]
 L["OPT_NPH_ENEMY_NAMEPLATE"] = "Namensplaketten von Feinden"
 L["OPT_NPH_FRIENDLY_NAMEPLATE"] = "Namensplaketten von Verbündeten"
 L["OPT_NPH_MARKER_HIDDEN_WOW_SETTINGS"] = "Versteckte WoW-Einstellungen"
@@ -512,16 +526,24 @@ L["OPT_NPH_MARKER_SCALE"] = "Markierungsskalierung"
 L["OPT_NPH_MARKER_SCALE_DESC"] = "Wert, mit dem die Markierungsgröße multipliziert wird (1 = Normalgröße, 0.5 = halbe Größe, 2 = doppelte Größe etc.)"
 L["OPT_NPH_MARKER_SETTINGS"] = "Markierungseinstellungen"
 --[[Translation missing --]]
---[[ L["OPT_NPH_MARKER_THEME"] = ""--]] 
+L["OPT_NPH_MARKER_THEME"] = "Markers' theme"
 L["OPT_NPH_MARKER_THEME_DEFAULT"] = "Standard"
 --[[Translation missing --]]
---[[ L["OPT_NPH_MARKER_THEME_DESC"] = ""--]] 
+L["OPT_NPH_MARKER_THEME_DESC"] = "Select between the available markers' themes"
 L["OPT_NPH_MARKER_THEME_MINIMAL"] = "Minimalist"
 L["OPT_NPH_MARKER_WOW_SETTINGS"] = "WoW-Einstellungen"
 L["OPT_NPH_MARKER_X_OFFSET"] = "Horizontale Verschiebung"
 L["OPT_NPH_MARKER_X_OFFSET_DESC"] = "Verschiebt Markierungen horizontal."
 L["OPT_NPH_MARKER_Y_OFFSET"] = "Vertikale Verschiebung"
 L["OPT_NPH_MARKER_Y_OFFSET_DESC"] = "Verschiebt Markierungen vertikal."
+--[[Translation missing --]]
+L["OPT_NPH_MAX_NAMEPLATE_DISTANCE"] = "Maximum distance of nameplates"
+--[[Translation missing --]]
+L["OPT_NPH_MAX_NAMEPLATE_DISTANCE_DESC"] = [=[Set the maximum distance at which to display nameplates.
+
+(H.H.T.D. requires nameplates in order to display its symbols on top of them)
+
+This setting might have an impact on performances depending on your computer.]=]
 L["OPT_NPH_WARNING1"] = [=[WARNUNG: Die Namensplaketten feindlicher Einheiten sind deaktiviert. So kann HHTD sein Symbol auf feindlichen Heilern nicht anzeigen.
 Du kannst die Anzeige der Namensplaketten aktivieren über Interface > Spiel > Namen oder durch Drücken der zugewiesenen Taste(nkombination).]=]
 L["OPT_NPH_WARNING2"] = [=[WARNUNG: Die Namensplaketten befreundeter Einheiten sind deaktiviert. So kann HHTD sein Symbol nicht auf Verbündeten anzeigen.
@@ -566,9 +588,9 @@ L["OPT_PVPHEALERSSPECSONLY_DESC"] = "Erkennt nur Spieler, die in Heilung spezial
 L["OPT_SET_FRIENDLY_HEALERS_ROLE"] = "Rolle befreundeter Heiler setzen"
 L["OPT_SET_FRIENDLY_HEALERS_ROLE_DESC"] = "Legt automatisch die Schlachtzug-Heiler-Rolle bei erkannten freundlichen Heilern (wenn möglich) fest."
 --[[Translation missing --]]
---[[ L["OPT_SHOW_CHAT_COMMAND_REMINDER"] = ""--]] 
+L["OPT_SHOW_CHAT_COMMAND_REMINDER"] = "Show /HHTDG chat command reminder"
 --[[Translation missing --]]
---[[ L["OPT_SHOW_CHAT_COMMAND_REMINDER_DESC"] = ""--]] 
+L["OPT_SHOW_CHAT_COMMAND_REMINDER_DESC"] = "Print a message in the chat every time HHTD is enabled."
 L["OPT_SOUNDS"] = "Warnsignale"
 L["OPT_SOUNDS_DESC"] = "HHTD wird einen bestimmten Sound abspielen, wenn du auf einen feindlichen Heiler zielst oder die Maus über ihn bewegst."
 L["OPT_STRICTGUIDPVE"] = "Genaue PVE-Erkennung"
@@ -598,128 +620,135 @@ do
     local L = LibStub("AceLocale-3.0"):NewLocale("H.H.T.D.", "esES");
 
     if L then
-L["ACTIVE"] = "¡Activo!"
+        L["ACTIVE"] = "¡Activo!"
 L["Announcer"] = "Anunciador"
 L["Announcer_DESC"] = "Este módulo te permite gestionar las alertas de chat y sonido."
 --[[Translation missing --]]
---[[ L["AUTO_RAID_PARTY_INSTANCE"] = ""--]] 
+L["AUTO_RAID_PARTY_INSTANCE"] = "Auto: Raid Warning / Raid / Instance / Party"
 L["CHAT_POST_ANNOUNCE_FEATURE_NOT_CONFIGURED"] = "Los anuncios a mensajes de raid no están configurados. Teclea /HHTDG"
 --[[Translation missing --]]
---[[ L["CHAT_POST_ANNOUNCE_TOO_SOON_WAIT"] = ""--]] 
+L["CHAT_POST_ANNOUNCE_TOO_SOON_WAIT"] = "It's too soon (see the announce throttle setting)."
 L["CHAT_POST_NO_HEALERS"] = "No hay sanadores en ninguno de los bandos :/ (aún)"
 --[[Translation missing --]]
---[[ L["CM"] = ""--]] 
+L["CM"] = "Custom Marks"
 --[[Translation missing --]]
---[[ L["CM_DESC"] = ""--]] 
+L["CM_DESC"] = "Enable this module to set permanent custom marks on NPC and Player units' nameplates."
 L["DESCRIPTION"] = "¡Descubre a esos sanadores sangrientos instantáneamente y ayúdales a cumplir su destino! (JcE y JcJ)"
 L["DISABLED"] = [=[hhtd ha sido desactivado!
 Escribe /hhtd enable para reactivarlo.]=]
 L["ENABLED"] = "¡Activado! Escribe /HHTDG para una lista de opciones."
 L["HEALER_UNDER_ATTACK"] = "El sanador amigo %s esta siendo atacado por %s"
 --[[Translation missing --]]
---[[ L["HHTD_IS_NOW_KNOWN_AS_H.H.T.D."] = ""--]] 
+L["HHTD_IS_NOW_KNOWN_AS_H.H.T.D."] = [=['%s' is now known as H.H.T.D. (see the change log for more information)
+
+Your previous settings were successfully transferred and the old version turned off.
+
+If you had previously disabled HHTD for some of your characters, you must login to each one once before deleting or disabling globally the old '%s' add-on so that this preference can also be kept.
+
+This message will be displayed only once per character where HHTD's previous version was enabled.]=]
 L["HUMAN"] = "Humano"
 L["IDLE"] = "Inactivo"
 --[[Translation missing --]]
---[[ L["INSTANCE_CHAT"] = ""--]] 
+L["INSTANCE_CHAT"] = "Instance chat"
 L["IS_A_HEALER"] = "¡%s es un sanador!"
 L["LOG_ACTIVE"] = "¡Activo!"
 --[[Translation missing --]]
---[[ L["LOG_BELOW_THRESHOLD"] = ""--]] 
+L["LOG_BELOW_THRESHOLD"] = " (below threshold)"
 L["LOG_IDLE"] = "Inactivo"
 L["NO_DATA"] = "No hay datos"
 L["NPC"] = "NPC"
 --[[Translation missing --]]
---[[ L["NPH"] = ""--]] 
+L["NPH"] = "Nameplate Hooker"
 L["NPH_DESC"] = "Este módulo añade una cruz roja a las placas de nombre de los sanadores enemigos."
 --[[Translation missing --]]
---[[ L["OPT_A_CHAT_WARNING"] = ""--]] 
+L["OPT_A_CHAT_WARNING"] = "Chat Warning"
 --[[Translation missing --]]
---[[ L["OPT_A_CHAT_WARNING_DESC"] = ""--]] 
+L["OPT_A_CHAT_WARNING_DESC"] = "Display a chat warning when a friendly healer is under attack"
 --[[Translation missing --]]
---[[ L["OPT_A_HEALER_PROTECTION"] = ""--]] 
+L["OPT_A_HEALER_PROTECTION"] = "Healer protection settings"
 --[[Translation missing --]]
---[[ L["OPT_A_HUD_WARNING"] = ""--]] 
+L["OPT_A_HUD_WARNING"] = "HUD Warning"
 --[[Translation missing --]]
---[[ L["OPT_A_HUD_WARNING_DESC"] = ""--]] 
+L["OPT_A_HUD_WARNING_DESC"] = "Display a heads-up warning when a friendly healer is under attack"
 --[[Translation missing --]]
---[[ L["OPT_ALWAYS_SHOW_NAMEPLATES"] = ""--]] 
+L["OPT_ALWAYS_SHOW_NAMEPLATES"] = "Always show nameplates"
 --[[Translation missing --]]
---[[ L["OPT_ALWAYS_SHOW_NAMEPLATES_DESC"] = ""--]] 
+L["OPT_ALWAYS_SHOW_NAMEPLATES_DESC"] = "By default nameplates are hidden outside of combat"
 L["OPT_ANNOUNCE"] = "Mostrar mensajes"
 L["OPT_ANNOUNCE_DESC"] = "HHTD mostrará mensajes cuando selecciones o pases por encima el ratón de un sanador enemigo."
 L["OPT_CLEAR_LOGS"] = "Limpiar registros."
 --[[Translation missing --]]
---[[ L["OPT_CM_CHANGEMARK"] = ""--]] 
+L["OPT_CM_CHANGEMARK"] = "Change to %s"
 --[[Translation missing --]]
---[[ L["OPT_CM_CHANGEMARK_DESC"] = ""--]] 
+L["OPT_CM_CHANGEMARK_DESC"] = "Change the mark to the one selected in the '%s' selector"
 --[[Translation missing --]]
---[[ L["OPT_CM_CLEARASSOC"] = ""--]] 
+L["OPT_CM_CLEARASSOC"] = "Clear"
 --[[Translation missing --]]
---[[ L["OPT_CM_CLEARASSOC_DESC"] = ""--]] 
+L["OPT_CM_CLEARASSOC_DESC"] = "Clear the selected name from its mark"
 --[[Translation missing --]]
---[[ L["OPT_CM_CLEARTARGETMARKER"] = ""--]] 
+L["OPT_CM_CLEARTARGETMARKER"] = "Clear target"
 --[[Translation missing --]]
---[[ L["OPT_CM_CLEARTARGETMARKER_DESC"] = ""--]] 
+L["OPT_CM_CLEARTARGETMARKER_DESC"] = "Remove the marker from your target"
 --[[Translation missing --]]
---[[ L["OPT_CM_DESCRIPTION"] = ""--]] 
+L["OPT_CM_DESCRIPTION"] = "Here you can target a unit and apply a custom mark only you will see, these marks will persist accross sessions."
 --[[Translation missing --]]
---[[ L["OPT_CM_EXISTINGASSOC"] = ""--]] 
+L["OPT_CM_EXISTINGASSOC"] = "Existing name-marker associations"
 --[[Translation missing --]]
---[[ L["OPT_CM_EXISTINGASSOC_DESC"] = ""--]] 
+L["OPT_CM_EXISTINGASSOC_DESC"] = "Select a name in this list to use with the other buttons of this section"
 --[[Translation missing --]]
---[[ L["OPT_CM_FNPC_NAMEPLATE"] = ""--]] 
+L["OPT_CM_FNPC_NAMEPLATE"] = "Friendly NPC nameplates"
 --[[Translation missing --]]
---[[ L["OPT_CM_FNPC_NAMEPLATE_DESC"] = ""--]] 
+L["OPT_CM_FNPC_NAMEPLATE_DESC"] = [=[Show nameplates on friendly NPCs
+This is necessary for markers to be shown on these units.]=]
 --[[Translation missing --]]
---[[ L["OPT_CM_MARKER_CUSTOMIZATION"] = ""--]] 
+L["OPT_CM_MARKER_CUSTOMIZATION"] = "Marker customization"
 --[[Translation missing --]]
---[[ L["OPT_CM_MARKER_MANAGEMENT"] = ""--]] 
+L["OPT_CM_MARKER_MANAGEMENT"] = "Marker management"
 --[[Translation missing --]]
---[[ L["OPT_CM_SELECT_MARKER"] = ""--]] 
+L["OPT_CM_SELECT_MARKER"] = "Marker"
 --[[Translation missing --]]
---[[ L["OPT_CM_SELECT_MARKER_DESC"] = ""--]] 
+L["OPT_CM_SELECT_MARKER_DESC"] = "Select a marker to apply to your target"
 --[[Translation missing --]]
---[[ L["OPT_CM_SETTARGETMARKER"] = ""--]] 
+L["OPT_CM_SETTARGETMARKER"] = "Mark target"
 --[[Translation missing --]]
---[[ L["OPT_CM_SETTARGETMARKER_DESC"] = ""--]] 
+L["OPT_CM_SETTARGETMARKER_DESC"] = "Mark the selected target with the selected marker"
 --[[Translation missing --]]
---[[ L["OPT_CM_VCa"] = ""--]] 
+L["OPT_CM_VCa"] = "Alpha Shading"
 --[[Translation missing --]]
---[[ L["OPT_CM_VCa_DESC"] = ""--]] 
+L["OPT_CM_VCa_DESC"] = "Change texture's Alpha component shading"
 --[[Translation missing --]]
---[[ L["OPT_CM_VCb"] = ""--]] 
+L["OPT_CM_VCb"] = "Blue Shading"
 --[[Translation missing --]]
---[[ L["OPT_CM_VCb_DESC"] = ""--]] 
+L["OPT_CM_VCb_DESC"] = "Change texture's Blue component shading"
 --[[Translation missing --]]
---[[ L["OPT_CM_VCg"] = ""--]] 
+L["OPT_CM_VCg"] = "Green Shading"
 --[[Translation missing --]]
---[[ L["OPT_CM_VCg_DESC"] = ""--]] 
+L["OPT_CM_VCg_DESC"] = "Change texture's Green component shading"
 --[[Translation missing --]]
---[[ L["OPT_CM_VCr"] = ""--]] 
+L["OPT_CM_VCr"] = "Red Shading"
 --[[Translation missing --]]
---[[ L["OPT_CM_VCr_DESC"] = ""--]] 
+L["OPT_CM_VCr_DESC"] = "Change texture's red component shading"
 L["OPT_CORE_OPTIONS"] = "Opciones principales"
 L["OPT_DEBUG"] = "Depurar"
 L["OPT_DEBUG_DESC"] = "Activa / desactiva la depuración de errores"
 --[[Translation missing --]]
---[[ L["OPT_DEBUGLEVEL"] = ""--]] 
+L["OPT_DEBUGLEVEL"] = "debugging level"
 --[[Translation missing --]]
---[[ L["OPT_DEBUGLEVEL_DESC"] = ""--]] 
+L["OPT_DEBUGLEVEL_DESC"] = "debug level: 1=all, 2=warnings, 3=errors"
 L["OPT_ENABLE_GEHR"] = "Activa el Informe Gráfico"
 L["OPT_ENABLE_GEHR_DESC"] = "Muestra una lista gráfica de sanadores enemigos detectados con diversas funciones"
 --[[Translation missing --]]
---[[ L["OPT_GUI"] = ""--]] 
+L["OPT_GUI"] = "Open GUI"
 --[[Translation missing --]]
---[[ L["OPT_GUI_DESC"] = ""--]] 
+L["OPT_GUI_DESC"] = "Open the graphical configuration panel"
 --[[Translation missing --]]
---[[ L["OPT_HEADER_GLOBAL_ENEMY_HEALER_OPTIONS"] = ""--]] 
+L["OPT_HEADER_GLOBAL_ENEMY_HEALER_OPTIONS"] = "Global enemy healers settings"
 --[[Translation missing --]]
---[[ L["OPT_HEADER_GLOBAL_FRIENDLY_HEALER_OPTIONS"] = ""--]] 
+L["OPT_HEADER_GLOBAL_FRIENDLY_HEALER_OPTIONS"] = "Global friendly healers settings"
 L["OPT_HEALER_FORGET_TIMER"] = "Contador de olvido de sanador"
 L["OPT_HEALER_FORGET_TIMER_DESC"] = "Establece el Contador de olvido de sanador (el tiempo en segundos en que un enemigo sigue siendo considerado como un sanador)"
 --[[Translation missing --]]
---[[ L["OPT_HEALER_MINIMUM_HEAL_AMOUNT"] = ""--]] 
+L["OPT_HEALER_MINIMUM_HEAL_AMOUNT"] = "Heal amount (|cff00dd00%u|r) threshold"
 L["OPT_HEALER_MINIMUM_HEAL_AMOUNT_DESC"] = "Los sanadores no serán detectados hasta que alcancen esta cantidad de sanación basada en un porcentaje de tu salud máxima."
 L["OPT_HEALER_UNDER_ATTACK_ALERTS"] = "Protege los sanadores amigos"
 L["OPT_HEALER_UNDER_ATTACK_ALERTS_DESC"] = "Muestra un mensaje cuando un sanador amigo cercano está siendo atacado"
@@ -729,32 +758,41 @@ L["OPT_LOGS"] = "Registros"
 L["OPT_LOGS_DESC"] = "Muestra los sanadores detectados por HHTD y las estadísticas."
 L["OPT_MODULES"] = "Módulos"
 --[[Translation missing --]]
---[[ L["OPT_NPH_DISPLAY_HEALER_RANK"] = ""--]] 
+L["OPT_NPH_DISPLAY_HEALER_RANK"] = "Display healers' rank"
 --[[Translation missing --]]
---[[ L["OPT_NPH_DISPLAY_HEALER_RANK_DESC"] = ""--]] 
+L["OPT_NPH_DISPLAY_HEALER_RANK_DESC"] = [=[Add a number representing each healer's rank.
+The lower the number the better the healer.]=]
 --[[Translation missing --]]
---[[ L["OPT_NPH_ENEMY_NAMEPLATE"] = ""--]] 
+L["OPT_NPH_ENEMY_NAMEPLATE"] = "Enemy nameplates"
 --[[Translation missing --]]
---[[ L["OPT_NPH_FRIENDLY_NAMEPLATE"] = ""--]] 
+L["OPT_NPH_FRIENDLY_NAMEPLATE"] = "Friendly nameplates"
 --[[Translation missing --]]
---[[ L["OPT_NPH_MARKER_HIDDEN_WOW_SETTINGS"] = ""--]] 
+L["OPT_NPH_MARKER_HIDDEN_WOW_SETTINGS"] = "Hidden WoW settings"
 L["OPT_NPH_MARKER_SCALE"] = "Escala de los marcadores"
 L["OPT_NPH_MARKER_SCALE_DESC"] = "Cambiar el tamaño de los marcadores"
 L["OPT_NPH_MARKER_SETTINGS"] = "Opciones de los marcadores"
 --[[Translation missing --]]
---[[ L["OPT_NPH_MARKER_THEME"] = ""--]] 
+L["OPT_NPH_MARKER_THEME"] = "Markers' theme"
 --[[Translation missing --]]
---[[ L["OPT_NPH_MARKER_THEME_DEFAULT"] = ""--]] 
+L["OPT_NPH_MARKER_THEME_DEFAULT"] = "Default"
 --[[Translation missing --]]
---[[ L["OPT_NPH_MARKER_THEME_DESC"] = ""--]] 
+L["OPT_NPH_MARKER_THEME_DESC"] = "Select between the available markers' themes"
 --[[Translation missing --]]
---[[ L["OPT_NPH_MARKER_THEME_MINIMAL"] = ""--]] 
+L["OPT_NPH_MARKER_THEME_MINIMAL"] = "Minimalist"
 --[[Translation missing --]]
---[[ L["OPT_NPH_MARKER_WOW_SETTINGS"] = ""--]] 
+L["OPT_NPH_MARKER_WOW_SETTINGS"] = "WoW settings"
 L["OPT_NPH_MARKER_X_OFFSET"] = "Punto horizontal"
 L["OPT_NPH_MARKER_X_OFFSET_DESC"] = "Mueve el marcador horizontalmente"
 L["OPT_NPH_MARKER_Y_OFFSET"] = "Punto vertical"
 L["OPT_NPH_MARKER_Y_OFFSET_DESC"] = "Mueve el marcador verticalmente"
+--[[Translation missing --]]
+L["OPT_NPH_MAX_NAMEPLATE_DISTANCE"] = "Maximum distance of nameplates"
+--[[Translation missing --]]
+L["OPT_NPH_MAX_NAMEPLATE_DISTANCE_DESC"] = [=[Set the maximum distance at which to display nameplates.
+
+(H.H.T.D. requires nameplates in order to display its symbols on top of them)
+
+This setting might have an impact on performances depending on your computer.]=]
 L["OPT_NPH_WARNING1"] = [=[AVISO: Las placas de nombre de enemigos están desactivadas. HHTD no puede añadir el símbolo de sanador.
 Puedes activar las placas de nombre a través de las opciones de interfaz de WoW o usando la tecla asignada.]=]
 L["OPT_NPH_WARNING2"] = [=[AVISO: Las placas de nombre de aliados están desactivadas. HHTD no puede añadir el símbolo de sanador.
@@ -764,10 +802,13 @@ L["OPT_OFF_DESC"] = "Desactiva HHTD"
 L["OPT_ON"] = "Activado"
 L["OPT_ON_DESC"] = "Activa HHTD"
 --[[Translation missing --]]
---[[ L["OPT_POST_ANNOUNCE_CHANNEL"] = ""--]] 
+L["OPT_POST_ANNOUNCE_CHANNEL"] = "Post channel"
 L["OPT_POST_ANNOUNCE_CHANNEL_DESC"] = "Decide donde será mostrado tu anuncio"
 --[[Translation missing --]]
---[[ L["OPT_POST_ANNOUNCE_DESCRIPTION"] = ""--]] 
+L["OPT_POST_ANNOUNCE_DESCRIPTION"] = [=[|cFFFF0000IMPORTANT:|r Type |cff40ff40/hhtdp|r or bind a key to announce friendly healers to protect and enemy healers to focus.
+
+(see World of Warcraft escape menu binding interface to bind a key)
+]=]
 L["OPT_POST_ANNOUNCE_ENABLE"] = "Anuncios de chat"
 L["OPT_POST_ANNOUNCE_ENABLE_DESC"] = "Activar anuncios a raid."
 L["OPT_POST_ANNOUNCE_HUMAMNS_ONLY"] = "Solo humanos"
@@ -788,12 +829,12 @@ L["OPT_POST_ANNOUNCE_PROTECT_MESSAGE_DESC"] = [=[Escribe un mensaje incitando a 
 Debes usar la palabra clave [SANADORES] en algún sitio, que será reemplazado automáticamente por los nombres de los sanadores activos.]=]
 L["OPT_POST_ANNOUNCE_SETTINGS"] = "Opciones de anuncios a raid"
 --[[Translation missing --]]
---[[ L["OPT_POST_ANNOUNCE_THROTTLE"] = ""--]] 
+L["OPT_POST_ANNOUNCE_THROTTLE"] = "Announce throttle"
 L["OPT_POST_ANNOUNCE_THROTTLE_DESC"] = "Establecer el tiempo mínimo en segundos entre cada posible anuncio."
 --[[Translation missing --]]
---[[ L["OPT_PROTECT_HEALER_MINIMUM_DAMAGE_AMOUNT"] = ""--]] 
+L["OPT_PROTECT_HEALER_MINIMUM_DAMAGE_AMOUNT"] = "Damage amount (|cffdd0000%u|r) threshold"
 --[[Translation missing --]]
---[[ L["OPT_PROTECT_HEALER_MINIMUM_DAMAGE_AMOUNT_DESC"] = ""--]] 
+L["OPT_PROTECT_HEALER_MINIMUM_DAMAGE_AMOUNT_DESC"] = "Friendly attacked healers won't be detected until they reach this cumulative amount of damage based on a percentage of your own maximum health."
 L["OPT_PVE"] = "Activar para PVE"
 L["OPT_PVE_DESC"] = "HHTD también trabajará con NPCs."
 L["OPT_PVPHEALERSSPECSONLY"] = "Detección de especialización de sanador"
@@ -801,17 +842,17 @@ L["OPT_PVPHEALERSSPECSONLY_DESC"] = "Solo detectar jugadores especializados en s
 L["OPT_SET_FRIENDLY_HEALERS_ROLE"] = "Establecer rol de los sanadores amigos"
 L["OPT_SET_FRIENDLY_HEALERS_ROLE_DESC"] = "Establecerá automáticamente el rol de raid SANADOR a los sanadores amigos cuando se detecten (si es posible)"
 --[[Translation missing --]]
---[[ L["OPT_SHOW_CHAT_COMMAND_REMINDER"] = ""--]] 
+L["OPT_SHOW_CHAT_COMMAND_REMINDER"] = "Show /HHTDG chat command reminder"
 --[[Translation missing --]]
---[[ L["OPT_SHOW_CHAT_COMMAND_REMINDER_DESC"] = ""--]] 
+L["OPT_SHOW_CHAT_COMMAND_REMINDER_DESC"] = "Print a message in the chat every time HHTD is enabled."
 L["OPT_SOUNDS"] = "Sonidos de alerta"
 L["OPT_SOUNDS_DESC"] = "HHTD activará un sonido específico cuando selecciones o pases el ratón por encima de un sanador enemigo"
 L["OPT_STRICTGUIDPVE"] = "Detección refinada para PVE"
 L["OPT_STRICTGUIDPVE_DESC"] = "Cuando varios NPCs compartan el mismo nombre, HHTD solo añadirá una cruz sobre aquellos que realmente curaron en vez de a todos. Toma nota de que la mayor parte del tiempo, necesitarás seleccionar o pasar el ratón por encima para que aparezca la cruz."
 --[[Translation missing --]]
---[[ L["OPT_SWAPSYMBOLS"] = ""--]] 
+L["OPT_SWAPSYMBOLS"] = "Swap friends/foes symbols"
 --[[Translation missing --]]
---[[ L["OPT_SWAPSYMBOLS_DESC"] = ""--]] 
+L["OPT_SWAPSYMBOLS_DESC"] = "The symbols used for friends and foes are swapped"
 L["OPT_TESTONTARGET"] = "Probar el comportamiento de HHTD en el objetivo actual"
 L["OPT_TESTONTARGET_DESC"] = "Marcará tu objetivo actual como sanador para que puedas probar lo que pasa."
 L["OPT_TESTONTARGET_ENOTARGET"] = "Debes tener algún objetivo."
@@ -825,11 +866,11 @@ L["SAY"] = "Decir"
 L["VERSION"] = "Versión:"
 L["YELL"] = "Gritar"
 --[[Translation missing --]]
---[[ L["YOU_GOT_HER"] = ""--]] 
+L["YOU_GOT_HER"] = "You got %sher|r!"
 --[[Translation missing --]]
---[[ L["YOU_GOT_HIM"] = ""--]] 
+L["YOU_GOT_HIM"] = "You got %shim|r!"
 --[[Translation missing --]]
---[[ L["YOU_GOT_IT"] = ""--]] 
+L["YOU_GOT_IT"] = "You got %sit|r!"
 
     end
 end
@@ -838,318 +879,345 @@ do
     local L = LibStub("AceLocale-3.0"):NewLocale("H.H.T.D.", "esMX");
 
     if L then
+        --[[Translation missing --]]
+L["ACTIVE"] = "Active!"
 --[[Translation missing --]]
---[[ L["ACTIVE"] = ""--]] 
+L["Announcer"] = "Announcer"
 --[[Translation missing --]]
---[[ L["Announcer"] = ""--]] 
+L["Announcer_DESC"] = "This module allows you to manage chat and sound alerts"
 --[[Translation missing --]]
---[[ L["Announcer_DESC"] = ""--]] 
+L["AUTO_RAID_PARTY_INSTANCE"] = "Auto: Raid Warning / Raid / Instance / Party"
 --[[Translation missing --]]
---[[ L["AUTO_RAID_PARTY_INSTANCE"] = ""--]] 
+L["CHAT_POST_ANNOUNCE_FEATURE_NOT_CONFIGURED"] = "The announce to raid messages are not configured. Type /HHTDG"
 --[[Translation missing --]]
---[[ L["CHAT_POST_ANNOUNCE_FEATURE_NOT_CONFIGURED"] = ""--]] 
+L["CHAT_POST_ANNOUNCE_TOO_SOON_WAIT"] = "It's too soon (see the announce throttle setting)."
 --[[Translation missing --]]
---[[ L["CHAT_POST_ANNOUNCE_TOO_SOON_WAIT"] = ""--]] 
+L["CHAT_POST_NO_HEALERS"] = "No healers on either sides :/ (yet)"
 --[[Translation missing --]]
---[[ L["CHAT_POST_NO_HEALERS"] = ""--]] 
+L["CM"] = "Custom Marks"
 --[[Translation missing --]]
---[[ L["CM"] = ""--]] 
+L["CM_DESC"] = "Enable this module to set permanent custom marks on NPC and Player units' nameplates."
 --[[Translation missing --]]
---[[ L["CM_DESC"] = ""--]] 
+L["DESCRIPTION"] = "In World of Warcraft healers have to die. This is a cruel truth that you're taught very early in the game. This add-on helps you influence this unfortunate destiny in a way or another depending on the healer's side..."
 --[[Translation missing --]]
---[[ L["DESCRIPTION"] = ""--]] 
+L["DISABLED"] = [=[hhtd has been disabled!
+Type '/hhtd on' to re-enable it.]=]
 --[[Translation missing --]]
---[[ L["DISABLED"] = ""--]] 
+L["ENABLED"] = "enabled! Type /HHTDG to open its option panel"
 --[[Translation missing --]]
---[[ L["ENABLED"] = ""--]] 
+L["HEALER_UNDER_ATTACK"] = "Healer friend %s is being attacked by %s"
 --[[Translation missing --]]
---[[ L["HEALER_UNDER_ATTACK"] = ""--]] 
+L["HHTD_IS_NOW_KNOWN_AS_H.H.T.D."] = [=['%s' is now known as H.H.T.D. (see the change log for more information)
+
+Your previous settings were successfully transferred and the old version turned off.
+
+If you had previously disabled HHTD for some of your characters, you must login to each one once before deleting or disabling globally the old '%s' add-on so that this preference can also be kept.
+
+This message will be displayed only once per character where HHTD's previous version was enabled.]=]
 --[[Translation missing --]]
---[[ L["HHTD_IS_NOW_KNOWN_AS_H.H.T.D."] = ""--]] 
+L["HUMAN"] = "Human"
 --[[Translation missing --]]
---[[ L["HUMAN"] = ""--]] 
+L["IDLE"] = "Idle"
 --[[Translation missing --]]
---[[ L["IDLE"] = ""--]] 
+L["INSTANCE_CHAT"] = "Instance chat"
 --[[Translation missing --]]
---[[ L["INSTANCE_CHAT"] = ""--]] 
+L["IS_A_HEALER"] = "%s is a healer!"
 --[[Translation missing --]]
---[[ L["IS_A_HEALER"] = ""--]] 
+L["LOG_ACTIVE"] = "Active!"
 --[[Translation missing --]]
---[[ L["LOG_ACTIVE"] = ""--]] 
+L["LOG_BELOW_THRESHOLD"] = " (below threshold)"
 --[[Translation missing --]]
---[[ L["LOG_BELOW_THRESHOLD"] = ""--]] 
+L["LOG_IDLE"] = "Idle"
 --[[Translation missing --]]
---[[ L["LOG_IDLE"] = ""--]] 
+L["NO_DATA"] = "No data"
 --[[Translation missing --]]
---[[ L["NO_DATA"] = ""--]] 
+L["NPC"] = "NPC"
 --[[Translation missing --]]
---[[ L["NPC"] = ""--]] 
+L["NPH"] = "Nameplate Hooker"
 --[[Translation missing --]]
---[[ L["NPH"] = ""--]] 
+L["NPH_DESC"] = "This module adds a red cross to enemy healers' nameplates"
 --[[Translation missing --]]
---[[ L["NPH_DESC"] = ""--]] 
+L["OPT_A_CHAT_WARNING"] = "Chat Warning"
 --[[Translation missing --]]
---[[ L["OPT_A_CHAT_WARNING"] = ""--]] 
+L["OPT_A_CHAT_WARNING_DESC"] = "Display a chat warning when a friendly healer is under attack"
 --[[Translation missing --]]
---[[ L["OPT_A_CHAT_WARNING_DESC"] = ""--]] 
+L["OPT_A_HEALER_PROTECTION"] = "Healer protection settings"
 --[[Translation missing --]]
---[[ L["OPT_A_HEALER_PROTECTION"] = ""--]] 
+L["OPT_A_HUD_WARNING"] = "HUD Warning"
 --[[Translation missing --]]
---[[ L["OPT_A_HUD_WARNING"] = ""--]] 
+L["OPT_A_HUD_WARNING_DESC"] = "Display a heads-up warning when a friendly healer is under attack"
 --[[Translation missing --]]
---[[ L["OPT_A_HUD_WARNING_DESC"] = ""--]] 
+L["OPT_ALWAYS_SHOW_NAMEPLATES"] = "Always show nameplates"
 --[[Translation missing --]]
---[[ L["OPT_ALWAYS_SHOW_NAMEPLATES"] = ""--]] 
+L["OPT_ALWAYS_SHOW_NAMEPLATES_DESC"] = "By default nameplates are hidden outside of combat"
 --[[Translation missing --]]
---[[ L["OPT_ALWAYS_SHOW_NAMEPLATES_DESC"] = ""--]] 
+L["OPT_ANNOUNCE"] = "Show messages"
 --[[Translation missing --]]
---[[ L["OPT_ANNOUNCE"] = ""--]] 
+L["OPT_ANNOUNCE_DESC"] = "HHTD will display messages when you target or mouse-over an enemy healer."
 --[[Translation missing --]]
---[[ L["OPT_ANNOUNCE_DESC"] = ""--]] 
+L["OPT_CLEAR_LOGS"] = "Clear logs"
 --[[Translation missing --]]
---[[ L["OPT_CLEAR_LOGS"] = ""--]] 
+L["OPT_CM_CHANGEMARK"] = "Change to %s"
 --[[Translation missing --]]
---[[ L["OPT_CM_CHANGEMARK"] = ""--]] 
+L["OPT_CM_CHANGEMARK_DESC"] = "Change the mark to the one selected in the '%s' selector"
 --[[Translation missing --]]
---[[ L["OPT_CM_CHANGEMARK_DESC"] = ""--]] 
+L["OPT_CM_CLEARASSOC"] = "Clear"
 --[[Translation missing --]]
---[[ L["OPT_CM_CLEARASSOC"] = ""--]] 
+L["OPT_CM_CLEARASSOC_DESC"] = "Clear the selected name from its mark"
 --[[Translation missing --]]
---[[ L["OPT_CM_CLEARASSOC_DESC"] = ""--]] 
+L["OPT_CM_CLEARTARGETMARKER"] = "Clear target"
 --[[Translation missing --]]
---[[ L["OPT_CM_CLEARTARGETMARKER"] = ""--]] 
+L["OPT_CM_CLEARTARGETMARKER_DESC"] = "Remove the marker from your target"
 --[[Translation missing --]]
---[[ L["OPT_CM_CLEARTARGETMARKER_DESC"] = ""--]] 
+L["OPT_CM_DESCRIPTION"] = "Here you can target a unit and apply a custom mark only you will see, these marks will persist accross sessions."
 --[[Translation missing --]]
---[[ L["OPT_CM_DESCRIPTION"] = ""--]] 
+L["OPT_CM_EXISTINGASSOC"] = "Existing name-marker associations"
 --[[Translation missing --]]
---[[ L["OPT_CM_EXISTINGASSOC"] = ""--]] 
+L["OPT_CM_EXISTINGASSOC_DESC"] = "Select a name in this list to use with the other buttons of this section"
 --[[Translation missing --]]
---[[ L["OPT_CM_EXISTINGASSOC_DESC"] = ""--]] 
+L["OPT_CM_FNPC_NAMEPLATE"] = "Friendly NPC nameplates"
 --[[Translation missing --]]
---[[ L["OPT_CM_FNPC_NAMEPLATE"] = ""--]] 
+L["OPT_CM_FNPC_NAMEPLATE_DESC"] = [=[Show nameplates on friendly NPCs
+This is necessary for markers to be shown on these units.]=]
 --[[Translation missing --]]
---[[ L["OPT_CM_FNPC_NAMEPLATE_DESC"] = ""--]] 
+L["OPT_CM_MARKER_CUSTOMIZATION"] = "Marker customization"
 --[[Translation missing --]]
---[[ L["OPT_CM_MARKER_CUSTOMIZATION"] = ""--]] 
+L["OPT_CM_MARKER_MANAGEMENT"] = "Marker management"
 --[[Translation missing --]]
---[[ L["OPT_CM_MARKER_MANAGEMENT"] = ""--]] 
+L["OPT_CM_SELECT_MARKER"] = "Marker"
 --[[Translation missing --]]
---[[ L["OPT_CM_SELECT_MARKER"] = ""--]] 
+L["OPT_CM_SELECT_MARKER_DESC"] = "Select a marker to apply to your target"
 --[[Translation missing --]]
---[[ L["OPT_CM_SELECT_MARKER_DESC"] = ""--]] 
+L["OPT_CM_SETTARGETMARKER"] = "Mark target"
 --[[Translation missing --]]
---[[ L["OPT_CM_SETTARGETMARKER"] = ""--]] 
+L["OPT_CM_SETTARGETMARKER_DESC"] = "Mark the selected target with the selected marker"
 --[[Translation missing --]]
---[[ L["OPT_CM_SETTARGETMARKER_DESC"] = ""--]] 
+L["OPT_CM_VCa"] = "Alpha Shading"
 --[[Translation missing --]]
---[[ L["OPT_CM_VCa"] = ""--]] 
+L["OPT_CM_VCa_DESC"] = "Change texture's Alpha component shading"
 --[[Translation missing --]]
---[[ L["OPT_CM_VCa_DESC"] = ""--]] 
+L["OPT_CM_VCb"] = "Blue Shading"
 --[[Translation missing --]]
---[[ L["OPT_CM_VCb"] = ""--]] 
+L["OPT_CM_VCb_DESC"] = "Change texture's Blue component shading"
 --[[Translation missing --]]
---[[ L["OPT_CM_VCb_DESC"] = ""--]] 
+L["OPT_CM_VCg"] = "Green Shading"
 --[[Translation missing --]]
---[[ L["OPT_CM_VCg"] = ""--]] 
+L["OPT_CM_VCg_DESC"] = "Change texture's Green component shading"
 --[[Translation missing --]]
---[[ L["OPT_CM_VCg_DESC"] = ""--]] 
+L["OPT_CM_VCr"] = "Red Shading"
 --[[Translation missing --]]
---[[ L["OPT_CM_VCr"] = ""--]] 
+L["OPT_CM_VCr_DESC"] = "Change texture's red component shading"
 --[[Translation missing --]]
---[[ L["OPT_CM_VCr_DESC"] = ""--]] 
+L["OPT_CORE_OPTIONS"] = "Core options"
 --[[Translation missing --]]
---[[ L["OPT_CORE_OPTIONS"] = ""--]] 
+L["OPT_DEBUG"] = "debugging logs"
 --[[Translation missing --]]
---[[ L["OPT_DEBUG"] = ""--]] 
+L["OPT_DEBUG_DESC"] = "Enables / disables debugging"
 --[[Translation missing --]]
---[[ L["OPT_DEBUG_DESC"] = ""--]] 
+L["OPT_DEBUGLEVEL"] = "debugging level"
 --[[Translation missing --]]
---[[ L["OPT_DEBUGLEVEL"] = ""--]] 
+L["OPT_DEBUGLEVEL_DESC"] = "debug level: 1=all, 2=warnings, 3=errors"
 --[[Translation missing --]]
---[[ L["OPT_DEBUGLEVEL_DESC"] = ""--]] 
+L["OPT_ENABLE_GEHR"] = "Enable Graphical Reporter"
 --[[Translation missing --]]
---[[ L["OPT_ENABLE_GEHR"] = ""--]] 
+L["OPT_ENABLE_GEHR_DESC"] = "Displays a graphical list of detected enemy healers with various features"
 --[[Translation missing --]]
---[[ L["OPT_ENABLE_GEHR_DESC"] = ""--]] 
+L["OPT_GUI"] = "Open GUI"
 --[[Translation missing --]]
---[[ L["OPT_GUI"] = ""--]] 
+L["OPT_GUI_DESC"] = "Open the graphical configuration panel"
 --[[Translation missing --]]
---[[ L["OPT_GUI_DESC"] = ""--]] 
+L["OPT_HEADER_GLOBAL_ENEMY_HEALER_OPTIONS"] = "Global enemy healers settings"
 --[[Translation missing --]]
---[[ L["OPT_HEADER_GLOBAL_ENEMY_HEALER_OPTIONS"] = ""--]] 
+L["OPT_HEADER_GLOBAL_FRIENDLY_HEALER_OPTIONS"] = "Global friendly healers settings"
 --[[Translation missing --]]
---[[ L["OPT_HEADER_GLOBAL_FRIENDLY_HEALER_OPTIONS"] = ""--]] 
+L["OPT_HEALER_FORGET_TIMER"] = "Healer Forget Timer"
 --[[Translation missing --]]
---[[ L["OPT_HEALER_FORGET_TIMER"] = ""--]] 
+L["OPT_HEALER_FORGET_TIMER_DESC"] = "Set the Healer Forget Timer (the time in seconds an enemy will remain considered has a healer)"
 --[[Translation missing --]]
---[[ L["OPT_HEALER_FORGET_TIMER_DESC"] = ""--]] 
+L["OPT_HEALER_MINIMUM_HEAL_AMOUNT"] = "Heal amount (|cff00dd00%u|r) threshold"
 --[[Translation missing --]]
---[[ L["OPT_HEALER_MINIMUM_HEAL_AMOUNT"] = ""--]] 
+L["OPT_HEALER_MINIMUM_HEAL_AMOUNT_DESC"] = "Healers won't be detected until they reach this cumulative amount of healing based on a percentage of your own maximum health."
 --[[Translation missing --]]
---[[ L["OPT_HEALER_MINIMUM_HEAL_AMOUNT_DESC"] = ""--]] 
+L["OPT_HEALER_UNDER_ATTACK_ALERTS"] = "Protect friendly healers"
 --[[Translation missing --]]
---[[ L["OPT_HEALER_UNDER_ATTACK_ALERTS"] = ""--]] 
+L["OPT_HEALER_UNDER_ATTACK_ALERTS_DESC"] = "Display an alert when a nearby friendly healers is attacked for more than |cffdd0000%u|r damage"
 --[[Translation missing --]]
---[[ L["OPT_HEALER_UNDER_ATTACK_ALERTS_DESC"] = ""--]] 
+L["OPT_LOG"] = "Logging"
 --[[Translation missing --]]
---[[ L["OPT_LOG"] = ""--]] 
+L["OPT_LOG_DESC"] = "Enables logging and adds a new 'Logs' tab to HHTD's option panel"
 --[[Translation missing --]]
---[[ L["OPT_LOG_DESC"] = ""--]] 
+L["OPT_LOGS"] = "Logs"
 --[[Translation missing --]]
---[[ L["OPT_LOGS"] = ""--]] 
+L["OPT_LOGS_DESC"] = "Display HHTD detected healers and statistics"
 --[[Translation missing --]]
---[[ L["OPT_LOGS_DESC"] = ""--]] 
+L["OPT_MODULES"] = "Modules"
 --[[Translation missing --]]
---[[ L["OPT_MODULES"] = ""--]] 
+L["OPT_NPH_DISPLAY_HEALER_RANK"] = "Display healers' rank"
 --[[Translation missing --]]
---[[ L["OPT_NPH_DISPLAY_HEALER_RANK"] = ""--]] 
+L["OPT_NPH_DISPLAY_HEALER_RANK_DESC"] = [=[Add a number representing each healer's rank.
+The lower the number the better the healer.]=]
 --[[Translation missing --]]
---[[ L["OPT_NPH_DISPLAY_HEALER_RANK_DESC"] = ""--]] 
+L["OPT_NPH_ENEMY_NAMEPLATE"] = "Enemy nameplates"
 --[[Translation missing --]]
---[[ L["OPT_NPH_ENEMY_NAMEPLATE"] = ""--]] 
+L["OPT_NPH_FRIENDLY_NAMEPLATE"] = "Friendly nameplates"
 --[[Translation missing --]]
---[[ L["OPT_NPH_FRIENDLY_NAMEPLATE"] = ""--]] 
+L["OPT_NPH_MARKER_HIDDEN_WOW_SETTINGS"] = "Hidden WoW settings"
 --[[Translation missing --]]
---[[ L["OPT_NPH_MARKER_HIDDEN_WOW_SETTINGS"] = ""--]] 
+L["OPT_NPH_MARKER_SCALE"] = "Markers' scaling"
 --[[Translation missing --]]
---[[ L["OPT_NPH_MARKER_SCALE"] = ""--]] 
+L["OPT_NPH_MARKER_SCALE_DESC"] = "Multiply markers' size by # i.e. 1 = normal size, 0.5 = half size, 2 = double size, etc..."
 --[[Translation missing --]]
---[[ L["OPT_NPH_MARKER_SCALE_DESC"] = ""--]] 
+L["OPT_NPH_MARKER_SETTINGS"] = "Markers' settings"
 --[[Translation missing --]]
---[[ L["OPT_NPH_MARKER_SETTINGS"] = ""--]] 
+L["OPT_NPH_MARKER_THEME"] = "Markers' theme"
 --[[Translation missing --]]
---[[ L["OPT_NPH_MARKER_THEME"] = ""--]] 
+L["OPT_NPH_MARKER_THEME_DEFAULT"] = "Default"
 --[[Translation missing --]]
---[[ L["OPT_NPH_MARKER_THEME_DEFAULT"] = ""--]] 
+L["OPT_NPH_MARKER_THEME_DESC"] = "Select between the available markers' themes"
 --[[Translation missing --]]
---[[ L["OPT_NPH_MARKER_THEME_DESC"] = ""--]] 
+L["OPT_NPH_MARKER_THEME_MINIMAL"] = "Minimalist"
 --[[Translation missing --]]
---[[ L["OPT_NPH_MARKER_THEME_MINIMAL"] = ""--]] 
+L["OPT_NPH_MARKER_WOW_SETTINGS"] = "WoW settings"
 --[[Translation missing --]]
---[[ L["OPT_NPH_MARKER_WOW_SETTINGS"] = ""--]] 
+L["OPT_NPH_MARKER_X_OFFSET"] = "Horizontal offset"
 --[[Translation missing --]]
---[[ L["OPT_NPH_MARKER_X_OFFSET"] = ""--]] 
+L["OPT_NPH_MARKER_X_OFFSET_DESC"] = "Move markers horizontally"
 --[[Translation missing --]]
---[[ L["OPT_NPH_MARKER_X_OFFSET_DESC"] = ""--]] 
+L["OPT_NPH_MARKER_Y_OFFSET"] = "Vertical offset"
 --[[Translation missing --]]
---[[ L["OPT_NPH_MARKER_Y_OFFSET"] = ""--]] 
+L["OPT_NPH_MARKER_Y_OFFSET_DESC"] = "Move markers vertically"
 --[[Translation missing --]]
---[[ L["OPT_NPH_MARKER_Y_OFFSET_DESC"] = ""--]] 
+L["OPT_NPH_MAX_NAMEPLATE_DISTANCE"] = "Maximum distance of nameplates"
 --[[Translation missing --]]
---[[ L["OPT_NPH_WARNING1"] = ""--]] 
+L["OPT_NPH_MAX_NAMEPLATE_DISTANCE_DESC"] = [=[Set the maximum distance at which to display nameplates.
+
+(H.H.T.D. requires nameplates in order to display its symbols on top of them)
+
+This setting might have an impact on performances depending on your computer.]=]
 --[[Translation missing --]]
---[[ L["OPT_NPH_WARNING2"] = ""--]] 
+L["OPT_NPH_WARNING1"] = [=[WARNING: *Enemies*' nameplates are currently disabled. HHTD cannot add its symbol on enemies.
+        You can enable nameplates display through the WoW UI's options or by using the assigned key-stroke.]=]
 --[[Translation missing --]]
---[[ L["OPT_OFF"] = ""--]] 
+L["OPT_NPH_WARNING2"] = [=[WARNING: *Allies*' nameplates are currently disabled. HHTD cannot add its symbol on allies.
+        You can enable nameplates display through the WoW UI's options or by using the assigned key-stroke.]=]
 --[[Translation missing --]]
---[[ L["OPT_OFF_DESC"] = ""--]] 
+L["OPT_OFF"] = "off"
 --[[Translation missing --]]
---[[ L["OPT_ON"] = ""--]] 
+L["OPT_OFF_DESC"] = "Disables HHTD"
 --[[Translation missing --]]
---[[ L["OPT_ON_DESC"] = ""--]] 
+L["OPT_ON"] = "on"
 --[[Translation missing --]]
---[[ L["OPT_POST_ANNOUNCE_CHANNEL"] = ""--]] 
+L["OPT_ON_DESC"] = "Enables HHTD"
 --[[Translation missing --]]
---[[ L["OPT_POST_ANNOUNCE_CHANNEL_DESC"] = ""--]] 
+L["OPT_POST_ANNOUNCE_CHANNEL"] = "Post channel"
 --[[Translation missing --]]
---[[ L["OPT_POST_ANNOUNCE_DESCRIPTION"] = ""--]] 
+L["OPT_POST_ANNOUNCE_CHANNEL_DESC"] = [=[Decide where your announce will be posted.
+Note: unless you want to use 'say' or 'yell' you should leave this to automatic.]=]
 --[[Translation missing --]]
---[[ L["OPT_POST_ANNOUNCE_ENABLE"] = ""--]] 
+L["OPT_POST_ANNOUNCE_DESCRIPTION"] = [=[|cFFFF0000IMPORTANT:|r Type |cff40ff40/hhtdp|r or bind a key to announce friendly healers to protect and enemy healers to focus.
+
+(see World of Warcraft escape menu binding interface to bind a key)
+]=]
 --[[Translation missing --]]
---[[ L["OPT_POST_ANNOUNCE_ENABLE_DESC"] = ""--]] 
+L["OPT_POST_ANNOUNCE_ENABLE"] = "Chat announces"
 --[[Translation missing --]]
---[[ L["OPT_POST_ANNOUNCE_HUMAMNS_ONLY"] = ""--]] 
+L["OPT_POST_ANNOUNCE_ENABLE_DESC"] = "Enable announce to raid features."
 --[[Translation missing --]]
---[[ L["OPT_POST_ANNOUNCE_HUMAMNS_ONLY_DESC"] = ""--]] 
+L["OPT_POST_ANNOUNCE_HUMAMNS_ONLY"] = "Humans only"
 --[[Translation missing --]]
---[[ L["OPT_POST_ANNOUNCE_KILL_MESSAGE"] = ""--]] 
+L["OPT_POST_ANNOUNCE_HUMAMNS_ONLY_DESC"] = "Do not include NPCs in the announce."
 --[[Translation missing --]]
---[[ L["OPT_POST_ANNOUNCE_KILL_MESSAGE_DESC"] = ""--]] 
+L["OPT_POST_ANNOUNCE_KILL_MESSAGE"] = "Text for enemy healers"
 --[[Translation missing --]]
---[[ L["OPT_POST_ANNOUNCE_MESSAGE_TOO_SHORT"] = ""--]] 
+L["OPT_POST_ANNOUNCE_KILL_MESSAGE_DESC"] = [=[Type a message inciting your team to focus enemy healers.
+
+You must use the [HEALERS] keyword somewhere which will be automatically replaced by the names of the currently active healers.]=]
 --[[Translation missing --]]
---[[ L["OPT_POST_ANNOUNCE_MESSAGES_EQUAL"] = ""--]] 
+L["OPT_POST_ANNOUNCE_MESSAGE_TOO_SHORT"] = "Your message is too short!"
 --[[Translation missing --]]
---[[ L["OPT_POST_ANNOUNCE_MISSING_KEYWORD"] = ""--]] 
+L["OPT_POST_ANNOUNCE_MESSAGES_EQUAL"] = "There is one message for friends and one for foes, they cannot be the same."
 --[[Translation missing --]]
---[[ L["OPT_POST_ANNOUNCE_NUMBER"] = ""--]] 
+L["OPT_POST_ANNOUNCE_MISSING_KEYWORD"] = "The [HEALERS] keyword is missing!"
 --[[Translation missing --]]
---[[ L["OPT_POST_ANNOUNCE_NUMBER_DESC"] = ""--]] 
+L["OPT_POST_ANNOUNCE_NUMBER"] = "Healers number"
 --[[Translation missing --]]
---[[ L["OPT_POST_ANNOUNCE_POST_MESSAGE_ISSUE"] = ""--]] 
+L["OPT_POST_ANNOUNCE_NUMBER_DESC"] = "Set how many healers to include in each announce."
 --[[Translation missing --]]
---[[ L["OPT_POST_ANNOUNCE_PROTECT_MESSAGE"] = ""--]] 
+L["OPT_POST_ANNOUNCE_POST_MESSAGE_ISSUE"] = "There is something wrong with one of the announce text."
 --[[Translation missing --]]
---[[ L["OPT_POST_ANNOUNCE_PROTECT_MESSAGE_DESC"] = ""--]] 
+L["OPT_POST_ANNOUNCE_PROTECT_MESSAGE"] = "Text for friendly healers"
 --[[Translation missing --]]
---[[ L["OPT_POST_ANNOUNCE_SETTINGS"] = ""--]] 
+L["OPT_POST_ANNOUNCE_PROTECT_MESSAGE_DESC"] = [=[Type a message inciting your team to protect their healers.
+
+You must use the [HEALERS] keyword somewhere which will be automatically replaced by the names of the currently active healers.]=]
 --[[Translation missing --]]
---[[ L["OPT_POST_ANNOUNCE_THROTTLE"] = ""--]] 
+L["OPT_POST_ANNOUNCE_SETTINGS"] = "Announce to raid settings"
 --[[Translation missing --]]
---[[ L["OPT_POST_ANNOUNCE_THROTTLE_DESC"] = ""--]] 
+L["OPT_POST_ANNOUNCE_THROTTLE"] = "Announce throttle"
 --[[Translation missing --]]
---[[ L["OPT_PROTECT_HEALER_MINIMUM_DAMAGE_AMOUNT"] = ""--]] 
+L["OPT_POST_ANNOUNCE_THROTTLE_DESC"] = "Set the minimum time in seconds between each possible announce."
 --[[Translation missing --]]
---[[ L["OPT_PROTECT_HEALER_MINIMUM_DAMAGE_AMOUNT_DESC"] = ""--]] 
+L["OPT_PROTECT_HEALER_MINIMUM_DAMAGE_AMOUNT"] = "Damage amount (|cffdd0000%u|r) threshold"
 --[[Translation missing --]]
---[[ L["OPT_PVE"] = ""--]] 
+L["OPT_PROTECT_HEALER_MINIMUM_DAMAGE_AMOUNT_DESC"] = "Friendly attacked healers won't be detected until they reach this cumulative amount of damage based on a percentage of your own maximum health."
 --[[Translation missing --]]
---[[ L["OPT_PVE_DESC"] = ""--]] 
+L["OPT_PVE"] = "Enable for PVE"
 --[[Translation missing --]]
---[[ L["OPT_PVPHEALERSSPECSONLY"] = ""--]] 
+L["OPT_PVE_DESC"] = "HHTD will also work for NPCs."
 --[[Translation missing --]]
---[[ L["OPT_PVPHEALERSSPECSONLY_DESC"] = ""--]] 
+L["OPT_PVPHEALERSSPECSONLY"] = "Specialized players only"
 --[[Translation missing --]]
---[[ L["OPT_SET_FRIENDLY_HEALERS_ROLE"] = ""--]] 
+L["OPT_PVPHEALERSSPECSONLY_DESC"] = "Only detect players specialized in healing."
 --[[Translation missing --]]
---[[ L["OPT_SET_FRIENDLY_HEALERS_ROLE_DESC"] = ""--]] 
+L["OPT_SET_FRIENDLY_HEALERS_ROLE"] = "Set friendly healers role"
 --[[Translation missing --]]
---[[ L["OPT_SHOW_CHAT_COMMAND_REMINDER"] = ""--]] 
+L["OPT_SET_FRIENDLY_HEALERS_ROLE_DESC"] = "Will automatically set the raid HEALER role to friendly healers upon detection (if possible)"
 --[[Translation missing --]]
---[[ L["OPT_SHOW_CHAT_COMMAND_REMINDER_DESC"] = ""--]] 
+L["OPT_SHOW_CHAT_COMMAND_REMINDER"] = "Show /HHTDG chat command reminder"
 --[[Translation missing --]]
---[[ L["OPT_SOUNDS"] = ""--]] 
+L["OPT_SHOW_CHAT_COMMAND_REMINDER_DESC"] = "Print a message in the chat every time HHTD is enabled."
 --[[Translation missing --]]
---[[ L["OPT_SOUNDS_DESC"] = ""--]] 
+L["OPT_SOUNDS"] = "Sound alerts"
 --[[Translation missing --]]
---[[ L["OPT_STRICTGUIDPVE"] = ""--]] 
+L["OPT_SOUNDS_DESC"] = "HHTD will play a specific sound when you hover or target an enemy healer"
 --[[Translation missing --]]
---[[ L["OPT_STRICTGUIDPVE_DESC"] = ""--]] 
+L["OPT_STRICTGUIDPVE"] = "Accurate PVE detection"
 --[[Translation missing --]]
---[[ L["OPT_SWAPSYMBOLS"] = ""--]] 
+L["OPT_STRICTGUIDPVE_DESC"] = "When several NPCs share the same name, HHTD will only add a cross over those who actually healed instead of adding a cross to all of them."
 --[[Translation missing --]]
---[[ L["OPT_SWAPSYMBOLS_DESC"] = ""--]] 
+L["OPT_SWAPSYMBOLS"] = "Swap friends/foes symbols"
 --[[Translation missing --]]
---[[ L["OPT_TESTONTARGET"] = ""--]] 
+L["OPT_SWAPSYMBOLS_DESC"] = "The symbols used for friends and foes are swapped"
 --[[Translation missing --]]
---[[ L["OPT_TESTONTARGET_DESC"] = ""--]] 
+L["OPT_TESTONTARGET"] = "Test HHTD's behavior on current target"
 --[[Translation missing --]]
---[[ L["OPT_TESTONTARGET_ENOTARGET"] = ""--]] 
+L["OPT_TESTONTARGET_DESC"] = "Will mark your current target as a healer so you can test what happens."
 --[[Translation missing --]]
---[[ L["OPT_USE_HEALER_MINIMUM_HEAL_AMOUNT"] = ""--]] 
+L["OPT_TESTONTARGET_ENOTARGET"] = "You need to target something"
 --[[Translation missing --]]
---[[ L["OPT_USE_HEALER_MINIMUM_HEAL_AMOUNT_DESC"] = ""--]] 
+L["OPT_USE_HEALER_MINIMUM_HEAL_AMOUNT"] = "Use minimum heal amount filter"
 --[[Translation missing --]]
---[[ L["OPT_VERSION"] = ""--]] 
+L["OPT_USE_HEALER_MINIMUM_HEAL_AMOUNT_DESC"] = "Healers will have to heal for a specified amount before being tagged as such."
 --[[Translation missing --]]
---[[ L["OPT_VERSION_DESC"] = ""--]] 
+L["OPT_VERSION"] = "version"
 --[[Translation missing --]]
---[[ L["PARTY"] = ""--]] 
+L["OPT_VERSION_DESC"] = "Display version and release date"
 --[[Translation missing --]]
---[[ L["RELEASE_DATE"] = ""--]] 
+L["PARTY"] = "Party"
 --[[Translation missing --]]
---[[ L["SAY"] = ""--]] 
+L["RELEASE_DATE"] = "Release Date:"
 --[[Translation missing --]]
---[[ L["VERSION"] = ""--]] 
+L["SAY"] = "Say"
 --[[Translation missing --]]
---[[ L["YELL"] = ""--]] 
+L["VERSION"] = "version:"
 --[[Translation missing --]]
---[[ L["YOU_GOT_HER"] = ""--]] 
+L["YELL"] = "Yell"
 --[[Translation missing --]]
---[[ L["YOU_GOT_HIM"] = ""--]] 
+L["YOU_GOT_HER"] = "You got %sher|r!"
 --[[Translation missing --]]
---[[ L["YOU_GOT_IT"] = ""--]] 
+L["YOU_GOT_HIM"] = "You got %shim|r!"
+--[[Translation missing --]]
+L["YOU_GOT_IT"] = "You got %sit|r!"
 
     end
 end
@@ -1158,7 +1226,7 @@ do
     local L = LibStub("AceLocale-3.0"):NewLocale("H.H.T.D.", "koKR");
 
     if L then
-L["ACTIVE"] = "활성화!"
+        L["ACTIVE"] = "활성화!"
 L["Announcer"] = "알림"
 L["Announcer_DESC"] = "이 모듈은 대화창 알림과 소리 경보를 관리할 수 있습니다"
 L["AUTO_RAID_PARTY_INSTANCE"] = "자동: 공격대 경보 / 공격대 / 인스턴스 / 파티"
@@ -1173,7 +1241,13 @@ L["DISABLED"] = [=[hhtd가 중지 되었습니다!
 L["ENABLED"] = "사용! 옵션 창을 열려면 /HHTDG 를 입력하세요."
 L["HEALER_UNDER_ATTACK"] = "힐러 %s|1이;가; %s의 공격을 받고 있습니다."
 --[[Translation missing --]]
---[[ L["HHTD_IS_NOW_KNOWN_AS_H.H.T.D."] = ""--]] 
+L["HHTD_IS_NOW_KNOWN_AS_H.H.T.D."] = [=['%s' is now known as H.H.T.D. (see the change log for more information)
+
+Your previous settings were successfully transferred and the old version turned off.
+
+If you had previously disabled HHTD for some of your characters, you must login to each one once before deleting or disabling globally the old '%s' add-on so that this preference can also be kept.
+
+This message will be displayed only once per character where HHTD's previous version was enabled.]=]
 L["HUMAN"] = "인간"
 L["IDLE"] = "놀고 있음"
 L["INSTANCE_CHAT"] = "인스턴스 대화"
@@ -1186,19 +1260,19 @@ L["NPC"] = "NPC"
 L["NPH"] = "이름표에 표시"
 L["NPH_DESC"] = "이 모듈은 적 힐러 이름표에 붉은 십자가를 표시합니다."
 --[[Translation missing --]]
---[[ L["OPT_A_CHAT_WARNING"] = ""--]] 
+L["OPT_A_CHAT_WARNING"] = "Chat Warning"
 --[[Translation missing --]]
---[[ L["OPT_A_CHAT_WARNING_DESC"] = ""--]] 
+L["OPT_A_CHAT_WARNING_DESC"] = "Display a chat warning when a friendly healer is under attack"
 --[[Translation missing --]]
---[[ L["OPT_A_HEALER_PROTECTION"] = ""--]] 
+L["OPT_A_HEALER_PROTECTION"] = "Healer protection settings"
 --[[Translation missing --]]
---[[ L["OPT_A_HUD_WARNING"] = ""--]] 
+L["OPT_A_HUD_WARNING"] = "HUD Warning"
 --[[Translation missing --]]
---[[ L["OPT_A_HUD_WARNING_DESC"] = ""--]] 
+L["OPT_A_HUD_WARNING_DESC"] = "Display a heads-up warning when a friendly healer is under attack"
 --[[Translation missing --]]
---[[ L["OPT_ALWAYS_SHOW_NAMEPLATES"] = ""--]] 
+L["OPT_ALWAYS_SHOW_NAMEPLATES"] = "Always show nameplates"
 --[[Translation missing --]]
---[[ L["OPT_ALWAYS_SHOW_NAMEPLATES_DESC"] = ""--]] 
+L["OPT_ALWAYS_SHOW_NAMEPLATES_DESC"] = "By default nameplates are hidden outside of combat"
 L["OPT_ANNOUNCE"] = "메시지 보기"
 L["OPT_ANNOUNCE_DESC"] = "적 힐러를 대상으로 잡거나 마우스-오버 하면 HHTD에 메시지를 표시합니다."
 L["OPT_CLEAR_LOGS"] = "기록 지우기"
@@ -1212,9 +1286,10 @@ L["OPT_CM_DESCRIPTION"] = "여기서 유닛을 지정하고 자신만 볼 수 �
 L["OPT_CM_EXISTINGASSOC"] = "존재하는 이름-기호 연관"
 L["OPT_CM_EXISTINGASSOC_DESC"] = "이 영역의 다른 버튼과 사용할 이름을 목록에서 선택하세요"
 --[[Translation missing --]]
---[[ L["OPT_CM_FNPC_NAMEPLATE"] = ""--]] 
+L["OPT_CM_FNPC_NAMEPLATE"] = "Friendly NPC nameplates"
 --[[Translation missing --]]
---[[ L["OPT_CM_FNPC_NAMEPLATE_DESC"] = ""--]] 
+L["OPT_CM_FNPC_NAMEPLATE_DESC"] = [=[Show nameplates on friendly NPCs
+This is necessary for markers to be shown on these units.]=]
 L["OPT_CM_MARKER_CUSTOMIZATION"] = "기호 사용자 설정"
 L["OPT_CM_MARKER_MANAGEMENT"] = "기호 관리"
 L["OPT_CM_SELECT_MARKER"] = "기호"
@@ -1252,32 +1327,41 @@ L["OPT_LOGS"] = "기록"
 L["OPT_LOGS_DESC"] = "감지된 힐러 및 통계를 HHTD에 표시"
 L["OPT_MODULES"] = "모듈"
 --[[Translation missing --]]
---[[ L["OPT_NPH_DISPLAY_HEALER_RANK"] = ""--]] 
+L["OPT_NPH_DISPLAY_HEALER_RANK"] = "Display healers' rank"
 --[[Translation missing --]]
---[[ L["OPT_NPH_DISPLAY_HEALER_RANK_DESC"] = ""--]] 
+L["OPT_NPH_DISPLAY_HEALER_RANK_DESC"] = [=[Add a number representing each healer's rank.
+The lower the number the better the healer.]=]
 --[[Translation missing --]]
---[[ L["OPT_NPH_ENEMY_NAMEPLATE"] = ""--]] 
+L["OPT_NPH_ENEMY_NAMEPLATE"] = "Enemy nameplates"
 --[[Translation missing --]]
---[[ L["OPT_NPH_FRIENDLY_NAMEPLATE"] = ""--]] 
+L["OPT_NPH_FRIENDLY_NAMEPLATE"] = "Friendly nameplates"
 --[[Translation missing --]]
---[[ L["OPT_NPH_MARKER_HIDDEN_WOW_SETTINGS"] = ""--]] 
+L["OPT_NPH_MARKER_HIDDEN_WOW_SETTINGS"] = "Hidden WoW settings"
 L["OPT_NPH_MARKER_SCALE"] = "힐러 기호 확대"
 L["OPT_NPH_MARKER_SCALE_DESC"] = "힐러 기호의 크기를 설정합니다 # 예제. 1= 기본 크기, 0.5 = 절반 크기, 2 = 두배 크기, 등등..."
 L["OPT_NPH_MARKER_SETTINGS"] = "힐러 기호 설정"
 --[[Translation missing --]]
---[[ L["OPT_NPH_MARKER_THEME"] = ""--]] 
+L["OPT_NPH_MARKER_THEME"] = "Markers' theme"
 --[[Translation missing --]]
---[[ L["OPT_NPH_MARKER_THEME_DEFAULT"] = ""--]] 
+L["OPT_NPH_MARKER_THEME_DEFAULT"] = "Default"
 --[[Translation missing --]]
---[[ L["OPT_NPH_MARKER_THEME_DESC"] = ""--]] 
+L["OPT_NPH_MARKER_THEME_DESC"] = "Select between the available markers' themes"
 --[[Translation missing --]]
---[[ L["OPT_NPH_MARKER_THEME_MINIMAL"] = ""--]] 
+L["OPT_NPH_MARKER_THEME_MINIMAL"] = "Minimalist"
 --[[Translation missing --]]
---[[ L["OPT_NPH_MARKER_WOW_SETTINGS"] = ""--]] 
+L["OPT_NPH_MARKER_WOW_SETTINGS"] = "WoW settings"
 L["OPT_NPH_MARKER_X_OFFSET"] = "수평 위치"
 L["OPT_NPH_MARKER_X_OFFSET_DESC"] = "힐러 기호의 위치를 수평으로 이동합니다."
 L["OPT_NPH_MARKER_Y_OFFSET"] = "수직 위치"
 L["OPT_NPH_MARKER_Y_OFFSET_DESC"] = "힐러 기호의 위치를 수직으로 이동합니다."
+--[[Translation missing --]]
+L["OPT_NPH_MAX_NAMEPLATE_DISTANCE"] = "Maximum distance of nameplates"
+--[[Translation missing --]]
+L["OPT_NPH_MAX_NAMEPLATE_DISTANCE_DESC"] = [=[Set the maximum distance at which to display nameplates.
+
+(H.H.T.D. requires nameplates in order to display its symbols on top of them)
+
+This setting might have an impact on performances depending on your computer.]=]
 L["OPT_NPH_WARNING1"] = [=[경고: 적대적 이름표가 현재 비활성화되어 있습니다. HHTD가 적에게 표시를 추가할 수 없습니다.
         와우 인터페이스 설정이나 지정된 단축키로 이름표 표시를 활성화시킬 수 있습니다.]=]
 L["OPT_NPH_WARNING2"] = [=[경고: 우호적 이름표가 현재 비활성되어 있습니다. HHTD가 아군에게 표시를 추가할 수 없습니다.
@@ -1323,17 +1407,17 @@ L["OPT_PVPHEALERSSPECSONLY_DESC"] = "오직 치료를 전문으로 하는 플레
 L["OPT_SET_FRIENDLY_HEALERS_ROLE"] = "아군 힐러 역할을 설정"
 L["OPT_SET_FRIENDLY_HEALERS_ROLE_DESC"] = "자동 감지할 때 아군 힐러를 공격대 힐러 역할로 설정합니다. (가능한 경우)"
 --[[Translation missing --]]
---[[ L["OPT_SHOW_CHAT_COMMAND_REMINDER"] = ""--]] 
+L["OPT_SHOW_CHAT_COMMAND_REMINDER"] = "Show /HHTDG chat command reminder"
 --[[Translation missing --]]
---[[ L["OPT_SHOW_CHAT_COMMAND_REMINDER_DESC"] = ""--]] 
+L["OPT_SHOW_CHAT_COMMAND_REMINDER_DESC"] = "Print a message in the chat every time HHTD is enabled."
 L["OPT_SOUNDS"] = "소리 경보"
 L["OPT_SOUNDS_DESC"] = "적 힐러를 대상으로 잡거나 마우스-오버 하면 HHTD에서 특정 소리를 냅니다."
 L["OPT_STRICTGUIDPVE"] = "정확한 PVE 감지"
 L["OPT_STRICTGUIDPVE_DESC"] = "여러 NPC가 같은 이름을 가지고 있으면 HHTD는 그들 모두에게 십자가를 표시하는 대신 실제로 치유하는 NPC에게만 십자가를 표시합니다. 지속적으로 십자가를 표시할 유닛을 대상 지정하거나 마우스-오버를 해야 한다는 걸 기억하세요."
 --[[Translation missing --]]
---[[ L["OPT_SWAPSYMBOLS"] = ""--]] 
+L["OPT_SWAPSYMBOLS"] = "Swap friends/foes symbols"
 --[[Translation missing --]]
---[[ L["OPT_SWAPSYMBOLS_DESC"] = ""--]] 
+L["OPT_SWAPSYMBOLS_DESC"] = "The symbols used for friends and foes are swapped"
 L["OPT_TESTONTARGET"] = "현재 대상에게 HHTD의 동작을 테스트합니다"
 L["OPT_TESTONTARGET_DESC"] = "테스트를 위해 현재 대상을 힐러로 지정합니다."
 L["OPT_TESTONTARGET_ENOTARGET"] = "적절한 대상이 필요합니다."
@@ -1357,17 +1441,15 @@ do
     local L = LibStub("AceLocale-3.0"):NewLocale("H.H.T.D.", "zhCN");
 
     if L then
-L["ACTIVE"] = "激活！"
+        L["ACTIVE"] = "激活！"
 L["Announcer"] = "通报"
 L["Announcer_DESC"] = "此模管理聊天和音效警报"
 L["AUTO_RAID_PARTY_INSTANCE"] = "自动：团队/小队/副本"
 L["CHAT_POST_ANNOUNCE_FEATURE_NOT_CONFIGURED"] = "未配置团队通报信息。输入 /HHTDG"
 L["CHAT_POST_ANNOUNCE_TOO_SOON_WAIT"] = "太快了（查看通报阈值设置）。"
 L["CHAT_POST_NO_HEALERS"] = "哇靠，当前双方都没有治疗职业！:D（暂时的）"
---[[Translation missing --]]
---[[ L["CM"] = ""--]] 
---[[Translation missing --]]
---[[ L["CM_DESC"] = ""--]] 
+L["CM"] = "自定义标记"
+L["CM_DESC"] = "启用此模组在NPC和玩家血条上设置一个永久的自定义标记。"
 L["DESCRIPTION"] = "在魔兽世界中，治疗者必须死亡。这是一个残酷的真理，你在游戏的早期就被教导。这个插件可以帮助你影响这种不幸的命运在某种方式或另一个取决于治疗师的身边..."
 L["DISABLED"] = [=[hhtd 已被禁用！
 输入“/hhtd on”来重新启用。]=]
@@ -1390,75 +1472,44 @@ L["LOG_BELOW_THRESHOLD"] = "（低于阈值）"
 L["LOG_IDLE"] = "发呆"
 L["NO_DATA"] = "无数据"
 L["NPC"] = "NPC"
-L["NPH"] = "姓名版挂钩"
+L["NPH"] = "姓名板标记"
 L["NPH_DESC"] = "此模块在敌对治疗姓名板上添加一个红十字"
---[[Translation missing --]]
---[[ L["OPT_A_CHAT_WARNING"] = ""--]] 
---[[Translation missing --]]
---[[ L["OPT_A_CHAT_WARNING_DESC"] = ""--]] 
---[[Translation missing --]]
---[[ L["OPT_A_HEALER_PROTECTION"] = ""--]] 
---[[Translation missing --]]
---[[ L["OPT_A_HUD_WARNING"] = ""--]] 
---[[Translation missing --]]
---[[ L["OPT_A_HUD_WARNING_DESC"] = ""--]] 
---[[Translation missing --]]
---[[ L["OPT_ALWAYS_SHOW_NAMEPLATES"] = ""--]] 
---[[Translation missing --]]
---[[ L["OPT_ALWAYS_SHOW_NAMEPLATES_DESC"] = ""--]] 
+L["OPT_A_CHAT_WARNING"] = "聊天框警报"
+L["OPT_A_CHAT_WARNING_DESC"] = "当友方治疗者被攻击时，在聊天框显示警报信息"
+L["OPT_A_HEALER_PROTECTION"] = "保护治疗者设置"
+L["OPT_A_HUD_WARNING"] = "屏幕显示警报"
+L["OPT_A_HUD_WARNING_DESC"] = "当友方治疗者被攻击时，在屏幕中显示警报"
+L["OPT_ALWAYS_SHOW_NAMEPLATES"] = "总是显示血条"
+L["OPT_ALWAYS_SHOW_NAMEPLATES_DESC"] = "在非战斗状态血条默认是隐藏的"
 L["OPT_ANNOUNCE"] = "显示信息"
 L["OPT_ANNOUNCE_DESC"] = "当你的目标或是鼠标指向一个敌对治疗者时 HHTD 将显示信息。"
 L["OPT_CLEAR_LOGS"] = "清除记录"
---[[Translation missing --]]
---[[ L["OPT_CM_CHANGEMARK"] = ""--]] 
---[[Translation missing --]]
---[[ L["OPT_CM_CHANGEMARK_DESC"] = ""--]] 
---[[Translation missing --]]
---[[ L["OPT_CM_CLEARASSOC"] = ""--]] 
---[[Translation missing --]]
---[[ L["OPT_CM_CLEARASSOC_DESC"] = ""--]] 
---[[Translation missing --]]
---[[ L["OPT_CM_CLEARTARGETMARKER"] = ""--]] 
---[[Translation missing --]]
---[[ L["OPT_CM_CLEARTARGETMARKER_DESC"] = ""--]] 
---[[Translation missing --]]
---[[ L["OPT_CM_DESCRIPTION"] = ""--]] 
---[[Translation missing --]]
---[[ L["OPT_CM_EXISTINGASSOC"] = ""--]] 
---[[Translation missing --]]
---[[ L["OPT_CM_EXISTINGASSOC_DESC"] = ""--]] 
---[[Translation missing --]]
---[[ L["OPT_CM_FNPC_NAMEPLATE"] = ""--]] 
---[[Translation missing --]]
---[[ L["OPT_CM_FNPC_NAMEPLATE_DESC"] = ""--]] 
---[[Translation missing --]]
---[[ L["OPT_CM_MARKER_CUSTOMIZATION"] = ""--]] 
---[[Translation missing --]]
---[[ L["OPT_CM_MARKER_MANAGEMENT"] = ""--]] 
---[[Translation missing --]]
---[[ L["OPT_CM_SELECT_MARKER"] = ""--]] 
---[[Translation missing --]]
---[[ L["OPT_CM_SELECT_MARKER_DESC"] = ""--]] 
---[[Translation missing --]]
---[[ L["OPT_CM_SETTARGETMARKER"] = ""--]] 
---[[Translation missing --]]
---[[ L["OPT_CM_SETTARGETMARKER_DESC"] = ""--]] 
---[[Translation missing --]]
---[[ L["OPT_CM_VCa"] = ""--]] 
---[[Translation missing --]]
---[[ L["OPT_CM_VCa_DESC"] = ""--]] 
---[[Translation missing --]]
---[[ L["OPT_CM_VCb"] = ""--]] 
---[[Translation missing --]]
---[[ L["OPT_CM_VCb_DESC"] = ""--]] 
---[[Translation missing --]]
---[[ L["OPT_CM_VCg"] = ""--]] 
---[[Translation missing --]]
---[[ L["OPT_CM_VCg_DESC"] = ""--]] 
---[[Translation missing --]]
---[[ L["OPT_CM_VCr"] = ""--]] 
---[[Translation missing --]]
---[[ L["OPT_CM_VCr_DESC"] = ""--]] 
+L["OPT_CM_CHANGEMARK"] = "更改为 %s"
+L["OPT_CM_CHANGEMARK_DESC"] = "将标记更改为 '%s' 选择器中已选项目之一"
+L["OPT_CM_CLEARASSOC"] = "清除"
+L["OPT_CM_CLEARASSOC_DESC"] = "从已选名称中清除标记"
+L["OPT_CM_CLEARTARGETMARKER"] = "清除目标"
+L["OPT_CM_CLEARTARGETMARKER_DESC"] = "清除当前目标的标记图标"
+L["OPT_CM_DESCRIPTION"] = "你可以选取一个目标，并添加一个仅自己可见的自定义标记，这些标记会一直存在。"
+L["OPT_CM_EXISTINGASSOC"] = "已被标记的名称"
+L["OPT_CM_EXISTINGASSOC_DESC"] = "从列表中选择一个名称来使用此区块的另一个按钮"
+L["OPT_CM_FNPC_NAMEPLATE"] = "友方NPC血条"
+L["OPT_CM_FNPC_NAMEPLATE_DESC"] = [=[显示友方NPC血条
+要在这些单位头上显示标记必须开启此选项。]=]
+L["OPT_CM_MARKER_CUSTOMIZATION"] = "自定义标记图示"
+L["OPT_CM_MARKER_MANAGEMENT"] = "管理标记"
+L["OPT_CM_SELECT_MARKER"] = "标记"
+L["OPT_CM_SELECT_MARKER_DESC"] = "选择一个图标，应用在当前目标上"
+L["OPT_CM_SETTARGETMARKER"] = "标记目标"
+L["OPT_CM_SETTARGETMARKER_DESC"] = "用选定的图示来标记已选目标"
+L["OPT_CM_VCa"] = "半透明"
+L["OPT_CM_VCa_DESC"] = "更改图案的透明度"
+L["OPT_CM_VCb"] = "蓝色"
+L["OPT_CM_VCb_DESC"] = "更改图案的蓝色调"
+L["OPT_CM_VCg"] = "绿色"
+L["OPT_CM_VCg_DESC"] = "更改图案的绿色调"
+L["OPT_CM_VCr"] = "红色"
+L["OPT_CM_VCr_DESC"] = "更改图案的红色调"
 L["OPT_CORE_OPTIONS"] = "核心选项"
 L["OPT_DEBUG"] = "除错"
 L["OPT_DEBUG_DESC"] = "启用/禁用除错"
@@ -1466,14 +1517,10 @@ L["OPT_DEBUGLEVEL"] = "除错等级"
 L["OPT_DEBUGLEVEL_DESC"] = "除错等级：1=全部，2=警报，3=错误"
 L["OPT_ENABLE_GEHR"] = "启用图形报告"
 L["OPT_ENABLE_GEHR_DESC"] = "显示敌对治疗多功能图形列表"
---[[Translation missing --]]
---[[ L["OPT_GUI"] = ""--]] 
---[[Translation missing --]]
---[[ L["OPT_GUI_DESC"] = ""--]] 
---[[Translation missing --]]
---[[ L["OPT_HEADER_GLOBAL_ENEMY_HEALER_OPTIONS"] = ""--]] 
---[[Translation missing --]]
---[[ L["OPT_HEADER_GLOBAL_FRIENDLY_HEALER_OPTIONS"] = ""--]] 
+L["OPT_GUI"] = "打开图形界面"
+L["OPT_GUI_DESC"] = "打开图形化配置面板"
+L["OPT_HEADER_GLOBAL_ENEMY_HEALER_OPTIONS"] = "全局敌方治疗者设置"
+L["OPT_HEADER_GLOBAL_FRIENDLY_HEALER_OPTIONS"] = "全局友方治疗者设置"
 L["OPT_HEALER_FORGET_TIMER"] = "治疗职业遗忘计时器"
 L["OPT_HEALER_FORGET_TIMER_DESC"] = "设置治疗职业遗忘计时器（用于在一定时间内将一个敌人标记为治疗职业）"
 L["OPT_HEALER_MINIMUM_HEAL_AMOUNT"] = "治疗值（|cff00dd00%u|r）阈值"
@@ -1485,33 +1532,27 @@ L["OPT_LOG_DESC"] = "启用记录并添加一个新的“记录”标签到 HHTD
 L["OPT_LOGS"] = "记录"
 L["OPT_LOGS_DESC"] = "显示 HHTD 检测到的治疗和数据"
 L["OPT_MODULES"] = "模块"
---[[Translation missing --]]
---[[ L["OPT_NPH_DISPLAY_HEALER_RANK"] = ""--]] 
---[[Translation missing --]]
---[[ L["OPT_NPH_DISPLAY_HEALER_RANK_DESC"] = ""--]] 
---[[Translation missing --]]
---[[ L["OPT_NPH_ENEMY_NAMEPLATE"] = ""--]] 
---[[Translation missing --]]
---[[ L["OPT_NPH_FRIENDLY_NAMEPLATE"] = ""--]] 
---[[Translation missing --]]
---[[ L["OPT_NPH_MARKER_HIDDEN_WOW_SETTINGS"] = ""--]] 
+L["OPT_NPH_DISPLAY_HEALER_RANK"] = "显示治疗者排名"
+L["OPT_NPH_DISPLAY_HEALER_RANK_DESC"] = "添加数字表示治疗者排名。数字越小表示治疗者越牛叉。"
+L["OPT_NPH_ENEMY_NAMEPLATE"] = "敌方血条"
+L["OPT_NPH_FRIENDLY_NAMEPLATE"] = "友方血条"
+L["OPT_NPH_MARKER_HIDDEN_WOW_SETTINGS"] = "隐藏的游戏设置"
 L["OPT_NPH_MARKER_SCALE"] = "标记缩放"
 L["OPT_NPH_MARKER_SCALE_DESC"] = "更改标记尺寸"
 L["OPT_NPH_MARKER_SETTINGS"] = "标记配置"
---[[Translation missing --]]
---[[ L["OPT_NPH_MARKER_THEME"] = ""--]] 
---[[Translation missing --]]
---[[ L["OPT_NPH_MARKER_THEME_DEFAULT"] = ""--]] 
---[[Translation missing --]]
---[[ L["OPT_NPH_MARKER_THEME_DESC"] = ""--]] 
---[[Translation missing --]]
---[[ L["OPT_NPH_MARKER_THEME_MINIMAL"] = ""--]] 
---[[Translation missing --]]
---[[ L["OPT_NPH_MARKER_WOW_SETTINGS"] = ""--]] 
+L["OPT_NPH_MARKER_THEME"] = "标记图示的主题"
+L["OPT_NPH_MARKER_THEME_DEFAULT"] = "默认"
+L["OPT_NPH_MARKER_THEME_DESC"] = "选择可用的标记图标主题"
+L["OPT_NPH_MARKER_THEME_MINIMAL"] = "极简"
+L["OPT_NPH_MARKER_WOW_SETTINGS"] = "游戏本身的设置"
 L["OPT_NPH_MARKER_X_OFFSET"] = "水平偏移量"
 L["OPT_NPH_MARKER_X_OFFSET_DESC"] = "水平移动标记"
 L["OPT_NPH_MARKER_Y_OFFSET"] = "垂直偏移量"
 L["OPT_NPH_MARKER_Y_OFFSET_DESC"] = "垂直移动标记"
+L["OPT_NPH_MAX_NAMEPLATE_DISTANCE"] = "血条最大可视距离"
+L["OPT_NPH_MAX_NAMEPLATE_DISTANCE_DESC"] = [=[设置血条的最远可视距离。
+（H.H.T.D.插件需要在血条上方显示标记符号）
+根据您硬件的不同，此设置可能会影响游戏流畅度。]=]
 L["OPT_NPH_WARNING1"] = [=[提示：敌方姓名版未被启用。HHTD 不能添加治疗标记。
 可以通过游戏内界面选项开启姓名版显示或使用快捷键。]=]
 L["OPT_NPH_WARNING2"] = [=[提示：友方姓名版未被启用。HHTD 不能添加治疗标记。
@@ -1546,28 +1587,22 @@ L["OPT_POST_ANNOUNCE_PROTECT_MESSAGE_DESC"] = [=[输入一个信息鼓动团队�
 L["OPT_POST_ANNOUNCE_SETTINGS"] = "通报到团队设置"
 L["OPT_POST_ANNOUNCE_THROTTLE"] = "通报阈值"
 L["OPT_POST_ANNOUNCE_THROTTLE_DESC"] = "设置每条可能通报的最小时间间隔。"
---[[Translation missing --]]
---[[ L["OPT_PROTECT_HEALER_MINIMUM_DAMAGE_AMOUNT"] = ""--]] 
---[[Translation missing --]]
---[[ L["OPT_PROTECT_HEALER_MINIMUM_DAMAGE_AMOUNT_DESC"] = ""--]] 
+L["OPT_PROTECT_HEALER_MINIMUM_DAMAGE_AMOUNT"] = "伤害量(|cffdd0000%u|r)阈值"
+L["OPT_PROTECT_HEALER_MINIMUM_DAMAGE_AMOUNT_DESC"] = "当友方治疗者累计遭受的伤害量超过您自己最大血量的一定百分比后，才会提示。"
 L["OPT_PVE"] = "PvE 启用"
 L["OPT_PVE_DESC"] = "HHTD 同样作用于 NPC。"
 L["OPT_PVPHEALERSSPECSONLY"] = "治疗职业特定检测"
 L["OPT_PVPHEALERSSPECSONLY_DESC"] = "只特定治疗玩家。"
 L["OPT_SET_FRIENDLY_HEALERS_ROLE"] = "设置友方治疗职业角色"
 L["OPT_SET_FRIENDLY_HEALERS_ROLE_DESC"] = "（如可能）自动设置检测团队治疗角色到友方治疗"
---[[Translation missing --]]
---[[ L["OPT_SHOW_CHAT_COMMAND_REMINDER"] = ""--]] 
---[[Translation missing --]]
---[[ L["OPT_SHOW_CHAT_COMMAND_REMINDER_DESC"] = ""--]] 
+L["OPT_SHOW_CHAT_COMMAND_REMINDER"] = "聊天框显示 /HHTDG 指令提醒"
+L["OPT_SHOW_CHAT_COMMAND_REMINDER_DESC"] = "每次HHTD插件启用时，都在聊天框显示提醒。"
 L["OPT_SOUNDS"] = "音效警报"
 L["OPT_SOUNDS_DESC"] = "当你鼠标悬停或目标到一个敌对治疗时 HHTD 播放特定的音效。"
 L["OPT_STRICTGUIDPVE"] = "精确 PvE 检测"
 L["OPT_STRICTGUIDPVE_DESC"] = "当多个 NPC 共享相同的名称，HHTD 只会增加一个十字而不是全部。请注意，在十字出现之前大部分的时间需要切换目标或鼠标悬停在单位。"
---[[Translation missing --]]
---[[ L["OPT_SWAPSYMBOLS"] = ""--]] 
---[[Translation missing --]]
---[[ L["OPT_SWAPSYMBOLS_DESC"] = ""--]] 
+L["OPT_SWAPSYMBOLS"] = "调换友方/敌方的标记符号"
+L["OPT_SWAPSYMBOLS_DESC"] = "友方和敌方所使用的的标记符号会被调换"
 L["OPT_TESTONTARGET"] = "在当前目标测试 HHTD 状态"
 L["OPT_TESTONTARGET_DESC"] = "将标记当前目标为治疗者来测试发生了什么。"
 L["OPT_TESTONTARGET_ENOTARGET"] = "需要一个目标"
@@ -1591,7 +1626,7 @@ do
     local L = LibStub("AceLocale-3.0"):NewLocale("H.H.T.D.", "zhTW");
 
     if L then
-L["ACTIVE"] = "啟用！"
+        L["ACTIVE"] = "啟用！"
 L["Announcer"] = "通報"
 L["Announcer_DESC"] = "此模組管理聊天和音效警報"
 L["AUTO_RAID_PARTY_INSTANCE"] = "自動:團隊警告/團隊/隊伍/副本"
@@ -1699,6 +1734,12 @@ L["OPT_NPH_MARKER_X_OFFSET"] = "水平偏移量"
 L["OPT_NPH_MARKER_X_OFFSET_DESC"] = "水平移動標記"
 L["OPT_NPH_MARKER_Y_OFFSET"] = "垂直偏移量"
 L["OPT_NPH_MARKER_Y_OFFSET_DESC"] = "垂直移動標記"
+L["OPT_NPH_MAX_NAMEPLATE_DISTANCE"] = "血條最大視野距離"
+L["OPT_NPH_MAX_NAMEPLATE_DISTANCE_DESC"] = [=[設定顯示血條的最遠距離。
+
+(H.H.T.D. 需要血條才能在上面顯示圖案)
+
+這個設定可能會影響效能，視你的電腦而定。]=]
 L["OPT_NPH_WARNING1"] = [=[警告：敵方血條目前是關閉的，HHTD無法加入紅十字標記。
 你可以在遊戲的介面選項中啟用顯示名稱/血條，或使用指定的按鍵。]=]
 L["OPT_NPH_WARNING2"] = [=[警告：友方血條目前是關閉的，HHTD無法加入紅十字標記。
@@ -1771,7 +1812,7 @@ do
     local L = LibStub("AceLocale-3.0"):NewLocale("H.H.T.D.", "ruRU");
 
     if L then
-L["ACTIVE"] = "Активный!"
+        L["ACTIVE"] = "Активный!"
 L["Announcer"] = "Информатор"
 L["Announcer_DESC"] = "Модуль настройки оповещений в чате и звуковых оповещений"
 L["AUTO_RAID_PARTY_INSTANCE"] = "Автоматически: Рейд/Группа/Подземелье"
@@ -1779,9 +1820,9 @@ L["CHAT_POST_ANNOUNCE_FEATURE_NOT_CONFIGURED"] = "Рейдовые оповещ�
 L["CHAT_POST_ANNOUNCE_TOO_SOON_WAIT"] = "Слишком быстро. Проверьте установки скорости появления оповещений"
 L["CHAT_POST_NO_HEALERS"] = "Ни наших,ни вражеских лекарей не обнаружено :/ (Пока...)"
 --[[Translation missing --]]
---[[ L["CM"] = ""--]] 
+L["CM"] = "Custom Marks"
 --[[Translation missing --]]
---[[ L["CM_DESC"] = ""--]] 
+L["CM_DESC"] = "Enable this module to set permanent custom marks on NPC and Player units' nameplates."
 L["DESCRIPTION"] = "Мгновенно обнаружить этих чертовых лекарей и воздать им по заслугам! (PVP и PVE)."
 L["DISABLED"] = [=[HHTD выключен.
 Введите "/hhtd on" для включения.]=]
@@ -1789,7 +1830,13 @@ L["ENABLED"] = [=[HHTD включен!
 Для просмотра возможных параметров введите команду /HHTDG]=]
 L["HEALER_UNDER_ATTACK"] = "наш лекарь %s атакован %s"
 --[[Translation missing --]]
---[[ L["HHTD_IS_NOW_KNOWN_AS_H.H.T.D."] = ""--]] 
+L["HHTD_IS_NOW_KNOWN_AS_H.H.T.D."] = [=['%s' is now known as H.H.T.D. (see the change log for more information)
+
+Your previous settings were successfully transferred and the old version turned off.
+
+If you had previously disabled HHTD for some of your characters, you must login to each one once before deleting or disabling globally the old '%s' add-on so that this preference can also be kept.
+
+This message will be displayed only once per character where HHTD's previous version was enabled.]=]
 L["HUMAN"] = "Человек"
 L["IDLE"] = "Находится в режиме ожидания"
 L["INSTANCE_CHAT"] = "Чат подземелья"
@@ -1802,72 +1849,73 @@ L["NPC"] = "НИП"
 L["NPH"] = "Подключение к индикаторам"
 L["NPH_DESC"] = "Модуль, добавляющий красный крест к индикаторам здоровья вражеских лекарей"
 --[[Translation missing --]]
---[[ L["OPT_A_CHAT_WARNING"] = ""--]] 
+L["OPT_A_CHAT_WARNING"] = "Chat Warning"
 --[[Translation missing --]]
---[[ L["OPT_A_CHAT_WARNING_DESC"] = ""--]] 
+L["OPT_A_CHAT_WARNING_DESC"] = "Display a chat warning when a friendly healer is under attack"
 --[[Translation missing --]]
---[[ L["OPT_A_HEALER_PROTECTION"] = ""--]] 
+L["OPT_A_HEALER_PROTECTION"] = "Healer protection settings"
 --[[Translation missing --]]
---[[ L["OPT_A_HUD_WARNING"] = ""--]] 
+L["OPT_A_HUD_WARNING"] = "HUD Warning"
 --[[Translation missing --]]
---[[ L["OPT_A_HUD_WARNING_DESC"] = ""--]] 
+L["OPT_A_HUD_WARNING_DESC"] = "Display a heads-up warning when a friendly healer is under attack"
 --[[Translation missing --]]
---[[ L["OPT_ALWAYS_SHOW_NAMEPLATES"] = ""--]] 
+L["OPT_ALWAYS_SHOW_NAMEPLATES"] = "Always show nameplates"
 --[[Translation missing --]]
---[[ L["OPT_ALWAYS_SHOW_NAMEPLATES_DESC"] = ""--]] 
+L["OPT_ALWAYS_SHOW_NAMEPLATES_DESC"] = "By default nameplates are hidden outside of combat"
 L["OPT_ANNOUNCE"] = "Вывод сообщений"
 L["OPT_ANNOUNCE_DESC"] = "HHTD выводит сообщения при выборе вражеского лекаря в цель или наведении на него мышкой"
 L["OPT_CLEAR_LOGS"] = "Стирает информацию в Логах"
 --[[Translation missing --]]
---[[ L["OPT_CM_CHANGEMARK"] = ""--]] 
+L["OPT_CM_CHANGEMARK"] = "Change to %s"
 --[[Translation missing --]]
---[[ L["OPT_CM_CHANGEMARK_DESC"] = ""--]] 
+L["OPT_CM_CHANGEMARK_DESC"] = "Change the mark to the one selected in the '%s' selector"
 --[[Translation missing --]]
---[[ L["OPT_CM_CLEARASSOC"] = ""--]] 
+L["OPT_CM_CLEARASSOC"] = "Clear"
 --[[Translation missing --]]
---[[ L["OPT_CM_CLEARASSOC_DESC"] = ""--]] 
+L["OPT_CM_CLEARASSOC_DESC"] = "Clear the selected name from its mark"
 --[[Translation missing --]]
---[[ L["OPT_CM_CLEARTARGETMARKER"] = ""--]] 
+L["OPT_CM_CLEARTARGETMARKER"] = "Clear target"
 --[[Translation missing --]]
---[[ L["OPT_CM_CLEARTARGETMARKER_DESC"] = ""--]] 
+L["OPT_CM_CLEARTARGETMARKER_DESC"] = "Remove the marker from your target"
 --[[Translation missing --]]
---[[ L["OPT_CM_DESCRIPTION"] = ""--]] 
+L["OPT_CM_DESCRIPTION"] = "Here you can target a unit and apply a custom mark only you will see, these marks will persist accross sessions."
 --[[Translation missing --]]
---[[ L["OPT_CM_EXISTINGASSOC"] = ""--]] 
+L["OPT_CM_EXISTINGASSOC"] = "Existing name-marker associations"
 --[[Translation missing --]]
---[[ L["OPT_CM_EXISTINGASSOC_DESC"] = ""--]] 
+L["OPT_CM_EXISTINGASSOC_DESC"] = "Select a name in this list to use with the other buttons of this section"
 --[[Translation missing --]]
---[[ L["OPT_CM_FNPC_NAMEPLATE"] = ""--]] 
+L["OPT_CM_FNPC_NAMEPLATE"] = "Friendly NPC nameplates"
 --[[Translation missing --]]
---[[ L["OPT_CM_FNPC_NAMEPLATE_DESC"] = ""--]] 
+L["OPT_CM_FNPC_NAMEPLATE_DESC"] = [=[Show nameplates on friendly NPCs
+This is necessary for markers to be shown on these units.]=]
 --[[Translation missing --]]
---[[ L["OPT_CM_MARKER_CUSTOMIZATION"] = ""--]] 
+L["OPT_CM_MARKER_CUSTOMIZATION"] = "Marker customization"
 --[[Translation missing --]]
---[[ L["OPT_CM_MARKER_MANAGEMENT"] = ""--]] 
+L["OPT_CM_MARKER_MANAGEMENT"] = "Marker management"
 --[[Translation missing --]]
---[[ L["OPT_CM_SELECT_MARKER"] = ""--]] 
+L["OPT_CM_SELECT_MARKER"] = "Marker"
 --[[Translation missing --]]
---[[ L["OPT_CM_SELECT_MARKER_DESC"] = ""--]] 
+L["OPT_CM_SELECT_MARKER_DESC"] = "Select a marker to apply to your target"
 --[[Translation missing --]]
---[[ L["OPT_CM_SETTARGETMARKER"] = ""--]] 
+L["OPT_CM_SETTARGETMARKER"] = "Mark target"
 --[[Translation missing --]]
---[[ L["OPT_CM_SETTARGETMARKER_DESC"] = ""--]] 
+L["OPT_CM_SETTARGETMARKER_DESC"] = "Mark the selected target with the selected marker"
 --[[Translation missing --]]
---[[ L["OPT_CM_VCa"] = ""--]] 
+L["OPT_CM_VCa"] = "Alpha Shading"
 --[[Translation missing --]]
---[[ L["OPT_CM_VCa_DESC"] = ""--]] 
+L["OPT_CM_VCa_DESC"] = "Change texture's Alpha component shading"
 --[[Translation missing --]]
---[[ L["OPT_CM_VCb"] = ""--]] 
+L["OPT_CM_VCb"] = "Blue Shading"
 --[[Translation missing --]]
---[[ L["OPT_CM_VCb_DESC"] = ""--]] 
+L["OPT_CM_VCb_DESC"] = "Change texture's Blue component shading"
 --[[Translation missing --]]
---[[ L["OPT_CM_VCg"] = ""--]] 
+L["OPT_CM_VCg"] = "Green Shading"
 --[[Translation missing --]]
---[[ L["OPT_CM_VCg_DESC"] = ""--]] 
+L["OPT_CM_VCg_DESC"] = "Change texture's Green component shading"
 --[[Translation missing --]]
---[[ L["OPT_CM_VCr"] = ""--]] 
+L["OPT_CM_VCr"] = "Red Shading"
 --[[Translation missing --]]
---[[ L["OPT_CM_VCr_DESC"] = ""--]] 
+L["OPT_CM_VCr_DESC"] = "Change texture's red component shading"
 L["OPT_CORE_OPTIONS"] = "Основные настройки"
 L["OPT_DEBUG"] = "отладка"
 L["OPT_DEBUG_DESC"] = "Включает/выключает режим отладки."
@@ -1876,13 +1924,13 @@ L["OPT_DEBUGLEVEL_DESC"] = "уровень отладки: 1=все, 2=пред�
 L["OPT_ENABLE_GEHR"] = "Включение графического информатора"
 L["OPT_ENABLE_GEHR_DESC"] = "Отображает графический список вражеских лекарей с разными дополнительными возможностями."
 --[[Translation missing --]]
---[[ L["OPT_GUI"] = ""--]] 
+L["OPT_GUI"] = "Open GUI"
 --[[Translation missing --]]
---[[ L["OPT_GUI_DESC"] = ""--]] 
+L["OPT_GUI_DESC"] = "Open the graphical configuration panel"
 --[[Translation missing --]]
---[[ L["OPT_HEADER_GLOBAL_ENEMY_HEALER_OPTIONS"] = ""--]] 
+L["OPT_HEADER_GLOBAL_ENEMY_HEALER_OPTIONS"] = "Global enemy healers settings"
 --[[Translation missing --]]
---[[ L["OPT_HEADER_GLOBAL_FRIENDLY_HEALER_OPTIONS"] = ""--]] 
+L["OPT_HEADER_GLOBAL_FRIENDLY_HEALER_OPTIONS"] = "Global friendly healers settings"
 L["OPT_HEALER_FORGET_TIMER"] = "Таймер забывания лекарей"
 L["OPT_HEALER_FORGET_TIMER_DESC"] = "устанавливает таймер забывания лекаря (Сколько времени в секундах помнить об обнаруженном лекаре)."
 L["OPT_HEALER_MINIMUM_HEAL_AMOUNT"] = "Порог количества лечения - (|cff00dd00%u|r)."
@@ -1895,32 +1943,41 @@ L["OPT_LOGS"] = "Логи"
 L["OPT_LOGS_DESC"] = "отображает лекарей, обнаруженных HHTD, и соответствующую статистику"
 L["OPT_MODULES"] = "Модули"
 --[[Translation missing --]]
---[[ L["OPT_NPH_DISPLAY_HEALER_RANK"] = ""--]] 
+L["OPT_NPH_DISPLAY_HEALER_RANK"] = "Display healers' rank"
 --[[Translation missing --]]
---[[ L["OPT_NPH_DISPLAY_HEALER_RANK_DESC"] = ""--]] 
+L["OPT_NPH_DISPLAY_HEALER_RANK_DESC"] = [=[Add a number representing each healer's rank.
+The lower the number the better the healer.]=]
 --[[Translation missing --]]
---[[ L["OPT_NPH_ENEMY_NAMEPLATE"] = ""--]] 
+L["OPT_NPH_ENEMY_NAMEPLATE"] = "Enemy nameplates"
 --[[Translation missing --]]
---[[ L["OPT_NPH_FRIENDLY_NAMEPLATE"] = ""--]] 
+L["OPT_NPH_FRIENDLY_NAMEPLATE"] = "Friendly nameplates"
 --[[Translation missing --]]
---[[ L["OPT_NPH_MARKER_HIDDEN_WOW_SETTINGS"] = ""--]] 
+L["OPT_NPH_MARKER_HIDDEN_WOW_SETTINGS"] = "Hidden WoW settings"
 L["OPT_NPH_MARKER_SCALE"] = "установка пропорций индикаторов"
 L["OPT_NPH_MARKER_SCALE_DESC"] = "изменить размер индикаторов"
 L["OPT_NPH_MARKER_SETTINGS"] = "установка параметров индикаторов"
 --[[Translation missing --]]
---[[ L["OPT_NPH_MARKER_THEME"] = ""--]] 
+L["OPT_NPH_MARKER_THEME"] = "Markers' theme"
 --[[Translation missing --]]
---[[ L["OPT_NPH_MARKER_THEME_DEFAULT"] = ""--]] 
+L["OPT_NPH_MARKER_THEME_DEFAULT"] = "Default"
 --[[Translation missing --]]
---[[ L["OPT_NPH_MARKER_THEME_DESC"] = ""--]] 
+L["OPT_NPH_MARKER_THEME_DESC"] = "Select between the available markers' themes"
 --[[Translation missing --]]
---[[ L["OPT_NPH_MARKER_THEME_MINIMAL"] = ""--]] 
+L["OPT_NPH_MARKER_THEME_MINIMAL"] = "Minimalist"
 --[[Translation missing --]]
---[[ L["OPT_NPH_MARKER_WOW_SETTINGS"] = ""--]] 
+L["OPT_NPH_MARKER_WOW_SETTINGS"] = "WoW settings"
 L["OPT_NPH_MARKER_X_OFFSET"] = "отступ по горизонтали"
 L["OPT_NPH_MARKER_X_OFFSET_DESC"] = "сдвинуть маркеры по горизонтали"
 L["OPT_NPH_MARKER_Y_OFFSET"] = "отступ по вертикали"
 L["OPT_NPH_MARKER_Y_OFFSET_DESC"] = "сдвинуть маркеры по вертикали"
+--[[Translation missing --]]
+L["OPT_NPH_MAX_NAMEPLATE_DISTANCE"] = "Maximum distance of nameplates"
+--[[Translation missing --]]
+L["OPT_NPH_MAX_NAMEPLATE_DISTANCE_DESC"] = [=[Set the maximum distance at which to display nameplates.
+
+(H.H.T.D. requires nameplates in order to display its symbols on top of them)
+
+This setting might have an impact on performances depending on your computer.]=]
 L["OPT_NPH_WARNING1"] = [=[ВНИМАНИЕ: Индикаторы здоровья врагов выключены! HHTD не сможет добавлять символ красного креста!
 Вы можете включить индикаторы здоровья через опции интерфейса WoW или используя горячую клавишу.]=]
 L["OPT_NPH_WARNING2"] = [=[ВНИМАНИЕ: Индикаторы здоровья союзников выключены! HHTD не сможет добавлять символ лекаря!
@@ -1954,9 +2011,9 @@ L["OPT_POST_ANNOUNCE_SETTINGS"] = "параметры рейдовых обья�
 L["OPT_POST_ANNOUNCE_THROTTLE"] = "скорость появления обьявлений"
 L["OPT_POST_ANNOUNCE_THROTTLE_DESC"] = "установите минимальное время в секундах между появлениями каждого из возможных обьявлений"
 --[[Translation missing --]]
---[[ L["OPT_PROTECT_HEALER_MINIMUM_DAMAGE_AMOUNT"] = ""--]] 
+L["OPT_PROTECT_HEALER_MINIMUM_DAMAGE_AMOUNT"] = "Damage amount (|cffdd0000%u|r) threshold"
 --[[Translation missing --]]
---[[ L["OPT_PROTECT_HEALER_MINIMUM_DAMAGE_AMOUNT_DESC"] = ""--]] 
+L["OPT_PROTECT_HEALER_MINIMUM_DAMAGE_AMOUNT_DESC"] = "Friendly attacked healers won't be detected until they reach this cumulative amount of damage based on a percentage of your own maximum health."
 L["OPT_PVE"] = "Включить для ПВЕ"
 L["OPT_PVE_DESC"] = "Разрешить использование HHTD против НИП"
 L["OPT_PVPHEALERSSPECSONLY"] = "Обнаружение специализации лекаря"
@@ -1964,17 +2021,17 @@ L["OPT_PVPHEALERSSPECSONLY_DESC"] = "Выявлять только игроко�
 L["OPT_SET_FRIENDLY_HEALERS_ROLE"] = "установите роли наших лекарей"
 L["OPT_SET_FRIENDLY_HEALERS_ROLE_DESC"] = "если возможно, автоматически установит роль Лекарь Рейда для всех обнаруженных наших лекарей"
 --[[Translation missing --]]
---[[ L["OPT_SHOW_CHAT_COMMAND_REMINDER"] = ""--]] 
+L["OPT_SHOW_CHAT_COMMAND_REMINDER"] = "Show /HHTDG chat command reminder"
 --[[Translation missing --]]
---[[ L["OPT_SHOW_CHAT_COMMAND_REMINDER_DESC"] = ""--]] 
+L["OPT_SHOW_CHAT_COMMAND_REMINDER_DESC"] = "Print a message in the chat every time HHTD is enabled."
 L["OPT_SOUNDS"] = "Звуковые оповещения"
 L["OPT_SOUNDS_DESC"] = "HHTD воспроизводит определенный звук при выборе лекаря в цель или наведении на него мышки"
 L["OPT_STRICTGUIDPVE"] = "Точность отслеживания в ПВЕ-режиме"
 L["OPT_STRICTGUIDPVE_DESC"] = "Если несколько НИП имеют одинаковые имена, HHTD добавит красный крест только к тому, который лечил в последнее время, а не ко всем сразу. В большинстве случаев понадобится выбрать НИП целью или навести на него мышь для появления креста."
 --[[Translation missing --]]
---[[ L["OPT_SWAPSYMBOLS"] = ""--]] 
+L["OPT_SWAPSYMBOLS"] = "Swap friends/foes symbols"
 --[[Translation missing --]]
---[[ L["OPT_SWAPSYMBOLS_DESC"] = ""--]] 
+L["OPT_SWAPSYMBOLS_DESC"] = "The symbols used for friends and foes are swapped"
 L["OPT_TESTONTARGET"] = "протестировать работу HHTD на выбранной цели"
 L["OPT_TESTONTARGET_DESC"] = "пометит выбранную вами цель как лекаря чтобы вы смогли протестировать как все работает"
 L["OPT_TESTONTARGET_ENOTARGET"] = "вы должны сначала выбрать цель"
@@ -1998,7 +2055,7 @@ do
     local L = LibStub("AceLocale-3.0"):NewLocale("H.H.T.D.", "itIT");
 
     if L then
-L["ACTIVE"] = "Attivo!"
+        L["ACTIVE"] = "Attivo!"
 L["Announcer"] = "Annunciatore"
 L["Announcer_DESC"] = "Questo modulo ti permette di gestire chat e avvisi sonori"
 L["AUTO_RAID_PARTY_INSTANCE"] = "Auto: Raid/Party/Instance"
@@ -2006,16 +2063,22 @@ L["CHAT_POST_ANNOUNCE_FEATURE_NOT_CONFIGURED"] = "Gli annunci al raid non sono c
 L["CHAT_POST_ANNOUNCE_TOO_SOON_WAIT"] = "E' troppo presto (vedi impostazioni sulla frequenza degli annunci)."
 L["CHAT_POST_NO_HEALERS"] = "Nessun guaritore su entrambi i lati :/ (ancora)"
 --[[Translation missing --]]
---[[ L["CM"] = ""--]] 
+L["CM"] = "Custom Marks"
 --[[Translation missing --]]
---[[ L["CM_DESC"] = ""--]] 
+L["CM_DESC"] = "Enable this module to set permanent custom marks on NPC and Player units' nameplates."
 L["DESCRIPTION"] = "Individua quei dannati curatori all'istante e aiutali a compiere il loro destino! (PVP e PVE)"
 L["DISABLED"] = [=[hhtd è stato disattivato!
 Scrivi '/hhtd on' per riattivarlo.]=]
 L["ENABLED"] = "attivo! Scrivi /HHTDG per aprire il pannello delle opzioni"
 L["HEALER_UNDER_ATTACK"] = "Il curatore amico %s sta venendo attaccato da %s"
 --[[Translation missing --]]
---[[ L["HHTD_IS_NOW_KNOWN_AS_H.H.T.D."] = ""--]] 
+L["HHTD_IS_NOW_KNOWN_AS_H.H.T.D."] = [=['%s' is now known as H.H.T.D. (see the change log for more information)
+
+Your previous settings were successfully transferred and the old version turned off.
+
+If you had previously disabled HHTD for some of your characters, you must login to each one once before deleting or disabling globally the old '%s' add-on so that this preference can also be kept.
+
+This message will be displayed only once per character where HHTD's previous version was enabled.]=]
 L["HUMAN"] = "Umano"
 L["IDLE"] = "Inattivo"
 L["INSTANCE_CHAT"] = "Instance chat"
@@ -2028,72 +2091,73 @@ L["NPC"] = "NPC"
 L["NPH"] = "Marcatore Name Plate"
 L["NPH_DESC"] = "Questo modulo aggiunge una croce rossa sui name plate dei curatori nemici"
 --[[Translation missing --]]
---[[ L["OPT_A_CHAT_WARNING"] = ""--]] 
+L["OPT_A_CHAT_WARNING"] = "Chat Warning"
 --[[Translation missing --]]
---[[ L["OPT_A_CHAT_WARNING_DESC"] = ""--]] 
+L["OPT_A_CHAT_WARNING_DESC"] = "Display a chat warning when a friendly healer is under attack"
 --[[Translation missing --]]
---[[ L["OPT_A_HEALER_PROTECTION"] = ""--]] 
+L["OPT_A_HEALER_PROTECTION"] = "Healer protection settings"
 --[[Translation missing --]]
---[[ L["OPT_A_HUD_WARNING"] = ""--]] 
+L["OPT_A_HUD_WARNING"] = "HUD Warning"
 --[[Translation missing --]]
---[[ L["OPT_A_HUD_WARNING_DESC"] = ""--]] 
+L["OPT_A_HUD_WARNING_DESC"] = "Display a heads-up warning when a friendly healer is under attack"
 --[[Translation missing --]]
---[[ L["OPT_ALWAYS_SHOW_NAMEPLATES"] = ""--]] 
+L["OPT_ALWAYS_SHOW_NAMEPLATES"] = "Always show nameplates"
 --[[Translation missing --]]
---[[ L["OPT_ALWAYS_SHOW_NAMEPLATES_DESC"] = ""--]] 
+L["OPT_ALWAYS_SHOW_NAMEPLATES_DESC"] = "By default nameplates are hidden outside of combat"
 L["OPT_ANNOUNCE"] = "Mostra messaggi"
 L["OPT_ANNOUNCE_DESC"] = "HHTD mostrerà messaggi quando passerai il mouse sopra un curatore nemico o lo avrai come target."
 L["OPT_CLEAR_LOGS"] = "Cancella i log"
 --[[Translation missing --]]
---[[ L["OPT_CM_CHANGEMARK"] = ""--]] 
+L["OPT_CM_CHANGEMARK"] = "Change to %s"
 --[[Translation missing --]]
---[[ L["OPT_CM_CHANGEMARK_DESC"] = ""--]] 
+L["OPT_CM_CHANGEMARK_DESC"] = "Change the mark to the one selected in the '%s' selector"
 --[[Translation missing --]]
---[[ L["OPT_CM_CLEARASSOC"] = ""--]] 
+L["OPT_CM_CLEARASSOC"] = "Clear"
 --[[Translation missing --]]
---[[ L["OPT_CM_CLEARASSOC_DESC"] = ""--]] 
+L["OPT_CM_CLEARASSOC_DESC"] = "Clear the selected name from its mark"
 --[[Translation missing --]]
---[[ L["OPT_CM_CLEARTARGETMARKER"] = ""--]] 
+L["OPT_CM_CLEARTARGETMARKER"] = "Clear target"
 --[[Translation missing --]]
---[[ L["OPT_CM_CLEARTARGETMARKER_DESC"] = ""--]] 
+L["OPT_CM_CLEARTARGETMARKER_DESC"] = "Remove the marker from your target"
 --[[Translation missing --]]
---[[ L["OPT_CM_DESCRIPTION"] = ""--]] 
+L["OPT_CM_DESCRIPTION"] = "Here you can target a unit and apply a custom mark only you will see, these marks will persist accross sessions."
 --[[Translation missing --]]
---[[ L["OPT_CM_EXISTINGASSOC"] = ""--]] 
+L["OPT_CM_EXISTINGASSOC"] = "Existing name-marker associations"
 --[[Translation missing --]]
---[[ L["OPT_CM_EXISTINGASSOC_DESC"] = ""--]] 
+L["OPT_CM_EXISTINGASSOC_DESC"] = "Select a name in this list to use with the other buttons of this section"
 --[[Translation missing --]]
---[[ L["OPT_CM_FNPC_NAMEPLATE"] = ""--]] 
+L["OPT_CM_FNPC_NAMEPLATE"] = "Friendly NPC nameplates"
 --[[Translation missing --]]
---[[ L["OPT_CM_FNPC_NAMEPLATE_DESC"] = ""--]] 
+L["OPT_CM_FNPC_NAMEPLATE_DESC"] = [=[Show nameplates on friendly NPCs
+This is necessary for markers to be shown on these units.]=]
 --[[Translation missing --]]
---[[ L["OPT_CM_MARKER_CUSTOMIZATION"] = ""--]] 
+L["OPT_CM_MARKER_CUSTOMIZATION"] = "Marker customization"
 --[[Translation missing --]]
---[[ L["OPT_CM_MARKER_MANAGEMENT"] = ""--]] 
+L["OPT_CM_MARKER_MANAGEMENT"] = "Marker management"
 --[[Translation missing --]]
---[[ L["OPT_CM_SELECT_MARKER"] = ""--]] 
+L["OPT_CM_SELECT_MARKER"] = "Marker"
 --[[Translation missing --]]
---[[ L["OPT_CM_SELECT_MARKER_DESC"] = ""--]] 
+L["OPT_CM_SELECT_MARKER_DESC"] = "Select a marker to apply to your target"
 --[[Translation missing --]]
---[[ L["OPT_CM_SETTARGETMARKER"] = ""--]] 
+L["OPT_CM_SETTARGETMARKER"] = "Mark target"
 --[[Translation missing --]]
---[[ L["OPT_CM_SETTARGETMARKER_DESC"] = ""--]] 
+L["OPT_CM_SETTARGETMARKER_DESC"] = "Mark the selected target with the selected marker"
 --[[Translation missing --]]
---[[ L["OPT_CM_VCa"] = ""--]] 
+L["OPT_CM_VCa"] = "Alpha Shading"
 --[[Translation missing --]]
---[[ L["OPT_CM_VCa_DESC"] = ""--]] 
+L["OPT_CM_VCa_DESC"] = "Change texture's Alpha component shading"
 --[[Translation missing --]]
---[[ L["OPT_CM_VCb"] = ""--]] 
+L["OPT_CM_VCb"] = "Blue Shading"
 --[[Translation missing --]]
---[[ L["OPT_CM_VCb_DESC"] = ""--]] 
+L["OPT_CM_VCb_DESC"] = "Change texture's Blue component shading"
 --[[Translation missing --]]
---[[ L["OPT_CM_VCg"] = ""--]] 
+L["OPT_CM_VCg"] = "Green Shading"
 --[[Translation missing --]]
---[[ L["OPT_CM_VCg_DESC"] = ""--]] 
+L["OPT_CM_VCg_DESC"] = "Change texture's Green component shading"
 --[[Translation missing --]]
---[[ L["OPT_CM_VCr"] = ""--]] 
+L["OPT_CM_VCr"] = "Red Shading"
 --[[Translation missing --]]
---[[ L["OPT_CM_VCr_DESC"] = ""--]] 
+L["OPT_CM_VCr_DESC"] = "Change texture's red component shading"
 L["OPT_CORE_OPTIONS"] = "Opzioni di base"
 L["OPT_DEBUG"] = "log dei debug"
 L["OPT_DEBUG_DESC"] = "Attiva / disattiva debugging"
@@ -2102,13 +2166,13 @@ L["OPT_DEBUGLEVEL_DESC"] = "livello debug: 1=tutto, 2=avvisi, 3=errori"
 L["OPT_ENABLE_GEHR"] = "Attiva Rapporto Grafico"
 L["OPT_ENABLE_GEHR_DESC"] = "Mostra una lista con varie caratteristiche dei curatori nemici rilevati"
 --[[Translation missing --]]
---[[ L["OPT_GUI"] = ""--]] 
+L["OPT_GUI"] = "Open GUI"
 --[[Translation missing --]]
---[[ L["OPT_GUI_DESC"] = ""--]] 
+L["OPT_GUI_DESC"] = "Open the graphical configuration panel"
 --[[Translation missing --]]
---[[ L["OPT_HEADER_GLOBAL_ENEMY_HEALER_OPTIONS"] = ""--]] 
+L["OPT_HEADER_GLOBAL_ENEMY_HEALER_OPTIONS"] = "Global enemy healers settings"
 --[[Translation missing --]]
---[[ L["OPT_HEADER_GLOBAL_FRIENDLY_HEALER_OPTIONS"] = ""--]] 
+L["OPT_HEADER_GLOBAL_FRIENDLY_HEALER_OPTIONS"] = "Global friendly healers settings"
 L["OPT_HEALER_FORGET_TIMER"] = "Timer Dimentica Curatore"
 L["OPT_HEALER_FORGET_TIMER_DESC"] = "Imposta il Timer Dimentica Curatore (tempo in secondi per cui un nemico resterà marcato come curatore)"
 L["OPT_HEALER_MINIMUM_HEAL_AMOUNT"] = "Soglia di cura (|cff00dd00%u|r)"
@@ -2121,32 +2185,41 @@ L["OPT_LOGS"] = "Log"
 L["OPT_LOGS_DESC"] = "Mostra curatori rilevati e statistiche di HHTD"
 L["OPT_MODULES"] = "Moduli"
 --[[Translation missing --]]
---[[ L["OPT_NPH_DISPLAY_HEALER_RANK"] = ""--]] 
+L["OPT_NPH_DISPLAY_HEALER_RANK"] = "Display healers' rank"
 --[[Translation missing --]]
---[[ L["OPT_NPH_DISPLAY_HEALER_RANK_DESC"] = ""--]] 
+L["OPT_NPH_DISPLAY_HEALER_RANK_DESC"] = [=[Add a number representing each healer's rank.
+The lower the number the better the healer.]=]
 --[[Translation missing --]]
---[[ L["OPT_NPH_ENEMY_NAMEPLATE"] = ""--]] 
+L["OPT_NPH_ENEMY_NAMEPLATE"] = "Enemy nameplates"
 --[[Translation missing --]]
---[[ L["OPT_NPH_FRIENDLY_NAMEPLATE"] = ""--]] 
+L["OPT_NPH_FRIENDLY_NAMEPLATE"] = "Friendly nameplates"
 --[[Translation missing --]]
---[[ L["OPT_NPH_MARKER_HIDDEN_WOW_SETTINGS"] = ""--]] 
+L["OPT_NPH_MARKER_HIDDEN_WOW_SETTINGS"] = "Hidden WoW settings"
 L["OPT_NPH_MARKER_SCALE"] = "Dimensioni marcatore"
 L["OPT_NPH_MARKER_SCALE_DESC"] = "Moltiplica la dimensione del marcatore di # ad es. 1 = normale, 0.5 = dimezzata, 2 = doppia, ecc."
 L["OPT_NPH_MARKER_SETTINGS"] = "Impostazioni marcatore"
 --[[Translation missing --]]
---[[ L["OPT_NPH_MARKER_THEME"] = ""--]] 
+L["OPT_NPH_MARKER_THEME"] = "Markers' theme"
 --[[Translation missing --]]
---[[ L["OPT_NPH_MARKER_THEME_DEFAULT"] = ""--]] 
+L["OPT_NPH_MARKER_THEME_DEFAULT"] = "Default"
 --[[Translation missing --]]
---[[ L["OPT_NPH_MARKER_THEME_DESC"] = ""--]] 
+L["OPT_NPH_MARKER_THEME_DESC"] = "Select between the available markers' themes"
 --[[Translation missing --]]
---[[ L["OPT_NPH_MARKER_THEME_MINIMAL"] = ""--]] 
+L["OPT_NPH_MARKER_THEME_MINIMAL"] = "Minimalist"
 --[[Translation missing --]]
---[[ L["OPT_NPH_MARKER_WOW_SETTINGS"] = ""--]] 
+L["OPT_NPH_MARKER_WOW_SETTINGS"] = "WoW settings"
 L["OPT_NPH_MARKER_X_OFFSET"] = "Offset orizzontale"
 L["OPT_NPH_MARKER_X_OFFSET_DESC"] = "Muove il marcatore orizzontalmente"
 L["OPT_NPH_MARKER_Y_OFFSET"] = "Offset verticale"
 L["OPT_NPH_MARKER_Y_OFFSET_DESC"] = "Muove il marcatore verticalmente"
+--[[Translation missing --]]
+L["OPT_NPH_MAX_NAMEPLATE_DISTANCE"] = "Maximum distance of nameplates"
+--[[Translation missing --]]
+L["OPT_NPH_MAX_NAMEPLATE_DISTANCE_DESC"] = [=[Set the maximum distance at which to display nameplates.
+
+(H.H.T.D. requires nameplates in order to display its symbols on top of them)
+
+This setting might have an impact on performances depending on your computer.]=]
 L["OPT_NPH_WARNING1"] = [=[ATTENZIONE: I name-plate dei nemici sono disattivati. HHTD non può aggiungere la croce rossa.
 Puoi attivare i name-plate attraverso le opzioni di interfaccia di WoW.]=]
 L["OPT_NPH_WARNING2"] = [=[ATTENZIONE: I name-plate per gli alleati sono disattivati. HHTD non può aggiungere il simbolo di curatore.
@@ -2183,9 +2256,9 @@ L["OPT_POST_ANNOUNCE_SETTINGS"] = "Impostazioni di annuncio al raid"
 L["OPT_POST_ANNOUNCE_THROTTLE"] = "Frequenza annunci"
 L["OPT_POST_ANNOUNCE_THROTTLE_DESC"] = "Imposta il tempo minimo in secondi tra ogni possibile annuncio."
 --[[Translation missing --]]
---[[ L["OPT_PROTECT_HEALER_MINIMUM_DAMAGE_AMOUNT"] = ""--]] 
+L["OPT_PROTECT_HEALER_MINIMUM_DAMAGE_AMOUNT"] = "Damage amount (|cffdd0000%u|r) threshold"
 --[[Translation missing --]]
---[[ L["OPT_PROTECT_HEALER_MINIMUM_DAMAGE_AMOUNT_DESC"] = ""--]] 
+L["OPT_PROTECT_HEALER_MINIMUM_DAMAGE_AMOUNT_DESC"] = "Friendly attacked healers won't be detected until they reach this cumulative amount of damage based on a percentage of your own maximum health."
 L["OPT_PVE"] = "Attiva in PVE"
 L["OPT_PVE_DESC"] = "HHTD funzionerà anche per gli NPC."
 L["OPT_PVPHEALERSSPECSONLY"] = "Solo giocatori curatori"
@@ -2193,17 +2266,17 @@ L["OPT_PVPHEALERSSPECSONLY_DESC"] = "Rileva solo giocatori specializzati come cu
 L["OPT_SET_FRIENDLY_HEALERS_ROLE"] = "Imposta ruolo curatori amici"
 L["OPT_SET_FRIENDLY_HEALERS_ROLE_DESC"] = "Imposta automaticamente il ruolo di HEALER ai curatori amici rilevati nel raid (se possibile)"
 --[[Translation missing --]]
---[[ L["OPT_SHOW_CHAT_COMMAND_REMINDER"] = ""--]] 
+L["OPT_SHOW_CHAT_COMMAND_REMINDER"] = "Show /HHTDG chat command reminder"
 --[[Translation missing --]]
---[[ L["OPT_SHOW_CHAT_COMMAND_REMINDER_DESC"] = ""--]] 
+L["OPT_SHOW_CHAT_COMMAND_REMINDER_DESC"] = "Print a message in the chat every time HHTD is enabled."
 L["OPT_SOUNDS"] = "Avvisi sonori"
 L["OPT_SOUNDS_DESC"] = "HHTD attiverà un suono specifico quando passerai il mouse sopra un curatore nemico o lo prenderai in target"
 L["OPT_STRICTGUIDPVE"] = "Rilevazione PVE accurata"
 L["OPT_STRICTGUIDPVE_DESC"] = "Quando più NPC condividono lo stesso nome, HHTD aggiungerà una croce solo sopra a quelli che effettivamente avranno curato invece che a tutti loro. Nota che il più delle volte avrai bisogno di prendere in target o passare il mouse su di un'unità prima che la croce appaia."
 --[[Translation missing --]]
---[[ L["OPT_SWAPSYMBOLS"] = ""--]] 
+L["OPT_SWAPSYMBOLS"] = "Swap friends/foes symbols"
 --[[Translation missing --]]
---[[ L["OPT_SWAPSYMBOLS_DESC"] = ""--]] 
+L["OPT_SWAPSYMBOLS_DESC"] = "The symbols used for friends and foes are swapped"
 L["OPT_TESTONTARGET"] = "Prova il comportamento di HHTD sul target attuale"
 L["OPT_TESTONTARGET_DESC"] = "Segnerà il tuo target attuale come un curatore per farti vedere cosa succede."
 L["OPT_TESTONTARGET_ENOTARGET"] = "Devi avere in target qualcosa"

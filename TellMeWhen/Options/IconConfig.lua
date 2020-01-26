@@ -76,6 +76,7 @@ end)
 local MainTab = IE:RegisterTab("ICON", "MAIN", "IconMain", 1)
 MainTab:SetTexts(L["ICON"], L["MAIN_DESC"])
 
+IE:RegisterTab("ICON", "HELP", "Help", 101):SetTexts(L["HELP"])
 
 
 local HistorySet = TMW.C.HistorySet:New("ICON")
@@ -107,7 +108,7 @@ function IE:LoadIcon(isRefresh, icon)
 		local ic_old = CI.icon
 
 		if type(icon) == "table" then			
-			PlaySound(SOUNDKIT and SOUNDKIT.IG_CHARACTER_INFO_TAB or "igCharacterInfoTab") -- SOUNDKIT is patch 7.3 compat
+			PlaySound(SOUNDKIT.IG_CHARACTER_INFO_TAB)
 			IE:SaveSettings()
 			
 			CI.icon = icon

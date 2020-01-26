@@ -43,13 +43,13 @@ function GridClickSetsFrame_OnEvent(self, event, arg1)
     elseif(event=="VARIABLES_LOADED") then
         if not U1 then
             if(GetLocale()=="zhCN") then
-                DEFAULT_CHAT_FRAME:AddMessage("GridClickSets - |cffff3333有爱|r (w.163.com/163ui)")
+                DEFAULT_CHAT_FRAME:AddMessage("GridClickSets - |cffff3333爱不易|r (github.com/aby-ui)")
             elseif(GetLocale()=="zhTW") then
                 DEFAULT_CHAT_FRAME:AddMessage("GridClickSets - |cff3399FF三月十二|r@聖光之願|cffFF00FF<冰封十字軍>|r.")
             end
         else
             if _G.ClassMods and _G.ClassMods.Options.DB.clicktocast.enabled then
-                U1Message("ClassMods的ClickToCast模块和有爱点击施法冲突，请关闭")
+                U1Message("ClassMods的ClickToCast模块和爱不易点击施法冲突，请关闭")
             end
         end
     end

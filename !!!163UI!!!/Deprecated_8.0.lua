@@ -1,13 +1,22 @@
+MainMenuBarPerformanceBar:SetPoint("CENTER", MainMenuMicroButton, "CENTER", 0, 11) --SetSize(28,36) --因为8.0之前按钮大小是28,58，暴雪忘了改了
+
 TEXT = TEXT or function(text)
     return text
 end
 
+local hbdp = LibStub("HereBeDragons-2.0")
 GetPlayerMapPosition = GetPlayerMapPosition or function(unit)
-    local mapId = C_Map.GetBestMapForUnit(unit)
-    if not mapId then return end
-    local player = C_Map.GetPlayerMapPosition(mapId, unit)
-    if not player then return end
-    return player:GetXY()
+    local x, y, instance = hbdp:GetPlayerZonePosition(false)
+    return x, y
+    --local mapId = C_Map.GetBestMapForUnit(unit)
+    --if not mapId then return end
+    --local player = C_Map.GetPlayerMapPosition(mapId, unit)
+    --if not player then return end
+    --return player:GetXY()
+end
+
+SetMapToCurrentZone = SetMapToCurrentZone or function()
+    WorldMapFrame:SetMapID(C_Map.GetBestMapForUnit("player"))
 end
 
 GetCurrentMapAreaID = GetCurrentMapAreaID or function()
@@ -48,15 +57,15 @@ UnitPopupFrames = UnitPopupFrames or {}
 UnitAura, UnitDebuff
 ---------------------------------------------------------------]]
 function Aby_UnitAura_Proxy(UnitAuraFunc, unit, indexOrName, filterOrNil, filter, ...)
-    if type(indexOrName) == "number" then
-        return UnitAuraFunc(unit, indexOrName, filterOrNil, filter, ...)
-    else
+    --if type(indexOrName) == "number" then
+    --    return UnitAuraFunc(unit, indexOrName, filterOrNil, filter, ...)
+    --else
         for i = 1, 40 do
             local name, icon, count, dispelType, duration, expires, caster, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, v1, nameplateShowAll, timeMod, value1, value2, value3, v3, v4, v5 = UnitAuraFunc(unit, i, filterOrNil, filter, ...)
             if not name then return end
             if name == indexOrName then return name, nil, icon, count, dispelType, duration, expires, caster, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, v1, nameplateShowAll, timeMod, value1, value2, value3, v3, v4, v5 end
         end
-    end
+    --end
 end
 function Aby_UnitAura(unit, indexOrName, filterOrNil, filter, ...) return Aby_UnitAura_Proxy(UnitAura, unit, indexOrName, filterOrNil, filter, ...) end
 function Aby_UnitBuff(unit, indexOrName, filterOrNil, filter, ...) return Aby_UnitAura_Proxy(UnitBuff, unit, indexOrName, filterOrNil, filter, ...) end
@@ -64,7 +73,7 @@ function Aby_UnitDebuff(unit, indexOrName, filterOrNil, filter, ...) return Aby_
 
 CanComplainChat = CanComplainChat or function(lineID)
     local loc = PlayerLocation:CreateFromChatLineID(lineID);
-    return C_ChatInfo.CanReportPlayer(loc)
+    return C_ReportSystem.CanReportPlayer(loc)
 end
 
 RegisterAddonMessagePrefix = RegisterAddonMessagePrefix or C_ChatInfo.RegisterAddonMessagePrefix
@@ -228,3 +237,102 @@ do
 	SPELL_POWER_OBSOLETE = Enum.PowerType.Obsolete;
 	SPELL_POWER_OBSOLETE2 = Enum.PowerType.Obsolete2;
 end
+
+--[[------------------------------------------------------------
+8.1
+---------------------------------------------------------------]]
+do
+    GetNumIgnores = GetNumIgnores or C_FriendList.GetNumIgnores
+end
+
+function C_LFGListGetSearchResultInfo(resultID)
+    --local id, activityId, title, comment, voiceChat, iLvl, honorLevel, age, numBNetFriends, numCharFriends, numGuildMates, isDelisted, leader, numMembers
+    local info = C_LFGList.GetSearchResultInfo(resultID);
+    if not info then return end
+    return info.searchResultID, info.activityID, info.name, info.comment, info.voiceChat, info.requiredItemLevel, info.requiredHonorLevel,
+    info.age, info.numBNetFriends, info.numCharFriends, info.numGuildMates, info.isDelisted, info.leaderName, info.numMembers
+end
+
+--[[------------------------------------------------------------
+8.1.5
+---------------------------------------------------------------]]
+WorldMapTooltip = WorldMapTooltip or GameTooltip
+--[[
+hooksecurefunc("TaskPOI_OnEnter", function(self) self.UpdateTooltip = nil end)
+if WorldMap_AddQuestTimeToTooltip then
+    hooksecurefunc("WorldMap_AddQuestTimeToTooltip", function()
+        local o = GameTooltip:GetOwner()
+        if o and o.OnTabEnter and not o._abyui then o._abyui = 1 hooksecurefunc(o, "OnTabEnter", function(self) self.UpdateTooltip = nil end) end
+    end)
+end
+--]]
+
+--[[------------------------------------------------------------
+8.2.0
+---------------------------------------------------------------]]
+--Interface\FrameXML\QuestInfo.lua:389: Action[SetPoint] failed because[SetPoint would result in anchor family connection]: attempted from: QuestInfoSealFrame:SetPoint.
+if QuestInfoSealFrame then
+    QuestInfoSealFrame._originSetPoint = QuestInfoSealFrame.SetPoint
+    QuestInfoSealFrame.SetPoint = function(self, ...)
+        QuestInfoSealFrame:ClearAllPoints()
+        QuestInfoSealFrame._originSetPoint(self, ...)
+    end
+end
+
+if QuestLogPopupDetailFrame and QuestLogPopupDetailFrame.ShowMapButton then
+    QuestLogPopupDetailFrame.ShowMapButton:SetScript("PreClick", function(self)
+        if InCombatLockdown() and not WorldMapFrame:IsShown() then WorldMapFrame:Show() end
+    end)
+    QuestLogPopupDetailFrame.ShowMapButton:SetScript("PostClick", function(self)
+        self:GetParent():Hide()
+    end)
+end
+
+--战斗中打开寻求组队
+if LFGListUtil_GetQuestCategoryData then
+    local origin = LFGListUtil_GetQuestCategoryData
+    hooksecurefunc("LFGListUtil_GetQuestCategoryData", function(...)
+        if InCombatLockdown() and not PVEFrame:IsVisible() then
+            local activityID, categoryID, filters, questName = origin(...);
+            if activityID then
+                PVEFrame:Show()
+            end
+        end
+    end)
+end
+
+--[[------------------------------------------------------------
+8.2.5
+---------------------------------------------------------------]]
+--- 注意参数含义和blz的不一样,是好友序号
+AbyBNGetGameAccountInfo = function(friendIndex, accountIndex)
+    local accountInfo = C_BattleNet.GetFriendAccountInfo(friendIndex);
+    local gameAccountInfo = C_BattleNet.GetGameAccountInfoByID(accountInfo.gameAccountInfo.gameAccountID, accountIndex);
+    local accountInfo = C_BattleNet.GetAccountInfoByID(accountInfo.bnetAccountID);
+    if gameAccountInfo and accountInfo then
+        local wowProjectID = gameAccountInfo.wowProjectID or 0;
+        local characterName = gameAccountInfo.characterName or "";
+        local realmName = gameAccountInfo.realmName or "";
+        local realmID = gameAccountInfo.realmID or 0;
+        local factionName = gameAccountInfo.factionName or "";
+        local raceName = gameAccountInfo.raceName or "";
+        local className = gameAccountInfo.className or "";
+        local areaName = gameAccountInfo.areaName or "";
+        local characterLevel = gameAccountInfo.characterLevel or "";
+        local richPresence = gameAccountInfo.richPresence or "";
+        local gameAccountID = gameAccountInfo.gameAccountID or 0;
+        local playerGuid = gameAccountInfo.playerGuid or 0;
+
+        return	gameAccountInfo.hasFocus, characterName, gameAccountInfo.clientProgram,
+        realmName, realmID, factionName, raceName, className, "", areaName, characterLevel,
+        richPresence, accountInfo.customMessage, accountInfo.customMessageTime,
+        gameAccountInfo.isOnline, gameAccountID, accountInfo.bnetAccountID, gameAccountInfo.isGameAFK, gameAccountInfo.isGameBusy,
+        playerGuid, wowProjectID, gameAccountInfo.isWowMobile;
+    end
+end
+
+--[[------------------------------------------------------------
+8.3.0
+---------------------------------------------------------------]]
+if not UIDropDownMenu_StopCounting then UIDropDownMenu_StopCounting = noop end
+if not UIDropDownMenu_StartCounting then UIDropDownMenu_StartCounting = noop end

@@ -3,10 +3,19 @@
 --------------------------------------------------------------------------
 --[[
 GTFO Friendly Fire List - Battle for Azeroth
-Author: Zensunim of Malygos
 ]]--
 
---- ********************
---- * Placeholder .... *
---- ********************
+if (not GTFO.ClassicMode) then
 
+-- **********************
+-- * Battle for Azeroth *
+-- **********************
+
+
+GTFO.FFSpellID["291338"] = {
+  --desc = "Blooddrinker (Madness: Bloodthirsty)";
+  sound = 4;
+};
+
+
+end

@@ -248,6 +248,11 @@ DCS_TableData.StatData.ItemLevelFrame = {
     category   = true,
     frame      = char_ctats_pane.ItemLevelFrame,
     updateFunc = function(statFrame)
+		-- Check for DejaCharacterStats. Lets hide the frame if the AddOn is not loaded.
+		if IsAddOnLoaded("ElvUI") then
+			_G.CharacterStatsPane.ItemLevelFrame.Value:Show()
+			_G.CharacterFrame.ItemLevelText:SetText('')
+		end
 		local avgItemLevel, avgItemLevelEquipped = GetAverageItemLevel()
 		local DCS_DecimalPlaces
 		local multiplier
@@ -336,6 +341,50 @@ DCS_TableData.StatData.RatingCategory = {
     updateFunc = function()	end
 }
 
+function MovementSpeed_OnUpdate(statFrame, elapsedTime) --Added this so Vehicles update as well. Shouldn't be too bad if other addons access this function, but still not as clean as I would like.
+	local unit = statFrame.unit;
+	local currentSpeed, runSpeed, flightSpeed, swimSpeed = GetUnitSpeed(unit);
+	runSpeed = runSpeed/BASE_MOVEMENT_SPEED*100;
+	flightSpeed = flightSpeed/BASE_MOVEMENT_SPEED*100;
+	swimSpeed = swimSpeed/BASE_MOVEMENT_SPEED*100;
+	currentSpeed = currentSpeed/BASE_MOVEMENT_SPEED*100;
+	
+	-- Pets seem to always actually use run speed
+	if (unit == "pet") then
+		swimSpeed = runSpeed;
+	end
+
+	-- Determine whether to display running, flying, or swimming speed
+	local speed = runSpeed;
+	local swimming = IsSwimming(unit);
+	if (UnitInVehicle(unit)) then
+		local vehicleSpeed = GetUnitSpeed("Vehicle")/BASE_MOVEMENT_SPEED*100;
+		speed = vehicleSpeed
+	elseif (swimming) then
+		speed = swimSpeed;
+	elseif (UnitOnTaxi("player") ) then
+		speed = currentSpeed;
+	elseif (IsFlying(unit)) then
+		speed = flightSpeed;
+	end
+
+	-- Hack so that your speed doesn't appear to change when jumping out of the water
+	if (IsFalling(unit)) then
+		if (statFrame.wasSwimming) then
+			speed = swimSpeed;
+		end
+	else
+		statFrame.wasSwimming = swimming;
+	end
+
+	local valueText = format("%d%%", speed+0.5);
+	PaperDollFrame_SetLabelAndText(statFrame, STAT_MOVEMENT_SPEED, valueText, false, speed);
+	statFrame.speed = speed;
+	statFrame.runSpeed = runSpeed;
+	statFrame.flightSpeed = flightSpeed;
+	statFrame.swimSpeed = swimSpeed;
+end
+
 local move_speed  --Needs a colon like all other stats have. Concatenated so we don't have to redo every localization to include a colon.
 if namespace.locale == "zhTW" then
 	move_speed = L["Movement Speed"] .. "：" --Chinese colon
@@ -346,6 +395,8 @@ hooksecurefunc("MovementSpeed_OnUpdate", function(statFrame)
 	statFrame.Label:SetText(move_speed)
 end)
 
+
+local SPELL_POWER_MANA = Enum.PowerType.Mana
 DCS_TableData.StatData.DCS_POWER = {
 	updateFunc = function(statFrame, unit)
 		local powerType = SPELL_POWER_MANA --changing here as well for similarity
@@ -380,6 +431,22 @@ DCS_TableData.StatData.DCS_ALTERNATEMANA = {
 		else
 			statFrame:Hide();
 		end
+	end
+}
+
+DCS_TableData.StatData.DCS_MOVESPEED = { --Added this so Vehicles update as well
+	updateFunc = function(statFrame, unit)
+		if ( unit ~= "player" ) then
+			statFrame:Hide();
+			return;
+		end
+
+		statFrame.wasSwimming = nil;
+		statFrame.unit = unit;
+		statFrame:Show();
+		MovementSpeed_OnUpdate(statFrame);
+
+		statFrame.onEnterFunc = MovementSpeed_OnEnter;
 	end
 }
 
@@ -491,13 +558,14 @@ DCS_TableData.StatData.GCD = {
 				gcd = casterGCD()
 			end
 		else
-			if (primaryStat == LE_UNIT_STAT_INTELLECT) or (classfilename == "HUNTER") or (primaryStat == LE_UNIT_STAT_STRENGTH) or (classfilename == "DEMONHUNTER")then 
+			if (primaryStat == LE_UNIT_STAT_INTELLECT) or (classfilename == "HUNTER") or (classfilename == "SHAMAN") or (primaryStat == LE_UNIT_STAT_STRENGTH) or (classfilename == "DEMONHUNTER")then 
 				-- adding wariors, paladins
 				-- tested with Crusader Strike, Judgment on retribution paladin
 				-- tested with Consecration, Avenger's Shield, Judgment on protection paladin
 				-- tested with Slam on level 1 warior
 				-- tested with Cobra shot and Multi-shot for hunter. Have troll hunter but don't have pet with Ancient Hysteria //Kakjens
 				-- adding DK-s as reported by Mpstark
+				-- tested enhancement shaman with several spells including Lighnting Shield. Wind Shear appears not to induce GCD
 				gcd = casterGCD()
 			else
 				gcd = 1 -- tested with mutilate for assasination rogues.
@@ -723,6 +791,13 @@ DCS_TableData.StatData.MASTERY_RATING = {
 		local stat = CR_MASTERY
 		local rating = GetCombatRating(stat)
 		if (UnitLevel("player") < SHOW_MASTERY_LEVEL) then
+			if not namespace.configMode then
+				if namespace.hidemastery then
+					statFrame:Hide();
+					--print("hiding")
+					return;
+				end
+			end
 			color_rating1 = "|cff7f7f7f" .. color_rating1 .. "|r"
 			color_rating2 = "|cff7f7f7f" .. color_rating2 .. "|r"
 			color_format = "|cff7f7f7f" .. color_format .. "|r"

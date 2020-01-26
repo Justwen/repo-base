@@ -1,4 +1,4 @@
-## Interface: 80000
+## Interface: 80300
 ## Title: ToyPlus
 ## Version: 1.7.1
 ## Author: distnz
@@ -8,5 +8,5 @@
 locales.lua
 ToyPlus.lua
 
-## Title: |cff880303[有爱]|r ToyPlus 玩具箱
+## Title: |cff880303[爱不易]|r ToyPlus 玩具箱
 ## X-Vendor: AbyUI

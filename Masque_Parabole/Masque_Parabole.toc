@@ -1,4 +1,4 @@
-## Interface: 80000
+## Interface: 80300
 ## Title: Masque_Parabole
 ## Notes: Parabole skin for Masque
 ## Author: Kelly Crabbé AKA MoonWitch
@@ -16,5 +16,5 @@
 ## X-Curse-Repository-ID: wow/masque_parabole/mainline
 
 skin.lua
-## Title: |cff880303[有爱]|r Masque 皮肤Parabole
+## Title: |cff880303[爱不易]|r Masque 皮肤Parabole
 ## X-Vendor: AbyUI

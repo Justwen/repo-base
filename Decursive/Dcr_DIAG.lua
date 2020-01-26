@@ -1,14 +1,21 @@
 --[[
     This file is part of Decursive.
 
-    Decursive (v 2.7.5.8) add-on for World of Warcraft UI
-    Copyright (C) 2006-2018 John Wellesz (Decursive AT 2072productions.com) ( http://www.2072productions.com/to/decursive.php )
+    Decursive (v 2.7.6.6) add-on for World of Warcraft UI
+    Copyright (C) 2006-2019 John Wellesz (Decursive AT 2072productions.com) ( http://www.2072productions.com/to/decursive.php )
 
-    Starting from 2009-10-31 and until said otherwise by its author, Decursive
-    is no longer free software, all rights are reserved to its author (John Wellesz).
+    Decursive is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-    The only official and allowed distribution means are www.2072productions.com, www.wowace.com and curse.com.
-    To distribute Decursive through other means a special authorization is required.
+    Decursive is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Decursive.  If not, see <https://www.gnu.org/licenses/>.
 
 
     Decursive is inspired from the original "Decursive v1.9.4" by Patrick Bohnet (Quu).
@@ -17,7 +24,7 @@
     Decursive is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY.
 
-    This file was last updated on 2018-07-18T0:42:34Z
+    This file was last updated on 2019-11-18T13:42:00Z
 --]]
 -------------------------------------------------------------------------------
 
@@ -89,7 +96,7 @@ local DebugTextTable    = T._DebugTextTable;
 local Reported          = {};
 
 local UNPACKAGED = "@pro" .. "ject-version@";
-local VERSION = "2.7.5.8";
+local VERSION = "2.7.6.6";
 
 T._LoadedFiles = {};
 T._LoadedFiles["Dcr_DIAG.lua"] = false; -- here for consistency but useless in this particular file
@@ -231,7 +238,8 @@ end -- }}}
 
 do
     local DebugHeader = false;
-    local HeaderFailOver = "|cFF11FF33Please email the content of this window to <Decursive+Report@2072productions.com>|r\n|cFF009999(Use CTRL+A to select all and then CTRL+C to put the text in your clip-board)|r\n\n";
+    local ReportEmail = GetAddOnMetadata("Decursive", "X-eMail") or "Decursive@2072productions.com";
+    local HeaderFailOver = ("|cFF11FF33Please email the content of this window to <%s>|r\n|cFF009999(Use CTRL+A to select all and then CTRL+C to put the text in your clip-board)|r\nAlso tell in your report if you noticed any strange behavior of Decursive.\n"):format(ReportEmail:gsub('@','+ReportFH@'));
     local LoadedAddonNum = 0;
     local TotalAddonMemoryUsage = 0;
 
@@ -268,15 +276,22 @@ do
         local instructionsHeader;
 
         if fromDiag or not T.Dcr.db or not T.Dcr.db.global.NewerVersionName or T._HHTDErrors ~= 0 then
-            instructionsHeader = T.Dcr.L and T.Dcr.L["DEBUG_REPORT_HEADER"] or HeaderFailOver;
+            if T.Dcr.L and T.Dcr.L["DEBUG_REPORT_HEADER"] then
+                -- Create the header insterting the email address and
+                -- influencing the content if this is an HHTD error.
+                instructionsHeader = (T.Dcr.L["DEBUG_REPORT_HEADER"]):format(
+
+                    ReportEmail:gsub('@', T._HHTDErrors ~= 0 and '+HHTDReport@' or '+Report@'),
+                    T._HHTDErrors ~= 0 and 'Decursive / H.H.T.D.' or 'Decursive'
+
+                );
+            else
+                instructionsHeader = HeaderFailOver
+            end
         else
             instructionsHeader = T.Dcr.L and ((T.Dcr.L["DECURSIVE_DEBUG_REPORT_BUT_NEW_VERSION"]):format(T.Dcr.db.global.NewerVersionName)) or HeaderFailOver;
             -- disable bug me not since the user _clearly_ took the wrong decision
             T.Dcr.db.global.NewVersionsBugMeNot = false;
-        end
-
-        if T._HHTDErrors ~= 0 then
-            instructionsHeader = instructionsHeader:gsub('ecursive', 'ecursive / H.H.T.D.');
         end
 
         local TIandBI = T.Dcr.GetTimersInfo and {T.Dcr:GetTimersInfo()} or {-1,-1,-1,-1,-1,0};
@@ -284,7 +299,7 @@ do
         _Debug(unpack(TIandBI));
 
 
-        DebugHeader = ("%s\n2.7.5.8  %s(%s)  CT: %0.4f D: %s %s %s BDTHFAd: %s nDrE: %d Embeded: %s W: %d (LA: %d TAMU: %d) TA: %d NDRTA: %d BUIE: %d TI: [dc:%d, lc:%d, y:%d, LEBY:%d, LB:%d, TTE:%u] (%s, %s, %s, %s)"):format(instructionsHeader, -- "%s\n
+        DebugHeader = ("%s\n2.7.6.6  %s(%s)  CT: %0.4f D: %s %s %s BDTHFAd: %s nDrE: %d Embeded: %s W: %d (LA: %d TAMU: %d) TA: %d NDRTA: %d BUIE: %d TI: [dc:%d, lc:%d, y:%d, LEBY:%d, LB:%d, TTE:%u] (%s, %s, %s, %s)"):format(instructionsHeader, -- "%s\n
         tostring(DC.MyClass), tostring(UnitLevel("player") or "??"), NiceTime(), date(), GetLocale(), -- %s(%s)  CT: %0.4f D: %s %s
         BugGrabber and "BG" .. (T.BugGrabber and "e" or "") or "NBG", -- %s
         tostring(T._BDT_HotFix1_applyed), -- BDTHFAd: %s
@@ -320,6 +335,7 @@ do
         local ACsuccess, actionsConfiguration = pcall(T._ExportActionsConfiguration);
 
         local CSCsuccess, customSpellConfiguration = pcall(T._ExportCustomSpellConfiguration);
+        local STPsuccess, spellTable = pcall(T._PrintSpellTable);
 
         local SRTOLEsuccess, SRTOLErrors =
             pcall(function() return "Script ran too long errors:\n" .. T.Dcr:tAsString(T.Dcr.db.global.SRTLerrors) end);
@@ -336,6 +352,7 @@ do
         .. table.concat(T._DebugTextTable, "")
         .. "\n\n-- --\n" .. actionsConfiguration .. "\n-- --"
         .. customSpellConfiguration .. "\n-- --"
+        .. spellTable .. "\n-- --"
         .. SRTOLErrors .. "\n-- --"
         .. "\n\nLoaded Addons:\n\n" .. loadedAddonList .. "\n-- --";
 
@@ -345,7 +362,7 @@ do
             local title = T.Dcr.L and T.Dcr.L["DECURSIVE_DEBUG_REPORT"] or "**** |cFFFF0000Decursive Debug Report|r ****";
 
             if T._HHTDErrors ~= 0 then
-                title = title:gsub('ecursive', 'ecursive/HHTD');
+                title = title:gsub('ecursive', 'ecursive / H.H.T.D.');
             end
 
             _G.DecursiveDEBUGtext:SetText(title);
@@ -373,9 +390,9 @@ local function PlaySoundFile_RanTooLongheck(message)
 end
 
 local function CheckHHTD_Error(errorm, errorml)
-    if (errorml:find("healers%-have%-to%-die") or errorml:find("hhtd"))
-        and not errorml:find("\\libs\\")
-        or errorml:find("\\libnameplateregistry") then
+    if (errorml:find("hhtd") and not errorml:find("\\libs\\"))
+        or
+        (errorml:find("\\libnameplateregistry") and not errorml:find("couldn't open") and not errorml:find("error loading")) then
         _Debug("CheckHHTD_Error()", true);
         return true;
     end
@@ -564,7 +581,10 @@ local _, _, _, tocversion = GetBuildInfo();
 T._CatchAllErrors = false;
 T._tocversion = tocversion;
 
-DC.WOW8 = (tocversion >= 80000)
+DC.WOWC = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
+DC.WOW8 = (tocversion >= 80000) or DC.WOWC
+
+
 
 function T._DecursiveErrorHandler(err, ...)
 
@@ -599,7 +619,6 @@ function T._DecursiveErrorHandler(err, ...)
         mine = true;
         _Debug("Error recorded");
     else
-
         if IsReporting then -- then it means there is a bug inside AddDebugText...
             IsReporting = false;
         else
@@ -623,7 +642,7 @@ function T._DecursiveErrorHandler(err, ...)
             end
 
             if (T._NonDecursiveErrors - T._NDRTaintingAccusations - T._BlizzardUIErrors) > 999 then
-                T._ErrorLimitStripped = true;
+                T._ErrorLimitStripped = NiceTime() > 10; -- allow a graceful period of 10s after startup
                 T._TooManyErrors();
             end
         end
@@ -650,16 +669,24 @@ function T._TooManyErrors()
 
     -- T._NDRTaintingAccusations
 
-    -- if tainting accusation and Blizzard's UI errors represent more than 90% of errors then yield and don't display anything
-    if not ((T._NDRTaintingAccusations + T._BlizzardUIErrors) > T._NonDecursiveErrors * 0.9) then
-        if not WarningDisplayed and T.Dcr and T.Dcr.L and not (#DebugTextTable > 0 or T._TaintingAccusations > 10) then -- if we can and should display the alert
-            _Print(T.Dcr:ColorText((T.Dcr.L["TOO_MANY_ERRORS_ALERT"]):format(T._NonDecursiveErrors), "FFFF0000"));
-            _Print(T.Dcr:ColorText(T.Dcr.L["DONT_SHOOT_THE_MESSENGER"], "FFFF9955"));
-            _Print('|cFF47C2A1Last UI error:|r', LastErrorMessage);
-            WarningDisplayed = true;
+    -- If the game just started (or Decursive), we ignore error burst as the
+    -- new LUA_WARNING feature reveals many loading issues in other add-ons
+    -- without gameplay consequences
+    if (NiceTime() > 10) then
+
+        -- if tainting accusation and Blizzard's UI errors represent more than 90% of errors then yield and don't display anything
+        if not ((T._NDRTaintingAccusations + T._BlizzardUIErrors) > T._NonDecursiveErrors * 0.9) then
+            if not WarningDisplayed and T.Dcr and T.Dcr.L and not (#DebugTextTable > 0 or T._TaintingAccusations > 10) then -- if we can and should display the alert
+                _Print(T.Dcr:ColorText((T.Dcr.L["TOO_MANY_ERRORS_ALERT"]):format(T._NonDecursiveErrors), "FFFF0000"));
+                _Print(T.Dcr:ColorText(T.Dcr.L["DONT_SHOOT_THE_MESSENGER"], "FFFF9955"));
+                _Print('|cFF47C2A1Last UI error:|r', LastErrorMessage);
+                WarningDisplayed = true;
+            end
+        else
+            _Debug("_TooManyErrors()'s message not displayed NDR-TA being predominent...");
         end
     else
-        _Debug("_TooManyErrors()'s message not displayed NDR-TA being predominent...");
+            _Debug("_TooManyErrors()'s message not displayed Decursive was just started...");
     end
 
     _Debug("Error handler disabled");
@@ -704,7 +731,7 @@ function T._HookErrorHandler()
         BUGGRABBER_SUPPRESS_THROTTLE_CHAT = true; -- for people using an older version of BugGrabber. There is no way to know...
 
 
-        -- force BG to load callbackhandler since it relies on other add-ons to embeded it.
+        -- force BG to load callbackhandler since it relies on other add-ons that embeded it.
         if not BugGrabber.RegisterCallback and BugGrabber.setupCallbacks then
             BugGrabber.setupCallbacks();
         end
@@ -786,6 +813,21 @@ do
 
         return table.concat(customSpellConfText, "\n");
     end
+    function T._PrintSpellTable() -- (use pcall with this) -- {{{
+
+        local errorPrefix = function (message)
+            return "_PrintSpellTable: " .. message;
+        end
+
+        local customSpellConfText = {};
+        local D = T.Dcr;
+
+        if not T._C or not T._C.DSI then
+            return errorPrefix("T._C.DSI not available");
+        end
+
+        return "\nDecursive known spells:\n(left and right side should be 'matching')\n" .. D:tAsString(D:tMap(T._C.DSI, GetSpellInfo));
+    end
     function T._ExportActionsConfiguration () -- (use pcall with this) -- {{{
 
         local errorPrefix = function (message)
@@ -853,16 +895,16 @@ do
             ["AceLocale-3.0"] = 6,
             ["AceTimer-3.0"] = 17,
 
-            ["AceGUI-3.0"] = 35,
+            ["AceGUI-3.0"] = 36,
             ["AceConfig-3.0"] = 3,
             ["AceConfigCmd-3.0"] = 14,
-            ["AceConfigDialog-3.0"] = 66,
-            ["AceConfigRegistry-3.0"] = 18,
+            ["AceConfigDialog-3.0"] = 73,
+            ["AceConfigRegistry-3.0"] = 20,
 
             ["LibDataBroker-1.1"] = 4,
-            ["LibDBIcon-1.0"] = 36,
+            ["LibDBIcon-1.0"] = 43,
             ["LibQTip-1.0"] = 46,
-            ["CallbackHandler-1.0"] = 6,
+            ["CallbackHandler-1.0"] = 7,
         };
 
         local GenericErrorMessage1 = "Decursive could not initialize properly because one or several of the required shared libraries (at least |cFF00FF00LibStub|r) could not be found.\n";
@@ -877,8 +919,8 @@ do
             for k,v in pairs(UseLibStub) do
                 if LibStub:GetLibrary(k, true) then
                     if (select(2, LibStub:GetLibrary(k))) < v then
-                        table.insert(Errors, ("The shared library |cFF00FF00%s|r is out-dated, revision |cFF0077FF%s|r at least is required. You have |cFF0077DD%s|r\n"):format(k, tostring(v), select(2, LibStub:GetLibrary(k))));
-                        LibraryIssues = true;
+                        --table.insert(Errors, ("The shared library |cFF00FF00%s|r is out-dated, revision |cFF0077FF%s|r at least is required. You have |cFF0077DD%s|r\n"):format(k, tostring(v), select(2, LibStub:GetLibrary(k))));
+                        --LibraryIssues = true;
                     end
                 else
                     table.insert(Errors, ("The shared library |cFF00FF00%s|r could not be found!!!\n"):format(k));
@@ -1059,4 +1101,4 @@ do
     end
 end
 
-T._LoadedFiles["Dcr_DIAG.lua"] = "2.7.5.8";
+T._LoadedFiles["Dcr_DIAG.lua"] = "2.7.6.6";

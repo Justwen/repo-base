@@ -1,7 +1,7 @@
-## Interface: 80000
+## Interface: 80300
 ## Title: XLoot
 ## Notes: Core module for Loot and Looting-related UI improvements
-## Version: 8.0-3
+## Version: 8.2-1
 ## Author: Xuerian
 ## X-Category: Inventory
 ## X-Name: XLoot
@@ -18,6 +18,6 @@ stacks.lua
 helpers.lua
 
 
-## Title: |cff880303[有爱]|r XLoot 拾取框增强
+## Title: |cff880303[爱不易]|r XLoot 拾取框增强
 ## Notes-zhCN: 美化拾取框,方便快捷的通告掉落到团队 工会 小队等频道.
 ## X-Vendor: AbyUI

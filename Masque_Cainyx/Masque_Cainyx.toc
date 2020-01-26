@@ -1,4 +1,4 @@
-## Interface: 80000
+## Interface: 80300
 ## Title: Masque: |cffff8000Cainyx|r
 ## Version: 7.0.0
 ## Author: WoWLoreConfusedMe
@@ -16,5 +16,5 @@
 
 
 Cainyx.lua
-## Title: |cff880303[有爱]|r Masque 皮肤Cainyx
+## Title: |cff880303[爱不易]|r Masque 皮肤Cainyx
 ## X-Vendor: AbyUI

@@ -13,6 +13,7 @@ ns.L = {
     ShowInspectAngularBorder    = "觀察面板直角邊框",
     ShowInspectColoredLabel     = "觀察面板高亮橙裝武器標簽",
     ShowCharacterItemSheet      = "顯示玩家自己裝備列表",
+    ShowInspectItemSheet        = "顯示觀察面板裝備列表",
     ShowOwnFrameWhenInspecting  = "觀察同時顯示自己裝備列表",
     ShowItemStats               = "顯示裝備屬性統計",
     DisplayPercentageStats      = "裝備屬性換算成百分比數值",
@@ -24,6 +25,7 @@ ns.L = {
     EnableMouseItemLevel        = "鼠標目標裝等",
     EnableMouseSpecialization   = "顯示鼠標天賦",
     EnableMouseWeaponLevel      = "顯示武器等級",
+    ShowPluginGreenState        = "顯示綠字屬性前綴 |cffcccc33(重載生效)|r",
     Bag                         = "背包",
     Bank                        = "銀行",
     Merchant                    = "商人",
@@ -34,6 +36,7 @@ ns.L = {
     GuildNews                   = "公會新聞",
     PaperDoll                   = "人物面板",
     Chat                        = "聊天",
+    Loot                        = "拾取",
 }
 
 BINDING_NAME_InspectRaidFrame = "顯示團隊觀察面板"

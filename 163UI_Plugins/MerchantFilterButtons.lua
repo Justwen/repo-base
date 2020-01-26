@@ -81,6 +81,7 @@ local function BuildButtons()
 	for k,v in pairs(Buttons) do
 		local button = CreateFrame("Button","MFB_"..k,MerchantFrame,"MainMenuBarMicroButton")
 		button.text = v.text
+        button:SetSize(28,58) button.Flash:SetPoint("TOPLEFT", -2, -18) --aby8
 		button:SetPoint("TOPRIGHT",MerchantFrame,"TOPRIGHT",v.x,-4)
 		button:SetScript("OnEnter",function()
 			GameTooltip:SetOwner(button, "ANCHOR_RIGHT")
@@ -112,7 +113,7 @@ local function BuildButtons()
 		button.Flash:Show()
 		button:SetScript("OnClick",function(self,button)
 			MerchantFrame_SetFilter(MerchantFrame,v.filter)
-			PlaySound163("SPELLBOOKCHANGEPAGE")
+			PlaySound(829) --"igspellbookopen")
 			MFB_DB.filter = GetMerchantFilter()
 			SetPushed(GetMerchantFilter())
 		end)

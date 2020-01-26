@@ -1,13 +1,13 @@
-## Interface: 80000
+## Interface: 80300
 ## Title: Bagnon
 ## Author: Tuller & Jaliborc (João Cardoso)
 ## Notes: Single window displays for your inventory and bank
+## OptionalDeps: BagBrother, WoWUnit, TestPoncho
 ## SavedVariables: Bagnon_Sets
-## OptionalDeps: BagBrother, ItemRack, Wardrobe, WoWUnit
-## Version: 8.0.0
-main.lua
-external\external.xml
-components\components.xml
+## Version: 8.3.2
 
-## Title-zhCN: |cff880303[有爱]|r Bagnon 背包整合
+addons\main\main.xml
+
+
+## Title-zhCN: |cff880303[爱不易]|r Bagnon 背包整合
 ## X-Vendor: AbyUI

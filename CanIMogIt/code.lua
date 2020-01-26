@@ -225,11 +225,13 @@ local exceptionItems = {
         [129714] = CanIMogIt.NOT_TRANSMOGABLE, -- Trailseeker Spaulders - 100 trial/boost ilvl 640
         [150642] = CanIMogIt.NOT_TRANSMOGABLE, -- Trailseeker Spaulders - 100 trial/boost ilvl 600
         [153810] = CanIMogIt.NOT_TRANSMOGABLE, -- Trailseeker Spaulders - 110 trial/boost ilvl 870
+        [162796] = CanIMogIt.NOT_TRANSMOGABLE, -- Wildguard Spaulders - 8.0 BfA Pre-Patch event
         [119588] = CanIMogIt.NOT_TRANSMOGABLE, -- Mistdancer Pauldrons - 100 Salvage Yard ilvl 610
         [117138] = CanIMogIt.NOT_TRANSMOGABLE, -- Mistdancer Pauldrons - 90 boost ilvl 483
         [129485] = CanIMogIt.NOT_TRANSMOGABLE, -- Mistdancer Pauldrons - 100 trial/boost ilvl 640
         [150658] = CanIMogIt.NOT_TRANSMOGABLE, -- Mistdancer Pauldrons - 100 trial/boost ilvl 600
         [153842] = CanIMogIt.NOT_TRANSMOGABLE, -- Mistdancer Pauldrons - 110 trial/boost ilvl 870
+        [162812] = CanIMogIt.NOT_TRANSMOGABLE, -- Serene Disciple's Padding - 8.0 BfA Pre-Patch event
         [134112] = CanIMogIt.KNOWN, -- Hidden Shoulders
     },
     [BODY] = {},
@@ -247,6 +249,7 @@ local exceptionItems = {
         [129482] = CanIMogIt.NOT_TRANSMOGABLE, -- Mistdancer Handguards - 100 trial/boost ilvl 640
         [150655] = CanIMogIt.NOT_TRANSMOGABLE, -- Mistdancer Handguards - 100 trial/boost ilvl 600
         [153839] = CanIMogIt.NOT_TRANSMOGABLE, -- Mistdancer Handguards - 110 trial/boost ilvl 870
+        [162809] = CanIMogIt.NOT_TRANSMOGABLE, -- Serene Disciple's Handguards - 8.0 BfA Pre-Patch event
     },
     [CLOAK] = {
         -- [134111] = CanIMogIt.KNOWN, -- Hidden Cloak
@@ -375,12 +378,27 @@ local appearanceCount = 0
 local buffer = 0
 local sourcesAdded = 0
 local sourcesRemoved = 0
+local loadingScreen = true
 
 
 local appearancesTable = {}
 local removeAppearancesTable = nil
 local appearancesTableGotten = false
 local doneAppearances = {}
+
+
+local function LoadingScreenStarted(event)
+    if event ~= "LOADING_SCREEN_ENABLED" then return end
+    loadingScreen = true
+end
+CanIMogIt.frame:AddEventFunction(LoadingScreenStarted)
+
+
+local function LoadingScreenEnded(event)
+    if event ~= "LOADING_SCREEN_DISABLED" then return end
+    loadingScreen = false
+end
+CanIMogIt.frame:AddEventFunction(LoadingScreenEnded)
 
 
 local function GetAppearancesTable()
@@ -475,8 +493,10 @@ end
 local timer = 0
 local function GetAppearancesOnUpdate(self, elapsed)
     -- OnUpdate function with a reset timer to throttle getting appearances.
+    -- We also don't run things if the loading screen is currently up, as some
+    -- functions don't return values when loading.
     timer = timer + elapsed
-    if timer >= CanIMogIt.throttleTime then
+    if timer >= CanIMogIt.throttleTime and not loadingScreen then
         _GetAppearances()
         timer = 0
     end
@@ -824,13 +844,15 @@ end
 
 
 function CanIMogIt:IsReadyForCalculations(itemLink)
-    -- Returns true of the item's GetItemInfo is ready, or if it's a keystone.
+    -- Returns true of the item's GetItemInfo is ready, or if it's a keystone,
+    -- or if it's a battlepet.
     local itemInfo = GetItemInfo(itemLink)
-    local type = string.match(itemLink, ".*(keystone):.*")
-    if not itemInfo and type ~= "keystone" then
-        return false
+    local isKeystone = string.match(itemLink, ".*(keystone):.*") == "keystone"
+    local isBattlepet = string.match(itemLink, ".*(battlepet):.*") == "battlepet"
+    if itemInfo or isKeystone or isBattlepet then
+        return true
     end
-    return true
+    return false
 end
 
 
@@ -1210,10 +1232,14 @@ function CanIMogIt:CalculateTooltipText(itemLink, bag, slot)
         playerKnowsTransmog, characterCanLearnTransmog, isItemSoulbound, text, unmodifiedText;
 
     local isItemSoulbound = CanIMogIt:IsItemSoulbound(itemLink, bag, slot)
-    if isItemSoulbound == nil then return end
 
     if isTransmogable then
         --Calculating the logic for each rule
+
+        -- If the item is transmogable, bug didn't give a result for soulbound state, it's
+        -- probably not ready yet.
+        if isItemSoulbound == nil then return end
+
         playerKnowsTransmogFromItem = CanIMogIt:PlayerKnowsTransmogFromItem(itemLink)
         if playerKnowsTransmogFromItem == nil then return end
 

@@ -57,7 +57,7 @@ FriendsMenuXP_Buttons["IGNORE"] = {
     func = function(name) AddOrDelIgnore(name); end,
     show = function(name)
         if(name == UnitName("player")) then return end;
-        for i = 1, GetNumIgnores() do
+        for i = 1, C_FriendList.GetNumIgnores() do
             if(name == GetIgnoreName(i)) then
                 return nil;
             end
@@ -71,7 +71,7 @@ FriendsMenuXP_Buttons["CANCEL_IGNORE"] = {
     func = function(name) AddOrDelIgnore(name); end,
     show = function(name)
         if(name == UnitName("player")) then return end;
-        for i = 1, GetNumIgnores() do
+        for i = 1, C_FriendList.GetNumIgnores() do
             if(name == GetIgnoreName(i)) then
                 return 1;
             end
@@ -83,23 +83,23 @@ FriendsMenuXP_Buttons["CANCEL_IGNORE"] = {
 FriendsMenuXP_Buttons["REPORT_SPAM"] = {
     text = FMXP_BUTTON_REPORT_PLAYER_FOR..REPORT_SPAMMING,
     func = function(name, dropdown)
-        local dialog = StaticPopup_Show("CONFIRM_REPORT_SPAM_CHAT", name);
-        if ( dialog ) then
-            dialog.data = dropdown.unit or tonumber(dropdown.lineID);
-        end
+        C_ReportSystem.OpenReportPlayerDialog(PLAYER_REPORT_TYPE_SPAM, name, PlayerLocation:CreateFromChatLineID(dropdown.lineID));
     end,
-    show = function(name, dropdown) return dropdown.lineID and CanComplainChat(dropdown.lineID) end,
+    show = function(name, dropdown)
+        local location = dropdown.lineID and PlayerLocation:CreateFromChatLineID(dropdown.lineID)
+        return location and (location:IsChatLineID() or location:IsCommunityInvitation())
+    end,
 }
 
 FriendsMenuXP_Buttons["REPORT_BAD_LANGUAGE"] = {
     text = FMXP_BUTTON_REPORT_PLAYER_FOR..REPORT_BAD_LANGUAGE,
     func = function(name, dropdown)
-        local dialog = StaticPopup_Show("CONFIRM_REPORT_BAD_LANGUAGE_CHAT", name);
-        if ( dialog ) then
-            dialog.data = dropdown.unit or tonumber(dropdown.lineID);
-        end
+        C_ReportSystem.OpenReportPlayerDialog(PLAYER_REPORT_TYPE_LANGUAGE, name, PlayerLocation:CreateFromChatLineID(dropdown.lineID));
     end,
-    show = function(name, dropdown) return dropdown.lineID and CanComplainChat(dropdown.lineID) end,
+    show = function(name, dropdown)
+        local location = dropdown.lineID and PlayerLocation:CreateFromChatLineID(dropdown.lineID)
+        return location and (location:IsChatLineID() or location:IsCommunityInvitation())
+    end,
 }
 
 FriendsMenuXP_Buttons["REPORT_BAD_NAME"] = {

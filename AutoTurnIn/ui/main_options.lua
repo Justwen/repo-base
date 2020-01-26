@@ -77,6 +77,8 @@ local EquipReward = newCheckbox("Equip", L["autoequip"], "autoequip")
 local Debug = newCheckbox("Debug", L["debug"], "debug")
 -- share quest (!!! alpha)
 local ShareQuests = newCheckbox("ShareQuests", L["ShareQuestsLabel"], "questshare")
+-- accept share quest --abyui
+local AcceptShared = newCheckbox("AcceptShared", L["AcceptSharedQuestsLabel"], "acceptshare")
 -- 'Show QuestLevel' CheckBox
 local ShowQuestLevel = newCheckbox("QuestLevel", L["questlevel"], "questlevel")
 -- 'Show Watch Quest Level' CheckBox
@@ -85,6 +87,8 @@ local ShowWatchLevel = newCheckbox("WatchLevel", L["watchlevel"], "watchlevel")
 local RelicToggle = newCheckbox("RelicToggle",  L["relictoggle"], "relictoggle")
 -- 'Stop Auto Select Reward if ArtifcatPower' CheckBox
 local ArtifactPowerToggle = newCheckbox("ArtifactPowerToggle",  L["artifactpowertoggle"], "artifactpowertoggle")
+-- RevivePets
+local ReviveBattlePet = newCheckbox("ReviveBattlePet", L["ReviveBattlePetLabel"], "reviveBattlePet")
 
 -- Auto toggle key
 local ToggleKeyConst = {NONE_KEY, ALT_KEY, CTRL_KEY, SHIFT_KEY}
@@ -116,6 +120,7 @@ ShowRewardText:SetPoint("TOPLEFT", EquipReward, "BOTTOMLEFT", 0, -10)
 ToDarkMoon:SetPoint("TOPLEFT", ShowRewardText, "BOTTOMLEFT", 0, -10)
 DarkMoonCannon:SetPoint("TOPLEFT", ToDarkMoon, "BOTTOMLEFT", 0, -10)
 DarkMoonAutoStart:SetPoint("TOPLEFT", DarkMoonCannon, "BOTTOMLEFT", 0, -10)
+ReviveBattlePet:SetPoint("TOPLEFT", CompleteOnly, "BOTTOMLEFT", 0, -30)
 Debug:SetPoint("TOPLEFT", ResetButton, "BOTTOMLEFT", 0, -10)
 ToggleKeyDropDown:SetPoint("TOPLEFT", DarkMoonAutoStart, "BOTTOMLEFT", -15, -22)
 ShowQuestLevel:SetPoint("TOPLEFT", ToggleKeyDropDown, "BOTTOMLEFT", 16, -10)
@@ -123,7 +128,7 @@ ShowWatchLevel:SetPoint("TOPLEFT", ShowQuestLevel, "BOTTOMLEFT", 0, -10)
 ShareQuests:SetPoint("TOPLEFT", ShowWatchLevel, "BOTTOMLEFT", 0, -10)
 RelicToggle:SetPoint("TOPLEFT", TournamentDropDown, "BOTTOMLEFT", 17, -10)
 ArtifactPowerToggle:SetPoint("TOPLEFT", RelicToggle, "BOTTOMLEFT", 0, -10)
-
+AcceptShared:SetPoint("TOPLEFT", ArtifactPowerToggle, "BOTTOMLEFT", 0, -10)
 
 OptionsPanel.refresh = function()
 	if ( MakeACopy ) then 
@@ -150,6 +155,7 @@ OptionsPanel.refresh = function()
 	ShowQuestLevel:SetChecked(ptable.TempConfig.questlevel)
 	ShowWatchLevel:SetChecked(ptable.TempConfig.watchlevel)
 	ShareQuests:SetChecked(ptable.TempConfig.questshare)
+    AcceptShared:SetChecked(ptable.TempConfig.acceptshare)
 	RelicToggle:SetChecked(ptable.TempConfig.relictoggle)
 	ArtifactPowerToggle:SetChecked(ptable.TempConfig.artifactpowertoggle)	
 

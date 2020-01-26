@@ -164,6 +164,23 @@ CanIMogIt.tooltipOverlayIcons = {
 CanIMogIt.DATABASE_START_UPDATE_TEXT = L["Updating appearances database."]
 CanIMogIt.DATABASE_DONE_UPDATE_TEXT = L["Items updated: "] -- followed by a number
 
+
+--------------------------------------------
+-- Location constants                     --
+--------------------------------------------
+
+CanIMogIt.ICON_LOCATIONS = {
+    ["TOPLEFT"] = {"TOPLEFT", 2, -2},
+    ["TOPRIGHT"] = {"TOPRIGHT", -2, -2},
+    ["BOTTOMLEFT"] = {"BOTTOMLEFT", 2, 2},
+    ["BOTTOMRIGHT"] = {"BOTTOMRIGHT", -2, 2},
+    ["CENTER"] = {"CENTER", 0, 0},
+    ["RIGHT"] = {"RIGHT", -2, 0},
+    ["LEFT"] = {"LEFT", 2, 0},
+    ["BOTTOM"] = {"BOTTOM", 0, 2},
+    ["TOP"] = {"TOP", 0, -2},
+}
+
 --------------------------------------------
 -- Blizzard frame constants --
 --------------------------------------------
@@ -188,7 +205,7 @@ CanIMogIt.NUM_SLOTS_PER_GUILDBANK_GROUP = 14 -- Buttons
 CanIMogIt.NUM_ENCOUNTER_JOURNAL_ENCOUNTER_LOOT_FRAMES = 10 -- Blizzard functions are locals
 -- Loot Roll = NUM_GROUP_LOOT_FRAMES
 CanIMogIt.NUM_MAIL_INBOX_ITEMS = 7
--- Mail Attachments = ATTACHMENTS_MAX_SEND
+-- Mail Attachments = ATTACHMENTS_MAX_RECEIVE
 -- Merchant Items = MERCHANT_ITEMS_PER_PAGE
 CanIMogIt.NUM_WARDROBE_COLLECTION_BUTTONS = 12 -- Blizzard functions are locals
 -- Trade Skill = no constants

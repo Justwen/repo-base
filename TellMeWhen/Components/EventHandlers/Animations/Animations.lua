@@ -22,8 +22,6 @@ local next, pairs, ipairs, type, assert, tinsert, sort =
 	  next, pairs, ipairs, type, assert, tinsert, sort
 local random, floor =
 	  random, floor
-local InCombatLockdown =
-	  InCombatLockdown
 	  
 -- GLOBALS: UIParent, CreateFrame
 
@@ -47,6 +45,7 @@ Animations:RegisterEventDefaults{
 	SizeX	  		= 30,
 	SizeY	  		= 30,
 	Thickness	  	= 2,
+	Scale           = 1,
 	Fade	  		= true,
 	Infinite  		= false,
 	AnimColor	  	= "7fff0000",
@@ -112,16 +111,18 @@ function Animations:HandleEvent(icon, eventSettings)
 		local Components = icon.Components
 		for c = 1, #Components do
 			local IconComponent = Components[c]
-			local EventHandlerData = IconComponent.EventHandlerData
-			for e = 1, #EventHandlerData do
-				local eventHandlerData = EventHandlerData[e]
-				
-				if eventHandlerData.identifier == self.subHandlerDataIdentifier and eventHandlerData.subHandlerIdentifier == Animation then
-		
-					eventHandlerData.subHandlerData.Play(icon, eventSettings)
-					return true
+			if IconComponent.IsEnabled then
+				local EventHandlerData = IconComponent.EventHandlerData
+				for e = 1, #EventHandlerData do
+					local eventHandlerData = EventHandlerData[e]
+					
+					if eventHandlerData.identifier == self.subHandlerDataIdentifier and eventHandlerData.subHandlerIdentifier == Animation then
 			
-				end				
+						eventHandlerData.subHandlerData.Play(icon, eventSettings)
+						return true
+				
+					end				
+				end
 			end
 		end
 	end

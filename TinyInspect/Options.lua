@@ -5,7 +5,7 @@
 
 local LibEvent = LibStub:GetLibrary("LibEvent.7000")
 
-local VERSION = 2.25
+local VERSION = 2.4
 
 local addon, ns = ...
 
@@ -32,12 +32,14 @@ local DefaultDB = {
         EnableItemLevelPaperDoll = true,
         EnableItemLevelGuildNews = true,
         EnableItemLevelChat = true,
+        EnableItemLevelLoot = true,
+        EnableItemLevelOther = true,
     ShowInspectAngularBorder = false,     --觀察面板直角邊框
     ShowInspectColoredLabel = true,       --觀察面板高亮橙裝武器標簽
-    ShowOwnFrameWhenInspecting = false,   --觀察同時顯示自己裝備列表
-    ShowItemStats = false,                --顯示裝備屬性統計
-    DisplayPercentageStats = false,       --裝備屬性換算成百分比數值
     ShowCharacterItemSheet = false,        --顯示玩家自己裝備列表
+    ShowInspectItemSheet = false,          --顯示观察对象装备列表 --20190318Added
+        ShowOwnFrameWhenInspecting = false,   --觀察同時顯示自己裝備列表
+        ShowItemStats = false,                --顯示裝備屬性統計
     EnablePartyItemLevel = false,          --小隊裝等
         SendPartyItemLevelToSelf = false,  --發送小隊裝等到自己面板
         SendPartyItemLevelToParty = false, --發送小隊裝等到隊伍頻道
@@ -48,6 +50,7 @@ local DefaultDB = {
     EnableMouseWeaponLevel = false,       --鼠標武器等級
     PaperDollItemLevelOutsideString = false, --PaperDoll文字外邊顯示(沒有在配置面板)
     ItemLevelAnchorPoint = "TOPLEFT",         --裝等位置
+    ShowPluginGreenState = false,         --裝備綠字屬性前綴顯示
 }
 
 local options = {
@@ -68,17 +71,19 @@ local options = {
         { key = "GuildNews" },
         { key = "PaperDoll" },
         { key = "Chat" },
+        { key = "Loot" },
+        { key = "Other" },
       },
       anchorkey = "ItemLevelAnchorPoint",
     },
     { key = "ShowInspectAngularBorder" },
     { key = "ShowInspectColoredLabel" },
     { key = "ShowCharacterItemSheet" },
-    { key = "ShowOwnFrameWhenInspecting" },
-    { key = "ShowItemStats", 
-      child = {
-        { key = "DisplayPercentageStats" },
-      }
+    { key = "ShowInspectItemSheet",
+        child = {
+            { key = "ShowOwnFrameWhenInspecting" },
+            { key = "ShowItemStats" },
+        }
     },
     { key = "EnablePartyItemLevel",
       child = {
@@ -98,6 +103,10 @@ local options = {
       }
     },
 }
+
+if (GetLocale():sub(1,2) == "zh") then
+    tinsert(options, { key = "ShowPluginGreenState" })
+end
 
 TinyInspectDB = DefaultDB
 
@@ -205,11 +214,12 @@ local function CreateAnchorFrame(anchorkey, parent)
     CreateAnchorButton(frame, "TOPRIGHT")
     CreateAnchorButton(frame, "RIGHT")
     CreateAnchorButton(frame, "BOTTOMRIGHT")
+    CreateAnchorButton(frame, "CENTER")
 end
 
 local function CreateCheckbox(list, parent, anchor, offsetx, offsety)
     local checkbox, subbox
-    local stepx, stepy = 20, 28
+    local stepx, stepy = 20, 27
     if (not list) then return offsety end
     for i, v in ipairs(list) do
         checkbox = CreateFrame("CheckButton", nil, parent, "InterfaceOptionsCheckButtonTemplate")
@@ -249,7 +259,7 @@ frame.title:SetPoint("TOPLEFT", 18, -16)
 frame.title:SetText(addon)
 frame.name = addon
 
-CreateCheckbox(options, frame, frame.title, 18, 10)
+CreateCheckbox(options, frame, frame.title, 18, 9)
 
 LibEvent:attachEvent("VARIABLES_LOADED", function()
     if TinyInspectDB and TinyInspectDB.version163 ~= DefaultDB.version163 then

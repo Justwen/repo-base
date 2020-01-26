@@ -168,6 +168,12 @@ function FriendsMenuXP_OnLoad(self)
     self:RegisterEvent("PLAYER_REGEN_DISABLED");
     self:RegisterEvent("PLAYER_REGEN_ENABLED");
 
+    FriendsMenuXP_HandlesGlobalMouseEvent = function(self, button, event)
+        return self:IsShown() and (self:IsMouseOver() or self:GetParent():IsMouseOver() or DropDownList1:IsMouseOver())
+    end
+    FriendsMenuXP.HandlesGlobalMouseEvent = FriendsMenuXP_HandlesGlobalMouseEvent
+    FriendsMenuXPSecure.HandlesGlobalMouseEvent = FriendsMenuXP_HandlesGlobalMouseEvent
+
     if(FRIENDS_MENU_XP_LOADED) then DEFAULT_CHAT_FRAME:AddMessage(FRIENDS_MENU_XP_LOADED,1,1,0); end
 	-- 5.4.1, fix IsDisabledByParentalControls taint
 	--setfenv(MainMenuMicroButton:GetScript("OnMouseUp"), setmetatable({ UpdateMicroButtons = function() end }, { __index = _G }))

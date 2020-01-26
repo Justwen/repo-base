@@ -39,6 +39,7 @@ local function GetSavedInstances()
 
     for i = 1, GetNumSavedInstances() do
         local name, id, _, difficulty, locked, extended, _, isRaid, maxPlayers, difficultyName, numEncounters, encounterProgress = GetSavedInstanceInfo(i);
+        if name == "围攻伯拉勒斯" then numEncounters = 4 end
         local instances = isRaid and db.raids or db.dungeons;
 
         if instances[name] == nil then
@@ -295,7 +296,7 @@ local function RenderEncounterJournalInstances()
     local dungeonsTab, raidsTab = GetEncounterJournalInstanceTabs();
     local savedInstances = savedDB[(raidsTab ~= nil and not raidsTab:IsEnabled()) and "raids" or "dungeons"];
 
-    RenderSavedInstancesOverview(savedDB);
+    --RenderSavedInstancesOverview(savedDB);
 
     HandleEncounterJournalScrollInstances(function(instanceButton)
         local instanceName = EJ_GetInstanceInfo(instanceButton.instanceID);
@@ -350,8 +351,8 @@ function EncounterJournalPlus_InstanceInfo_OnEvent(self, event, arg1)
             end
         end);
 
-        EncounterJournalEncounter_OnHook();
-        EncounterJournalTierDropdown_OnSelect();
+        --EncounterJournalEncounter_OnHook();
+        --EncounterJournalTierDropdown_OnSelect();
         EncounterJournalInstanceTab_OnClick();
     elseif event == "UPDATE_INSTANCE_INFO" then
         RenderEncounterJournalInstances();

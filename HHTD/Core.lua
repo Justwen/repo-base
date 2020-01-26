@@ -3,7 +3,7 @@ H.H.T.D. World of Warcraft Add-on
 Copyright (c) 2009-2018 by John Wellesz (hhtd@2072productions.com)
 All rights reserved
 
-Version 2.4.7
+Version 2.4.9.4
 
 In World of Warcraft healers have to die. This is a cruel truth that you're
 taught very early in the game. This add-on helps you influence this unfortunate
@@ -37,7 +37,7 @@ local INFO      = 3;
 local INFO2     = 4;
 
 local UNPACKAGED = "@pro" .. "ject-version@";
-local VERSION = "2.4.7";
+local VERSION = "2.4.9.4";
 
 local ADDON_NAME, T = ...;
 
@@ -108,7 +108,8 @@ local L = HHTD.Localized_Text;
 
 HHTD.Constants = {};
 local HHTD_C = HHTD.Constants;
-HHTD_C.WOW8 = (tocversion >= 80000);
+HHTD_C.WOWC = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
+HHTD_C.WOW8 = (tocversion >= 80000) or HHTD_C.WOWC
 
 --[=[
 HHTD_C.Healing_Classes = { -- unused
@@ -128,29 +129,34 @@ do
     -- /spew _HHTD_DEBUG.Constants.CLASS_SPEC_TO_ROLE
     HHTD_C.CLASS_SPEC_TO_ROLE = {}
 
-    local classID, classTag, userSpecNum, specID, specName, role
+    local classInfo, classTag, userSpecNum, specID, specName, role
+    local foundClass = 0;
+    local classID = 0;
+    while foundClass < MAX_CLASSES do -- in WOWC class ids are not continuous
+        classID = classID + 1;
+        classInfo = C_CreatureInfo.GetClassInfo(classID)
 
-    for classID = 1, MAX_CLASSES do
-        if not HHTD_C.WOW8 then
-            classTag = select(2, GetClassInfoByID(classID))
-        else
-            classTag = C_CreatureInfo.GetClassInfo(classID).classFile
+        if classInfo then
+            classTag = classInfo.classFile
+            foundClass = foundClass + 1;
+
+            HHTD_C.CLASS_SPEC_TO_ROLE[classTag] = {}
+
+            if not HHTD_C.WOWC then -- disable for now since WOWC has no easy way to do that... We are back to hardcoded localized values *sigh*
+                userSpecNum = 1
+
+                repeat
+                    specID, specName = GetSpecializationInfoForClassID(classID, userSpecNum)
+                    role = specID and GetSpecializationRoleByID(specID) or nil
+
+                    if role then
+                        HHTD_C.CLASS_SPEC_TO_ROLE[classTag][specName] = role
+                        userSpecNum = userSpecNum + 1
+                    end
+                until not role
+            end
         end
 
-        HHTD_C.CLASS_SPEC_TO_ROLE[classTag] = {}
-
-        userSpecNum = 1
-
-        repeat
-            specID, specName = GetSpecializationInfoForClassID(classID, userSpecNum)
-            role = specID and GetSpecializationRoleByID(specID) or nil
-
-            if role then
-                HHTD_C.CLASS_SPEC_TO_ROLE[classTag][specName] = role
-                userSpecNum = userSpecNum + 1
-            end
-        until not role
-        
     end
 
 end
@@ -258,7 +264,7 @@ function HHTD:HHTD_HEALER_BORN(selfevent, isFriend, healer)
     --@end-alpha@]===]
 
     -- if the player is human and friendly and is part of our group, set his/her role to HEALER
-    if self.db.global.SetFriendlyHealersRole then
+    if self.db.global.SetFriendlyHealersRole and not HHTD_C.WOWC then
 
         if isFriend and healer.isHuman and (UnitInRaid(healer.fullName) or UnitInParty(healer.fullName)) and UnitGroupRolesAssigned(healer.fullName) == 'NONE' then
             if (select(2, GetRaidRosterInfo(UnitInRaid("player") or 1))) > 0 then
@@ -272,7 +278,7 @@ function HHTD:HHTD_HEALER_BORN(selfevent, isFriend, healer)
             end
         end
 
-    end 
+    end
 
 end
 
@@ -313,7 +319,7 @@ local function REGISTER_HEALERS_ONLY_SPELLS_ONCE ()
         [088423] = "DRUID", -- Nature's Cure
         -- [008936] = "DRUID", -- Regrowth -- (also available through restoration afinity talent)
         [033891] = "DRUID", -- Incarnation: Tree of Life
-        [048438] = "DRUID", -- Wild Growth
+        -- [048438] = "DRUID", -- Wild Growth -- disabled in WoW8: In the feral talents, level 45, you can choose Restoration Affinity, which includes Rejuv, Swiftmend, Wild Growth.
         [000740] = "DRUID", -- Tranquility
         -- [145108] = "DRUID", -- Ysera's Gift -- (also available through restoration afinity talent)
         -- [000774] = "DRUID", -- Rejuvination -- (also available through restoration afinity talent)
@@ -334,7 +340,7 @@ local function REGISTER_HEALERS_ONLY_SPELLS_ONCE ()
         -- Monks
         [115175] = "MONK", -- Soothing Mist
         [115310] = "MONK", -- Revival
-        [116670] = "MONK", -- Vivify
+        --[116670] = "MONK", -- Vivify all monks have it in WoW8
         [116680] = "MONK", -- Thunder Focus Tea
         [116849] = "MONK", -- Life Cocoon
         [119611] = "MONK", -- Renewing mist
@@ -349,23 +355,44 @@ local function REGISTER_HEALERS_ONLY_SPELLS_ONCE ()
         --@end-debug@]===]
     };
 
+    if HHTD_C.WOWC then
+
+        Healers_Only_Spells_ByID = {
+            -- Druid Restoration
+            [18562] = "DRUID",   -- SwiftMend
+
+            -- Priest Holy
+            [00724] = "PRIEST", -- Lightwell
+
+            -- Shaman Restoration
+            [16178] = "SHAMAN", -- Purification
+            [29206] = "SHAMAN", -- Healing way
+        }
+
+        -- OK, this feature makes no sense in WoW classic...
+
+
+    end
+
     HHTD_C.Healers_Only_Spells_ByName = {};
 
 
     -- /spew _HHTD_DEBUG.Constants.Healers_Only_Spells_ByName
     -- /spew GetSpellInfo(077485)
 
+    local debug_SpellNumber = 0;
     for spellID, class in pairs(Healers_Only_Spells_ByID) do
 
         if (GetSpellInfo(spellID)) then
             HHTD_C.Healers_Only_Spells_ByName[(GetSpellInfo(spellID))] = class;
+            debug_SpellNumber = debug_SpellNumber + 1;
         else
             HHTD:Debug(ERROR, "Missing spell:", spellID);
         end
 
     end
 
-    HHTD:Debug(INFO, "Spells registered!");
+    HHTD:Debug(INFO, ("%d spells registered!"):format(debug_SpellNumber));
 end -- }}}
 
 -- Modules standards configurations {{{
@@ -488,7 +515,7 @@ do
                 desc = L["OPT_ON_DESC"],
                 set = function(info) HHTD.db.global.Enabled = true; HHTD:Enable(); return HHTD.db.global.Enabled; end,
                 get = function(info) return HHTD:IsEnabled(); end,
-                hidden = function() return HHTD:IsEnabled(); end, 
+                hidden = function() return HHTD:IsEnabled(); end,
 
                 disabled = false,
                 order = 1,
@@ -500,7 +527,7 @@ do
                 set = function(info) HHTD.db.global.Enabled = not HHTD:Disable(); return not HHTD.db.global.Enabled; end,
                 get = function(info) return not HHTD:IsEnabled(); end,
                 guiHidden = true,
-                hidden = function() return not HHTD:IsEnabled(); end, 
+                hidden = function() return not HHTD:IsEnabled(); end,
                 order = -1,
             },
             Debug = {
@@ -521,13 +548,13 @@ do
                 disabled = false,
                 order = -3,
             },
-            
+
             Version = {
                 type = 'execute',
                 name = L["OPT_VERSION"],
                 desc = L["OPT_VERSION_DESC"],
                 guiHidden = true,
-                func = function () HHTD:Print(L["VERSION"], '2.4.7,', L["RELEASE_DATE"], '2018-07-18T0:59:33Z') end,
+                func = function () HHTD:Print(L["VERSION"], '2.4.9.4,', L["RELEASE_DATE"], '2019-10-28T15:27:28Z') end,
                 order = -5,
             },
             ShowGUI = {
@@ -545,7 +572,7 @@ do
                 args = {
                     Info_Header = {
                         type = 'header',
-                        name = L["VERSION"] .. ' 2.4.7 -- ' .. L["RELEASE_DATE"] .. ' 2018-07-18T0:59:33Z',
+                        name = L["VERSION"] .. ' 2.4.9.4 -- ' .. L["RELEASE_DATE"] .. ' 2019-10-28T15:27:28Z',
                         order = 1,
                     },
                     Pve = {
@@ -559,6 +586,7 @@ do
                         width = 'double',
                         name = L["OPT_PVPHEALERSSPECSONLY"],
                         desc = L["OPT_PVPHEALERSSPECSONLY_DESC"],
+                        disabled = function() return HHTD_C.WOWC end,
                         order = 300,
                     },
                     Log = {
@@ -599,7 +627,7 @@ do
                             ["disabled"] = function () return not HHTD:IsEnabled(); end,
 
                             ["get"] = function (handler, info) return (HHTD:GetModule(info[#info])):IsEnabled(); end,
-                            ["set"] = function (handler, info, value) 
+                            ["set"] = function (handler, info, value)
 
                                 HHTD.db.global.Modules[info[#info]].Enabled = value;
                                 local result;
@@ -674,6 +702,7 @@ do
                         width = 'double',
                         name = L["OPT_SET_FRIENDLY_HEALERS_ROLE"],
                         desc = L["OPT_SET_FRIENDLY_HEALERS_ROLE_DESC"],
+                        disabled = function () return HHTD_C.WOWC end,
                         order = 660,
                     },
                     HealerUnderAttackAlerts = {
@@ -719,7 +748,7 @@ do
                         type = 'execute',
                         name = L["OPT_CLEAR_LOGS"],
                         confirm = true,
-                        func = function () 
+                        func = function ()
                             HHTD.LOGS[true]  = {};
                             HHTD.LOGS[false] = {};
                         end,
@@ -753,12 +782,12 @@ do
             self:Print(HHTD:ColorText(HHTD:GetOPtionPath(info), "FF00DD00"), "=>", HHTD:ColorText(value, "FF3399EE"));
         end
     end
-    
+
 
     local Enable_Module_CheckBox = {
         type = 'toggle',
         name = function (info) return L[info[#info]] end, -- it should be the localized module name
-        desc = function (info) return L[info[#info] .. "_DESC"] end, 
+        desc = function (info) return L[info[#info] .. "_DESC"] end,
         get = "get",
         set = "set",
         disabled = "disabled",
@@ -810,7 +839,7 @@ local DEFAULT__CONFIGURATION = {
         UHMHAP = true,
         HMHAP = 0.5,
         PHMDAP = 0.20,
-        SetFriendlyHealersRole = true,
+        SetFriendlyHealersRole = (not HHTD_C.WOWC) and true or false,
         HealerUnderAttackAlerts = true,
         ShowChatCommandReminder = true,
     },
@@ -823,7 +852,7 @@ do
     local oldAce3Name = "Healers Have To Die"
     local oldSV   = "Healers_Have_To_Die"
 
-    local function transmuteSettings() 
+    local function transmuteSettings()
 
         -- I've chosen to rename this add-on, let's handle this decision properly
         -- so that it'll be transparent to the users.
@@ -894,9 +923,9 @@ do
         -- Catch people updating add-ons while WoW is running before they post "it doesn't work!!!!" comments.
         local versionInTOC = GetAddOnMetadata("HHTD", "Version");
         if versionInTOC and versionInTOC ~= VERSION and versionInTOC ~= UNPACKAGED and VERSION ~= UNPACKAGED then
-            T._DiagStatus = 2;
-            T._Diagmessage = "You have updated H.H.T.D while WoW was still running in the background.\n\nYou need to restart WoW completely or you might experience various issues with your add-ons until you do.";
-            T._FatalError(T._Diagmessage);
+            --T._DiagStatus = 2;
+            --T._Diagmessage = "You have updated H.H.T.D while WoW was still running in the background.\n\nYou need to restart WoW completely or you might experience various issues with your add-ons until you do.";
+            --T._FatalError(T._Diagmessage);
         end
 
 
@@ -944,7 +973,7 @@ do
             self:SetEnabledState(false);
             DisableAddOn(ADDON_NAME, true); -- disable globaly as the oldName was
             self:Debug(WARNING, "globally disabled");
-        elseif oldNameGState ~= "DISABLED" and oldNameLState == 0 and self.db.char.settingsMigrated == nil 
+        elseif oldNameGState ~= "DISABLED" and oldNameLState == 0 and self.db.char.settingsMigrated == nil
             -- and there was actually a per character emable/disable setting
             and self.db.global.oldNameEnableState == 1 then
             -- The oldName was already disabled for this specific character
@@ -967,6 +996,11 @@ do
             -- that we found no reason to auto-disable make sure not to find
             -- one in the future
             self.db.global.settingsMigrated = false;
+        end
+
+        if HHTD_C.WOWC then
+            self.db.global.PvpHSpecsOnly = false;
+            self.db.global.SetFriendlyHealersRole = false;
         end
     end
 
@@ -1001,7 +1035,7 @@ function HHTD:OnEnable()
     self:RegisterEvent("PLAYER_ALIVE"); -- talents SHOULD be available
     self:RegisterEvent("ADDON_LOADED");
     -- self:RegisterEvent("PARTY_MEMBER_DISABLE"); -- useless event, no argument...
-   
+
     if not T._DiagStatus and self.db.global.ShowChatCommandReminder then
         --self:Print(L["ENABLED"]);
     end
@@ -1108,7 +1142,7 @@ do
                 LastDetectedGUID = unitGuid;
             end
         end
-        
+
     end
 end -- }}}
 
@@ -1116,7 +1150,7 @@ end -- }}}
 do
 
     --up values
-    
+
     local str_match                   = _G.string.match;
     local GetTime                     = _G.GetTime;
     local RequestBattlefieldScoreData = _G.RequestBattlefieldScoreData;
@@ -1127,6 +1161,16 @@ do
     local TableSort                 = _G.table.sort;
 
     local WIPRBSD = {false, nil, 0};
+
+    local WOWC_CANT_HEAL_CLASSES = {
+        ["MAGE"] = true,
+        ["WARRIOR"] = true,
+        ["HUNTER"] = true,
+        ["ROGUE"] = true,
+        ["WARLOCK"] = true,
+        ["DEATHKNIGHT"] = true, -- not wowc but still presents in RAID_CLASS_COLORS...
+        ["DEMONHUNTER"] = true, -- not wowc but still presents in RAID_CLASS_COLORS...
+    };
 
     function HHTD:UPDATE_BATTLEFIELD_SCORE()
         --[===[@alpha@
@@ -1265,14 +1309,35 @@ do
                 RequestBattlefieldScoreData()
                 WIPRBSD[3] = GetTime();
 
+                -- I got a few reports where this block is triggered, it seems
+                -- to happen randomly but quite rarely. Letting this for
+                -- unpackaged debug mode only.
+
+                --[===[@debug@
                 HHTD:Debug(ERROR, "Still waiting for UPDATE_BATTLEFIELD_SCORE after 30s...")
+                --@end-debug@]===]
             end
 
             return nil
         end
 
-        local spec = select(16, GetBattlefieldScore(playerIndex))
         local classTag = select(9, GetBattlefieldScore(playerIndex)) -- 2016-05-22 seen as nil in one bug report...
+
+
+        if HHTD_C.WOWC then
+
+            if WOWC_CANT_HEAL_CLASSES[classTag] then
+                HHTD:Debug(ERROR, "(HHTD-classic update required) Bad spell class for:", spellName, '(removed) detected:', HHTD_C.Healers_Only_Spells_ByName[spellName], 'real:', classTag)
+
+                HHTD_C.Healers_Only_Spells_ByName[spellName] = nil
+                return false;
+            else
+                return true;
+            end
+
+        end
+
+        local spec = select(16, GetBattlefieldScore(playerIndex))
 
         -- since GetBattlefieldScore() returns so many values, we can be sure it won't
         -- stay stable so make sure it won't break HHTD
@@ -1303,8 +1368,8 @@ do
             end
         else
             -- got a few error reports getting here where the classTag was nil on a Paladin... not sure what to do yet, seems rare.
-            HHTD:Debug(ERROR, "(HHTD update required) GetBattlefieldScore() API changed", GetBattlefieldScore(playerIndex))
-            
+            HHTD:Debug(ERROR, "(HHTD update required) GetBattlefieldScore() API changed", spec, classTag, GetBattlefieldScore(playerIndex))
+
             return nil
         end
     end
@@ -1609,7 +1674,7 @@ do
 
 
             if event == "SWING_DAMAGE" then
-               _amount = _spellID 
+               _amount = _spellID
             end
 
             if (_amount and event:sub(-7) == "_DAMAGE") then
@@ -1695,7 +1760,7 @@ do
         -- Esacpe if it's a heal spell toward a unit hostile to the source
         if isHealSpell and ( Source_Is_Friendly and band(destFlags, HOSTILE)~=0 or not Source_Is_Friendly and band(destFlags, FRIENDLY)~=0 ) then
             --[===[@debug@
-            self:Debug(INFO2, "Spell", spellNAME, "source and destination awkwardness", sourceName, destName, 
+            self:Debug(INFO2, "Spell", spellNAME, "source and destination awkwardness", sourceName, destName,
                 (Source_Is_Friendly and band(destFlags, HOSTILE)),
                 (not Source_Is_Friendly and band(destFlags, FRIENDLY)));
             --@end-debug@]===]
@@ -1758,4 +1823,4 @@ do
      end
  end -- }}}
 
- 
+

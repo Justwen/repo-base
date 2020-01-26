@@ -1,4 +1,4 @@
-﻿## Interface: 80000
+## Interface: 80300
 ## Title: AutoTurnIn
 ## Version: 7.0.9
 ## Author: Alexandr Shubert
@@ -14,7 +14,7 @@
 ## X-Category: Quest
 ## X-Embeds: Ace3
 
-libs\DropDownMenu\UIDropDownMenu.xml
+#libs\DropDownMenu\UIDropDownMenu.xml
 
 
 loc\localization_EN.lua
@@ -29,8 +29,6 @@ ui\main_options.lua
 ui\reward_options.lua
 
 
-## Title: |cff880303[有爱]|r AutoTurnIn 自动交接任务
+## Title: |cff880303[爱不易]|r AutoTurnIn 自动交接任务
 ## Notes-zhCN: 自动交接任务
 ## X-Vendor: AbyUI
-
-

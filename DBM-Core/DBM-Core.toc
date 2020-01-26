@@ -1,8 +1,9 @@
-## Interface: 80000
-## X-Min-Interface: 80000
+## Interface: 80300
+## X-Min-Interface: 80300
 ## Title:|cffffd200Deadly Boss Mods|r |cff69ccf0Core|r
 ## Title-zhCN:|cffffd200Deadly Boss Mods|r |cff69ccf0核心|r
 ## Title-ruRU:|cffffd200Deadly Boss Mods|r |cff69ccf0Ядро|r
+## Title-itIT:|cffffd200Deadly Boss Mods|r |cff69ccf0Base|r
 ## Title-zhTW:|cffffd200Deadly Boss Mods|r |cff69ccf0核心|r
 ## Title-koKR:|cffffd200Deadly Boss Mods|r |cff69ccf0핵심 모듈|r
 ## Title-esES:|cffffd200Deadly Boss Mods|r |cff69ccf0Proceso|r
@@ -10,19 +11,19 @@
 ## Title-frFR:|cffffd200Deadly Boss Mods|r |cff69ccf0Noyau|r
 ## Notes: Deadly Boss Mods
 ## Dependencies: DBM-StatusBarTimers, DBM-DefaultSkin
-## OptionalDependencies: LibStub, CallbackHandler-1.0, LibSharedMedia-3.0, LibChatAnims
-## SavedVariables: DBM_AllSavedOptions
+## OptionalDependencies: LibStub, CallbackHandler-1.0, LibSharedMedia-3.0, LibChatAnims, LibDBIcon-1.0
+## SavedVariables: DBM_AllSavedOptions, DBM_MinimapIcon
 ## SavedVariablesPerCharacter: DBM_UsedProfile, DBM_UseDualProfile, DBM_CharSavedRevision
 ## LoadOnDemand: 0
 ## DefaultState: enabled
-## Author: Tandanu and Nitram
+## Author: Tandanu and Nitram and MysticalOS
 ## X-Website: http://www.deadlybossmods.com
-## Version: 8.0.0-10-gdc5bb7b16
+## X-Curse-Project-ID: 3358
+## X-WoWI-ID: 8814
+## Version: 8.3.5-16-gcdcf288
 
-#@no-lib-strip@
 Libs\LibLatency\LibLatency.xml
 Libs\LibDurability\LibDurability.xml
-#@end-no-lib-strip@
 
 localization.en.lua
 localization.cn.lua

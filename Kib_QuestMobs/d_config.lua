@@ -1,4 +1,4 @@
-local LocalDatabase, GlobalDatabase, SavedVars, Locals = unpack(select(2, ...))
+local LocalDatabase, GlobalDatabase, SavedVars, Locals, SavedVarsDefault = unpack(select(2, ...))
 
 --<<GENERAL CONFIG ELEMENTS>>-----------------------------------------------------------------------<<>>
 
@@ -159,7 +159,7 @@ local function transConfig(config)
         var = config.var,
         text = config.text,
         tip = "说明`"..config.tip,
-        default = function() return SavedVars[config.var] end,
+        default = function() return SavedVarsDefault[config.var] end,
         callback = function(cfg, v, loading) config.func(v) end
     }
     if config.element == "Slider" then
@@ -179,6 +179,6 @@ function Kib_TransConfigsTo163()
     local cfgs = {}
     transConfigs(cfgs, GeneralConfigElements)
     transConfigs(cfgs, IndicatorConfigElements)
-    transConfigs(cfgs, TasksConfigElements)
+    --transConfigs(cfgs, TasksConfigElements)
     return cfgs
 end

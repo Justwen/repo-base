@@ -66,7 +66,7 @@ local function GetItemInfoTable(link)
 		quality = rarity,
 		level = level,
 		minLevel = minLevel,
-		typeName = type, -- type and subType are localzied
+		typeName = type, -- type and subType are localized
 		subTypeName = subType,
 		stackCount = stackCount,
 		equipLoc = equipLoc,
@@ -118,6 +118,11 @@ local defaults = {
 		frame_snap_offset_x = 0,
 		frame_snap_offset_y = 0,
 		frame_grow_upwards = false, -- Actually means "Snap to bottom item"
+
+		loot_padding_top = 10,
+		loot_padding_left = 10,
+		loot_padding_right = 10,
+		loot_padding_bottom = 10,
 		
 		frame_width_automatic = true,
 		frame_width = 150,
@@ -139,7 +144,9 @@ local defaults = {
 
 		linkall_threshold = 2, -- Quality from 0 - 6, Poor - Artifact
 		linkall_channel = 'RAID',
+		linkall_channel_secondary = 'NONE',
 		linkall_show = 'group',
+		linkall_first_only = false,
 
 		old_close_button = false,
 
@@ -235,7 +242,8 @@ function addon:ApplyOptions(in_options)
 				max_quality = math.max(max_quality, t.quality)
 			end
 		end
-		do
+		-- !CLASSIC
+		if GetCurrencyInfo then
 			local name, currentAmount, texture, earnedThisWeek, weeklyMax, totalMax, isDiscovered, rarity = GetCurrencyInfo(828)
 			if name and texture then
 				local row =  Fake.rows[slot+1]
@@ -295,9 +303,12 @@ do
 		end
 
 		local linkthreshold, reached = opt.linkall_threshold
+
+		local first_only = opt.linkall_first_only
+
 		for i=1, GetNumLootItems() do
 			if GetLootSlotType(i) == LOOT_SLOT_ITEM then 
-				local texture, item, quantity, rarity = GetLootSlotInfo(i)
+				local _, _, quantity, _, rarity = GetLootSlotInfo(i)
 				local link = GetLootSlotLink(i)
 				if rarity >= linkthreshold then
 					reached = true
@@ -307,6 +318,9 @@ do
 						output[key] = (quantity > 1 and quantity.."x" or "")..link
 					else
 						output[key] = buffer
+					end
+					if opt.linkall_first_only then
+						break
 					end
 				end
 			end
@@ -322,6 +336,9 @@ do
 		for k, v in pairs(output) do
 			v  = string.gsub(v, "\n", " ", 1, true) -- DIE NEWLINES, DIE A HORRIBLE DEATH
 			SendChatMessage(v, channel)
+			if opt.linkall_channel_secondary ~= 'NONE' then
+				SendChatMessage(v, opt.linkall_channel_secondary)
+			end
 			output[k] = nil
 		end
 
@@ -537,6 +554,11 @@ do
 	local resize_texts = {'text_name', 'text_info'}
 	function RowPrototype:UpdateAppearance()
 		local owner, opt = self.owner, self.owner.opt
+
+		-- Align frames
+		self:SetPoint('LEFT', opt.loot_padding_left, 0)
+		self:SetPoint('RIGHT', -opt.loot_padding_right, 0)
+
 		-- Colors
 		self:SetBorderColor(owner:GetColor('loot_color_border'))
 		self:SetBackdropColor(owner:GetColor('loot_color_backdrop', 0.7))
@@ -685,7 +707,7 @@ do
 
 		-- Attach
 		if self.i == 1 then
-			self:SetPoint('TOP', 0, -10)
+			self:SetPoint('TOP', 0, -opt.loot_padding_top)
 		else
 			self:SetPoint('TOP', owner.rows[self.i-1], 'BOTTOM', 0, owner.skin.row_offset)
 		end
@@ -751,10 +773,6 @@ do
 		locked:SetPoint('CENTER')
 		locked:SetTextColor(1, .2, .1)
 		auto:SetPoint('CENTER')
-
-		-- Align frames (Dimensions set in UpdateAppearance)
-		row:SetPoint('LEFT', 10, 0)
-		row:SetPoint('RIGHT', -10, 0)
 
 		item:SetPoint('LEFT', 0, 0)
 		tex:SetPoint('TOPLEFT', 3, -3)
@@ -880,7 +898,11 @@ do
 
 	function FramePrototype:UpdateHeight()
 		if self.row_height then
-			self:SetHeight(((self.link:IsShown() or self.close:IsShown()) and 26 or 20) + #self.slots * self.row_height)
+			self:SetHeight(
+				((self.link:IsShown() or not opt.old_close_button) and 6 or 0)
+				 + opt.loot_padding_top
+				 + opt.loot_padding_bottom
+				 + #self.slots * self.row_height)
 		end
 	end
 
@@ -1296,7 +1318,7 @@ function addon:LOOT_SLOT_CLEARED(slot)
 				if prev and next then
 					next:SetPoint('TOP', prev, 'BOTTOM', nil, XLootFrame.skin.row_offset)
 				elseif next then
-					next:SetPoint('TOP', 0, -10)
+					next:SetPoint('TOP', 0, -opt.loot_padding_top)
 				end
 				table.remove(slots, id)
 				XLootFrame:UpdateHeight()

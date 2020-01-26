@@ -54,7 +54,7 @@ function Accountant_RegisterEvents(self)
 	self:RegisterEvent("TAXIMAP_CLOSED");
 
 	self:RegisterEvent("TRADE_SHOW");
-	self:RegisterEvent("TRADE_CLOSE");
+	self:RegisterEvent("TRADE_CLOSED");
 
 	self:RegisterEvent("MAIL_SHOW");
 	self:RegisterEvent("MAIL_CLOSED");
@@ -325,7 +325,7 @@ function Accountant_Slash(msg)
 	local function helper(word) table.insert(args, word) end
 	string.gsub(msg, "[_%w]+", helper);
 	if args[1] == 'log'  then
-		ShowUIPanel(AccountantFrame);
+		AccountantFrame:Show();
 	elseif args[1] == 'verbose' then
 		if Accountant_Verbose == nil then
 			Accountant_Verbose = 1;
@@ -378,7 +378,7 @@ function Accountant_OnEvent(self, event, ...)
 		-- Accountant_Mode = "";
 	elseif event == "TRADE_SHOW" then
 		Accountant_Mode = "TRADE";
-	elseif event == "TRADE_CLOSE" then
+	elseif event == "TRADE_CLOSED" then
 		Accountant_Mode = "";
 	elseif event == "QUEST_COMPLETE" then
 		Accountant_Mode = "QUEST";
@@ -577,7 +577,7 @@ end
 
 function Accountant_OnHide()
 	if MYADDONS_ACTIVE_OPTIONSFRAME == self then
-		ShowUIPanel(myAddOnsFrame);
+		myAddOnsFrame:Show();
 	end
 end
 
@@ -661,7 +661,7 @@ end
 function AccountantTab_OnClick(self)
 	PanelTemplates_SetTab(AccountantFrame, self:GetID());
 	Accountant_CurrentTab = self:GetID();
-	PlaySound163("igCharacterInfoTab");
+	PlaySound(841);
 	Accountant_OnShow();
 end
 

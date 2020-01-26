@@ -1,9 +1,8 @@
-## Interface: 80000
+## Interface: 80300
 ## Title: World Quest Tracker
 ## Notes: Make more easy to see world quests
 ## SavedVariables: WQTrackerDB
 ## SavedVariablesPerCharacter: WQTrackerDBChr
-
 
 #@no-lib-strip@
 libs\libs.xml
@@ -33,5 +32,5 @@ WorldQuestTracker_Taxi.lua
 
 WorldQuestTrackerMixin.xml
 
-## Title: |cff880303[有爱]|r WorldQuest 世界任务追踪
+## Title: |cff880303[爱不易]|r WorldQuest 世界任务追踪
 ## X-Vendor: AbyUI

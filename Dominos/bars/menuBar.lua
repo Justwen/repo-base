@@ -4,47 +4,66 @@
 
 --[[ globals ]]--
 
-local _G = _G
-local hooksecurefunc = _G.hooksecurefunc
-local table = _G.table
-local ipairs = _G.ipairs
-local pairs = _G.pairs
-local LibStub = _G.LibStub
-local C_StorePublic = _G.C_StorePublic
+local wipe = wipe
+local tinsert = tinsert
+local LibStub = LibStub
+local C_StorePublic = C_StorePublic
 
 local AddonName = ...
 local Addon = LibStub('AceAddon-3.0'):GetAddon(AddonName)
 local MenuBar = Addon:CreateClass('Frame', Addon.ButtonBar); Addon.MenuBar = MenuBar
 
 
---[[ local constants ]]--
+local MICRO_BUTTONS
+if Addon:IsBuild("classic") then
+	MICRO_BUTTONS = {
+		"CharacterMicroButton",
+		"SpellbookMicroButton",
+		"TalentMicroButton",
+		"QuestLogMicroButton",
 
-local MICRO_BUTTONS = {
-	"CharacterMicroButton",
-	"SpellbookMicroButton",
-	"TalentMicroButton",
-	"AchievementMicroButton",
-	"QuestLogMicroButton",
-	"GuildMicroButton",
-	"LFDMicroButton",
-	"EJMicroButton",
-	"CollectionsMicroButton",
-	"StoreMicroButton",
-	"MainMenuMicroButton"
-}
+		"SocialsMicroButton",
+		"WorldMapMicroButton",
+
+		"MainMenuMicroButton",
+		"HelpMicroButton"
+	}
+else
+	MICRO_BUTTONS = {
+		"CharacterMicroButton",
+		"SpellbookMicroButton",
+		"TalentMicroButton",
+
+		"AchievementMicroButton",
+
+		"QuestLogMicroButton",
+
+		"GuildMicroButton",
+		"LFDMicroButton",
+		"CollectionsMicroButton",
+		"EJMicroButton",
+		"StoreMicroButton",
+
+		"MainMenuMicroButton"
+		-- "HelpMicroButton"
+	}
+end
 
 local MICRO_BUTTON_NAMES = {
-	['CharacterMicroButton'] = _G['CHARACTER_BUTTON'],
-	['SpellbookMicroButton'] = _G['SPELLBOOK_ABILITIES_BUTTON'],
-	['TalentMicroButton'] = _G['TALENTS_BUTTON'],
-	['AchievementMicroButton'] = _G['ACHIEVEMENT_BUTTON'],
-	['QuestLogMicroButton'] = _G['QUESTLOG_BUTTON'],
-	['GuildMicroButton'] = _G['LOOKINGFORGUILD'],
-	['LFDMicroButton'] = _G['DUNGEONS_BUTTON'],
-	['EJMicroButton'] = _G['ENCOUNTER_JOURNAL'],
-	['MainMenuMicroButton'] = _G['MAINMENU_BUTTON'],
-	['StoreMicroButton'] = _G['BLIZZARD_STORE'],
-	['CollectionsMicroButton'] = _G['COLLECTIONS']
+	['CharacterMicroButton'] = CHARACTER_BUTTON,
+	['SpellbookMicroButton'] = SPELLBOOK_ABILITIES_BUTTON,
+	['TalentMicroButton'] = TALENTS_BUTTON,
+	['AchievementMicroButton'] = ACHIEVEMENT_BUTTON,
+	['QuestLogMicroButton'] = QUESTLOG_BUTTON,
+	['GuildMicroButton'] = LOOKINGFORGUILD,
+	['LFDMicroButton'] = DUNGEONS_BUTTON,
+	['EJMicroButton'] = ENCOUNTER_JOURNAL,
+	['MainMenuMicroButton'] = MAINMENU_BUTTON,
+	['StoreMicroButton'] = BLIZZARD_STORE,
+	['CollectionsMicroButton'] = COLLECTIONS,
+	['HelpMicroButton'] = HELP_BUTTON,
+	["SocialsMicroButton"] = SOCIAL_BUTTON,
+	['WorldMapMicroButton'] = WORLDMAP_BUTTON
 }
 
 --[[ Menu Bar ]]--
@@ -83,30 +102,31 @@ function MenuBar:Create(...)
 
 	hooksecurefunc('UpdateMicroButtons', requestLayoutUpdate)
 
-	local petBattleFrame = _G['PetBattleFrame'].BottomFrame.MicroButtonFrame
+	if PetBattleFrame and PetBattleFrame.BottomFrame and PetBattleFrame.BottomFrame.MicroButtonFrame then
+		local petMicroButtons = PetBattleFrame.BottomFrame.MicroButtonFrame
 
-	getOrHook(petBattleFrame, 'OnShow', function()
-		bar.isPetBattleUIShown = true
-		requestLayoutUpdate()
-	end)
+		getOrHook(petMicroButtons, 'OnShow', function()
+			bar.isPetBattleUIShown = true
+			requestLayoutUpdate()
+		end)
 
-	getOrHook(petBattleFrame, 'OnHide', function()
-		bar.isPetBattleUIShown = nil
-		requestLayoutUpdate()
-	end)
+		getOrHook(petMicroButtons, 'OnHide', function()
+			bar.isPetBattleUIShown = nil
+			requestLayoutUpdate()
+		end)
+	end
 
+	if OverrideActionBar then
+		getOrHook(OverrideActionBar, 'OnShow', function()
+			bar.isOverrideUIShown = Addon:UsingOverrideUI()
+			requestLayoutUpdate()
+		end)
 
-	local overrideActionBar = _G['OverrideActionBar']
-
-	getOrHook(overrideActionBar, 'OnShow', function()
-		bar.isOverrideUIShown = Addon:UsingOverrideUI()
-		requestLayoutUpdate()
-	end)
-
-	getOrHook(overrideActionBar, 'OnHide', function()
-		bar.isOverrideUIShown = nil
-		requestLayoutUpdate()
-	end)
+		getOrHook(OverrideActionBar, 'OnHide', function()
+			bar.isOverrideUIShown = nil
+			requestLayoutUpdate()
+		end)
+	end
 
 	return bar
 end
@@ -134,19 +154,19 @@ function MenuBar:GetButtonInsets()
 end
 
 function MenuBar:UpdateActiveButtons()
-	table.wipe(self.activeButtons)
+	wipe(self.activeButtons)
 
 	for _, name in ipairs(MICRO_BUTTONS) do
 		local button = _G[name]
 
 		if not self:IsMenuButtonDisabled(button) then
-			table.insert(self.activeButtons, button)
+			tinsert(self.activeButtons, button)
 		end
 	end
 end
 
 function MenuBar:UpdateOverrideBarButtons()
-	table.wipe(self.overrideButtons)
+	wipe(self.overrideButtons)
 
 	local isStoreEnabled = C_StorePublic.IsEnabled()
 
@@ -162,7 +182,7 @@ function MenuBar:UpdateOverrideBarButtons()
 		end
 
 		if shouldAddButton then
-			table.insert(self.overrideButtons, _G[buttonName])
+			tinsert(self.overrideButtons, _G[buttonName])
 		end
 	end
 end
@@ -204,7 +224,10 @@ end
 
 function MenuBar:LayoutNormal()
 	for _, name in pairs(MICRO_BUTTONS) do
-		_G[name]:Hide()
+		local button = _G[name]
+		if button then
+			button:Hide()
+		end
 	end
 
 	for _, button in pairs(self.buttons) do
@@ -319,7 +342,21 @@ end
 local MenuBarController = Addon:NewModule('MenuBar')
 
 function MenuBarController:OnInitialize()
+	-- fix blizzard nil bug
+    -- luacheck: push ignore 111 113
+	if not AchievementMicroButton_Update then
+		AchievementMicroButton_Update = function() end
+	end
+	-- luacheck: pop
 
+	-- the performance bar actually appears under the game menu button if you
+	-- move it somewhere else
+	local MainMenuBarPerformanceBar  = MainMenuBarPerformanceBar
+	local MainMenuMicroButton = MainMenuMicroButton
+	if MainMenuBarPerformanceBar and MainMenuMicroButton then
+		MainMenuBarPerformanceBar:ClearAllPoints()
+		MainMenuBarPerformanceBar:SetPoint("BOTTOM", MainMenuMicroButton, "BOTTOM")
+	end
 end
 
 function MenuBarController:Load()

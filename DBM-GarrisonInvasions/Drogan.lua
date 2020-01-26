@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod("Drogan", "DBM-GarrisonInvasions")
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 23 $"):sub(12, -3))
+mod:SetRevision("20190417005938")
 mod:SetCreatureID(90841)
 mod:SetZone()
 

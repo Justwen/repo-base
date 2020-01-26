@@ -1,8 +1,22 @@
-local AddonName, Addon = ...
 local VehicleLeaveButton = _G.MainMenuBarVehicleLeaveButton
 if not VehicleLeaveButton then return end
 
+local _, Addon = ...
+
 --[[ The Bar ]]--
+
+local function header_UpdateExitButton(self)
+	if self:GetAttribute('state-display') == 'show' then
+		VehicleLeaveButton:Show()
+		VehicleLeaveButton:Enable()
+	else
+		VehicleLeaveButton:Hide()
+		VehicleLeaveButton:Disable()
+		VehicleLeaveButton:UnlockHighlight()
+	end
+end
+
+
 
 local VehicleBar = Addon:CreateClass('Frame', Addon.ButtonBar)
 
@@ -26,23 +40,12 @@ function VehicleBar:Create(...)
 	]])
 
 	bar.header:SetAttribute('updateVehicleButton', [[
-		local isVisible = self:GetAttribute('state-taxi') == 1
-		 			   or self:GetAttribute('state-canexitvehicle') == 1
-
+		local isVisible = self:GetAttribute('state-taxi') == 1 or self:GetAttribute('state-canexitvehicle') == 1
 		self:SetAttribute('state-display', isVisible and 'show' or 'hide')
 		self:CallMethod('UpdateExitButton')
 	]])
 
-	bar.header.UpdateExitButton = function(self)
-		if self:GetAttribute('state-display') == 'show' then
-			VehicleLeaveButton:Show()
-			VehicleLeaveButton:Enable()
-		else
-			VehicleLeaveButton:Hide()
-			VehicleLeaveButton:Disable()
-			VehicleLeaveButton:UnlockHighlight()
-		end
-	end
+	bar.header.UpdateExitButton = header_UpdateExitButton
 
 	RegisterStateDriver(bar.header, 'canexitvehicle', '[canexitvehicle]1;0')
 
@@ -86,11 +89,14 @@ function VehicleBarController:Load()
 	self.frame = VehicleBar:New()
 
 	self:RegisterEvent('UPDATE_BONUS_ACTIONBAR', 'UpdateOnTaxi')
-	self:RegisterEvent('UPDATE_MULTI_CAST_ACTIONBAR', 'UpdateOnTaxi')
-	self:RegisterEvent('UNIT_ENTERED_VEHICLE', 'UpdateOnTaxi')
-	self:RegisterEvent('UNIT_EXITED_VEHICLE', 'UpdateOnTaxi')
-	self:RegisterEvent('VEHICLE_UPDATE', 'UpdateOnTaxi')
 	self:RegisterEvent('PLAYER_REGEN_ENABLED', 'UpdateOnTaxi')
+
+	if Addon:IsBuild("retail") then
+		self:RegisterEvent('VEHICLE_UPDATE', 'UpdateOnTaxi')
+		self:RegisterEvent('UPDATE_MULTI_CAST_ACTIONBAR', 'UpdateOnTaxi')
+		self:RegisterEvent('UNIT_ENTERED_VEHICLE', 'UpdateOnTaxi')
+		self:RegisterEvent('UNIT_EXITED_VEHICLE', 'UpdateOnTaxi')
+	end
 end
 
 function VehicleBarController:Unload()

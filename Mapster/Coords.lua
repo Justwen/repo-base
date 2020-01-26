@@ -6,6 +6,8 @@ All rights reserved.
 local Mapster = LibStub("AceAddon-3.0"):GetAddon("Mapster")
 local L = LibStub("AceLocale-3.0"):GetLocale("Mapster")
 
+local WoWClassic = select(4, GetBuildInfo()) < 20000
+
 local MODNAME = "Coords"
 local Coords = Mapster:NewModule(MODNAME)
 
@@ -18,7 +20,7 @@ local texttemplate, text = "%%s: %%.%df, %%.%df"
 local MouseXY, OnUpdate
 
 local db
-local defaults = { 
+local defaults = {
 	profile = {
 		accuracy = 1,
 		fontSize = 11,
@@ -107,8 +109,8 @@ function Coords:OnEnable()
 		cursortext:SetTextColor(1, 1, 1)
 		playertext:SetTextColor(1, 1, 1)
 
-		cursortext:SetPoint("TOPLEFT", WorldMapFrame.ScrollContainer, "BOTTOM", 30, -5)
-		playertext:SetPoint("TOPRIGHT", WorldMapFrame.ScrollContainer, "BOTTOM", -30, -5)
+		cursortext:SetPoint("TOPLEFT", WorldMapFrame.ScrollContainer, "BOTTOM", 30, WoWClassic and -9 or -5)
+		playertext:SetPoint("TOPRIGHT", WorldMapFrame.ScrollContainer, "BOTTOM", -30, WoWClassic and -9 or -5)
 
 		tinsert(Mapster.elementsToHide, display)
 	end
@@ -143,6 +145,7 @@ function MouseXY()
 	local left, top = WorldMapScrollChild:GetLeft(), WorldMapScrollChild:GetTop()
 	local width, height = WorldMapScrollChild:GetWidth(), WorldMapScrollChild:GetHeight()
 	local scale = WorldMapScrollChild:GetEffectiveScale()
+	if not left or not top then return end -- this can occur while the map is being moved
 
 	local x, y = GetCursorPosition()
 	local cx = (x/scale - left) / width
@@ -156,13 +159,19 @@ function MouseXY()
 end
 
 local cursor, player = L["Cursor"], L["Player"]
+local HBD = LibStub("HereBeDragons-2.0")
 function OnUpdate()
 	local cx, cy = MouseXY()
 	local px, py
+    if WorldMapFrame:GetMapID() == C_Map.GetBestMapForUnit("player") then
+        px, py = HBD:GetPlayerZonePosition()
+    end
+    --[[
 	local xy = GetPlayerMapPosition(WorldMapFrame:GetMapID(), "player")
 	if xy then
 		px, py = xy:GetXY()
 	end
+	]]
 
 	if cx then
 		cursortext:SetFormattedText(text, cursor, 100 * cx, 100 * cy)

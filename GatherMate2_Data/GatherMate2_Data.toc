@@ -1,4 +1,4 @@
-## Interface: 80000
+## Interface: 80300
 ## Notes: Wowhead Data dump for GatherMate2
 ## Notes-zhTW: Wowhead 資料轉存至採集助手 GatherMate2
 ## Notes-zhCN: Wowhead 资料转存至采集助手 GatherMate2
@@ -8,9 +8,9 @@
 ## Author: kagaro, Xinhuan
 ## X-Category: Map
 ## X-Email: sal.scotto@gmail.com
-## Version: v31.0
+## Version: v33.0
 ## LoadOnDemand: 1
-## X-Generated-Version: $Revision: 465 $
+## X-Generated-Version: $Revision: 472 $
 ## Dependencies: GatherMate2
 
 MiningData.lua
@@ -22,6 +22,6 @@ ArchaeologyData.lua
 GatherMateData.lua
 #Data_Legion.lua
 
-## Title-zhCN: |cff880303[有爱]|r GatherMate2 采集数据库
+## Title-zhCN: |cff880303[爱不易]|r GatherMate2 采集数据库
 ## X-Vendor: AbyUI
 

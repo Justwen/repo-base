@@ -6,8 +6,8 @@ local INVSLOT_AVALIABLE = 16
 local S_ITEM_LEVEL = ITEM_LEVEL:gsub("%%d", "(%%d+)")
 --local GSS_Mode = 0;	--0=simply, 1=profession
 
-local MAX_LEVEL = 110
-local RATINGS_BONUS = { 400, 375, 475, 400, } --CRIT HASTE VERSATILITY MASTERY
+local MAX_LEVEL = 120
+local RATINGS_BONUS = { 72, 68, 85, 72, } --CRIT HASTE VERSATILITY MASTERY
 
 local tip
 if not tip then
@@ -37,11 +37,12 @@ end
 
 local function PraseItemSet(text)
 	local value = text:match(RATING_SUMMARY_ITEM_SUIT_FORMAT);
-	if(value) then
+	if(value and not value:find("已激活的艾泽里特之力")) then
 		return value;
 	end 
 end
 
+local trinket82 = GetItemInfo(167555) --口袋计算装置
 local function ScanItemTooltip(unit, slot)
     if not unit then return end
 	tip:SetOwner(UIParent, "ANCHOR_NONE")
@@ -52,7 +53,7 @@ local function ScanItemTooltip(unit, slot)
 	end
 	tip:SetInventoryItem(unit, slot);
 	tip:Show();
-	
+
 	local itemLevel, GemsSlotCount, GemsEmptyCount = 0, 0, 0;
 	local itemSet;
 	local ret;
@@ -72,23 +73,26 @@ local function ScanItemTooltip(unit, slot)
 		end
 	end
 
-	for i = 1,4 do
-		local texture = _G[ tip:GetName() .."Texture"..i]
-		if ( texture ) then
-			local texture = _G[ tip:GetName() .."Texture"..i]:GetTexture();
-			if ( texture ) then
-				--if string.find(texture, "gem") then
-					GemsSlotCount = GemsSlotCount + 1
-					if string.find(texture, "EmptySocket") then
-						GemsEmptyCount = GemsEmptyCount + 1
-					end
-				--end
-			end
-		end
-	end
+    if _G[ tip:GetName() .."TextLeft1"]:GetText() ~= trinket82 then
+        for i = 1,4 do
+            local texture = _G[ tip:GetName() .."Texture"..i]
+            if ( texture ) then
+                local texture = _G[ tip:GetName() .."Texture"..i]:GetTexture();
+                if ( texture ) then
+                    --if string.find(texture, "gem") then
+                    GemsSlotCount = GemsSlotCount + 1
+                    if string.find(texture, "EmptySocket") or texture == 458977 then
+                        GemsEmptyCount = GemsEmptyCount + 1
+                    end
+                    --end
+                end
+            end
+        end
+    end
 	
 	tip:Hide();
-    if (slot == 16 or slot == 17) and itemLevel ~= 750 and not UnitIsUnit(unit, "player") then itemLevel=itemLevel+15 end
+    --if (slot == 16 or slot == 17) and itemLevel ~= 750 and not UnitIsUnit(unit, "player") then itemLevel=itemLevel+15 end
+    if slot == 2 and GetInventoryItemQuality(unit, 2) == 6 then GemsSlotCount,GemsEmptyCount = 0, 0 end --abyui 艾泽拉斯之心有4孔
 	return itemLevel, itemSet, GemsSlotCount, GemsEmptyCount
 end
 
@@ -104,6 +108,7 @@ function GearStatsSummary_OnLoad(self)
 	self:RegisterEvent("VARIABLES_LOADED");
 	self:RegisterEvent("ADDON_LOADED");
 	self:RegisterEvent("UNIT_INVENTORY_CHANGED");
+    self:RegisterEvent("PLAYER_EQUIPMENT_CHANGED");
 	self:RegisterEvent("ITEM_UPGRADE_MASTER_UPDATE");
 	self:RegisterEvent("REPLACE_ENCHANT");
 
@@ -212,8 +217,8 @@ function GearStatsSummary_OnEvent(self, event, ...)
 		GearStatsSummary_SetupHook();
 	end
 
-	if event == "UNIT_INVENTORY_CHANGED" then
-		if ((arg1 == "player") and GearStatsSummarySelfFrame:IsVisible()) then
+	if event == "UNIT_INVENTORY_CHANGED" or event == "PLAYER_EQUIPMENT_CHANGED" then
+		if ((arg1 == "player" or event == "PLAYER_EQUIPMENT_CHANGED") and GearStatsSummarySelfFrame:IsVisible()) then
 			GearStatsSummary_HideFrame(GearStatsSummarySelfFrame);
 			if (GearStatsSummaryTargetFrame:IsVisible()) then
 				GearStatsSummary_ShowFrame(GearStatsSummarySelfFrame,GearStatsSummaryTargetFrame,UnitName("player"),0,0);
@@ -309,7 +314,7 @@ function GearStatsSummary_GetSpecName(unit)
         end
     end
     if name and (GetLocale() == "zhCN" or GetLocale() == "zhTW") then
-        name = name:utf8sub(1,2)
+        name = string.utf8sub(name,1,2)
     end
     return name, classID, specID
 end
@@ -454,7 +459,7 @@ function GearStatsSummary_ShowFrame(frame,target,tiptitle,anchorx,anchory,ready)
             end
 
             local _, _, ccode, linkp1, itemname = v:find("(\124c.-)(\124Hitem.-)\124h%[(.-)%]\124h\124r")
-            if (GetLocale() == "zhCN" or GetLocale() == "zhTW") and itemname:utf8len() > 6 then itemname = itemname:utf8sub(1,5).."…" end
+            if (GetLocale() == "zhCN" or GetLocale() == "zhTW") and string.utf8len(itemname) > 6 then itemname = string.utf8sub(itemname,1,5).."…" end
             --v = v:gsub("(\124c.-)(\124Hitem.-)\124h%[(.-)%]\124h\124r", "%2\124h" .. sum["ItemLevels"][k] .. " %1%3\124r\124h")
             v = sum["ItemLevels"][k] .. " " .. ccode..linkp1.."\124h"..itemname.."\124h\124r"
 
@@ -496,7 +501,7 @@ function GearStatsSummary_ShowFrame(frame,target,tiptitle,anchorx,anchory,ready)
     tiptext = tiptext .. '\n\n' .. gem_enchant
 
     local showPercent = UnitLevel(unit) == MAX_PLAYER_LEVEL  --爆击有额外加成，急速和全能是对的，精通受GetMasteryEffect()比例影响
-    tiptext = tiptext.."\n\n"..(UnitIsUnit("player", unit) and RS_STATS_ONLY_FROM_GEARS or "(未计算熔炉+15神器装等)")
+    tiptext = tiptext.."\n\n"..(UnitIsUnit("player", unit) and RS_STATS_ONLY_FROM_GEARS or RS_STATS_ONLY_FROM_GEARS) --"(未计算熔炉+15神器装等)"
     for i=5, 8 do if stats_total[i] then tiptext = tiptext .. "\n|cffffd200"..U1ATTRSNAME[i]..":|r"..YELLOW_FONT_COLOR_CODE.." +"..format("%-6d",stats_total[i]).."|r" end end
     local greenTotal = 0
     for i=1, 4 do greenTotal = greenTotal + (stats_total[i] or 0) end

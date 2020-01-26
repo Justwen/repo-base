@@ -1229,7 +1229,6 @@ function EventAlert_Buff_Dropped(spellID)
 	local eaf = _G["EAFrame_"..spellID];
 	if eaf~= nil then
 		FrameGlowShowOrHide(eaf,false)
-		--EA_ActionButton_HideOverlayGlow(eaf);
 		--eaf.overgrow = false;
 		eaf:Hide();
 		eaf:SetScript("OnUpdate", nil);
@@ -1250,7 +1249,6 @@ function EventAlert_TarBuff_Dropped(spellID)
 	local eaf = _G["EATarFrame_"..spellID];
 	if eaf~= nil then
 		FrameGlowShowOrHide(eaf,false)
-		--EA_ActionButton_HideOverlayGlow(eaf);
 		--eaf.overgrow = false;
 		eaf:Hide();
 		eaf:SetScript("OnUpdate", nil);
@@ -1858,10 +1856,10 @@ function EventAlert_SlashHandler(msg)
 
 	if (cmdtype == "options" or cmdtype == "opt") then
 		if not EA_Options_Frame:IsVisible() then
-			-- ShowUIPanel(EA_Options_Frame);
+			-- EA_Options_Frame:Show();
 			EA_Options_Frame:Show();
 		else
-			-- HideUIPanel(EA_Options_Frame);
+			-- EA_Options_Frame:Hide();
 			EA_Options_Frame:Hide();
 		end
 
@@ -3389,11 +3387,11 @@ function EventAlert_GroupFrameCheck_OnEvent(self, event, ...)
 					end
 				end
 			end
-		elseif (event == "UNIT_POWER_FREQUENT") then
+		elseif (event == "UNIT_POWER_UPDATE") then
 			local sUnitType, sPowerType = ...;
 			
 			-- SPEC EVENT FIRED, To check all INDEXD-EVENTCFG about this frame(by GroupIndex).
-			-- GC_IndexOfGroupFrame["UNIT_POWER"] = {[1]={Spells=1,Checks=1,SubChecks=1,},};
+			-- GC_IndexOfGroupFrame["UNIT_POWER_UPDATE"] = {[1]={Spells=1,Checks=1,SubChecks=1,},};
 			for iIndex, aValue in ipairs(GC_IndexOfGroupFrame[event][iGroupIndex]) do
 				iSpells = GC_IndexOfGroupFrame[event][iGroupIndex][iIndex].Spells;
 				iChecks = GC_IndexOfGroupFrame[event][iGroupIndex][iIndex].Checks;
@@ -3503,7 +3501,7 @@ function EventAlert_GroupFrameCheck_OnEvent(self, event, ...)
 						if (SubCheck.CheckAuraExist ~= nil) then
 							fShowResult = false;
 							local sSpellName, sSpellRank = GetSpellInfo(SubCheck.CheckAuraExist);
-							local sCurrSpellName, _, iStack, _, _, iExpireTime = UnitBuff(sUnitType, sSpellName, sSpellRank, sAuraFilter); --aby8
+							local sCurrSpellName, _, _, iStack, _, _, iExpireTime = Aby_UnitBuff(sUnitType, sSpellName, sSpellRank, sAuraFilter);
 							if sCurrSpellName ~= nil then
 								fShowResult = true;
 							else
@@ -3528,7 +3526,7 @@ function EventAlert_GroupFrameCheck_OnEvent(self, event, ...)
 						if (SubCheck.CheckAuraNotExist ~= nil) then
 							fShowResult = false;
 							local sSpellName, sSpellRank = GetSpellInfo(SubCheck.CheckAuraNotExist);
-							local sCurrSpellName = UnitBuff(sUnitType, sSpellName, sSpellRank, sAuraFilter);
+							local sCurrSpellName = Aby_UnitBuff(sUnitType, sSpellName, sSpellRank, sAuraFilter);
 							if sCurrSpellName == nil then
 								sCurrSpellName = Aby_UnitDebuff(sUnitType, sSpellName, sSpellRank, sAuraFilter);
 								if sCurrSpellName == nil then
@@ -3885,12 +3883,12 @@ end
 function FrameGlowShowOrHide(eaf,boolShow)
 	if boolShow then
 		if not(eaf.overgrow) then
-			EA_ActionButton_ShowOverlayGlow(eaf)
+			CoreUIShowOverlayGlow(eaf)
 			eaf.overgrow = true
 		end
 	else
 		if (eaf.overgrow) then
-			EA_ActionButton_HideOverlayGlow(eaf)
+			CoreUIHideOverlayGlow(eaf)
 			eaf.overgrow = false
 		end
 	end
@@ -3992,8 +3990,7 @@ EA_EventList={
 		--["UNIT_COMBO_POINTS"]			=EventAlert_COMBO_POINTS,
 		["UNIT_DISPLAYPOWER"]			=EventAlert_DISPLAYPOWER,
 		["UNIT_HEALTH"]					=EventAlert_UNIT_HEALTH	,
-		--["UNIT_POWER"]					=EventAlert_UNIT_POWER, --aby8
-		["UNIT_POWER_FREQUENT"]			=EventAlert_UNIT_POWER,
+		["UNIT_POWER_UPDATE"]			=EventAlert_UNIT_POWER,
 		--["RUNE_TYPE_UPDATE"]			=EventAlert_UpdateRunes, --aby8
 		["RUNE_POWER_UPDATE"]			=EventAlert_UpdateRunes,
 		["UNIT_SPELLCAST_SUCCEEDED"]	=EventAlert_UNIT_SPELLCAST_SUCCEEDED,

@@ -43,10 +43,6 @@ L= DBM:GetModLocalization(108)
 -----------------------------
 L= DBM:GetModLocalization(109)
 
-L:SetOptionLocalization({
-	SetIconOnBoss	= "Put an icon on the boss after $spell:76200 "
-})
-
 ---------------------
 --  The Deadmines  --
 ---------------------
@@ -93,10 +89,6 @@ L:SetTimerLocalization({
 -- General Umbriss --
 ---------------------
 L= DBM:GetModLocalization(131)
-
-L:SetOptionLocalization{
-	PingBlitz	= "Ping the minimap when General Umbriss is about to blitz you"
-}
 
 --------------------------
 -- Forgemaster Throngus --
@@ -283,7 +275,6 @@ L:SetOptionLocalization({
 	WarnSubmerge	= "Show warning for submerge",
 	TimerEmerge		= "Show timer for emerge",
 	TimerSubmerge	= "Show timer for submerge",
-	CrystalArrow	= "Show DBM arrow when $spell:81634 is near you",
 	RangeFrame		= "Show Range Frame (5 yards)"
 })
 
@@ -384,9 +375,7 @@ L:SetOptionLocalization{
 L= DBM:GetModLocalization(186)
 
 L:SetOptionLocalization{
-	StormIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(43648),
-	RangeFrame	= "Show range frame (10 yards)",
-	StormArrow	= "Show DBM Arrow for $spell:43648"
+	RangeFrame	= "Show range frame (10 yards)"
 }
 
 --------------
@@ -501,11 +490,6 @@ L:SetMiscLocalization{
 -------------------------
 L= DBM:GetModLocalization(175)
 
-L:SetOptionLocalization{
-	SetIconOnToxicLink	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(96477),
-	LinkArrow			= "Show DBM arrow when you are affected by $spell:96477"
-}
-
 ------------------------
 -- Bloodlord Mandokir --
 ------------------------
@@ -560,8 +544,7 @@ L:SetWarningLocalization{
 
 L:SetOptionLocalization{
 	SpecWarnToxic	= "Show special warning when you are missing $spell:96328 debuff",
-	InfoFrame		= "Show info frame for players not affected by $spell:96328",
-	SetIconOnGaze	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(96342)
+	InfoFrame		= "Show info frame for players not affected by $spell:96328"
 }
 
 L:SetMiscLocalization{
@@ -748,10 +731,6 @@ L = DBM:GetModLocalization("JulakDoom")
 
 L:SetGeneralLocalization{
 	name = "Julak-Doom"
-}
-
-L:SetOptionLocalization{
-	SetIconOnMC	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(93621)
 }
 
 -----------

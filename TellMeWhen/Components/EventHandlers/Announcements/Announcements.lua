@@ -228,10 +228,18 @@ Announcements:RegisterEventHandlerDataNonSpecific(0, "", {
 Announcements:RegisterEventHandlerDataNonSpecific(10, "SAY", {
 	text = CHAT_MSG_SAY,
 	isBlizz = 1,
+
+	ConfigFrames = {
+		"InstanceRestricted",
+	},
 })
 Announcements:RegisterEventHandlerDataNonSpecific(12, "YELL", {
 	text = CHAT_MSG_YELL,
 	isBlizz = 1,
+	
+	ConfigFrames = {
+		"InstanceRestricted",
+	},
 })
 Announcements:RegisterEventHandlerDataNonSpecific(14, "WHISPER", {
 	text = WHISPER,
@@ -291,15 +299,18 @@ Announcements:RegisterEventHandlerDataNonSpecific(40, "CHANNEL", {
 	text = L["CHAT_MSG_CHANNEL"],
 	desc = L["CHAT_MSG_CHANNEL_DESC"],
 	isBlizz = 1, -- flagged to not use override %t and %f substitutions, and also not to try and color any names
-
+	
+	-- No longer usable by addons since WoW 8.2.5 (and in Classic) when Blizzard broke ClassicLFG.
+	hidden = true,
+	
 	ConfigFrames = {
 		"Location",
 	},
 
 	defaultlocation = function() return select(2, GetChannelList()) end,
 	dropdown = function()
-		for i = 1, huge, 2 do
-			local num, name = select(i, GetChannelList())
+		for i = 1, huge, 3 do
+			local num, name, disabled = select(i, GetChannelList())
 			if not num then break end
 
 			local info = TMW.DD:CreateInfo()
@@ -313,8 +324,8 @@ Announcements:RegisterEventHandlerDataNonSpecific(40, "CHANNEL", {
 	end,
 	ddtext = function(value)
 		-- also a verification function
-		for i = 1, huge, 2 do
-			local num, name = select(i, GetChannelList())
+		for i = 1, huge, 3 do
+			local num, name, disabled = select(i, GetChannelList())
 			if not num then return end
 
 			if name == value then
@@ -323,8 +334,8 @@ Announcements:RegisterEventHandlerDataNonSpecific(40, "CHANNEL", {
 		end
 	end,
 	handler = function(icon, eventSettings, Text)
-		for i = 1, huge, 2 do
-			local num, name = select(i, GetChannelList())
+		for i = 1, huge, 3 do
+			local num, name, disabled = select(i, GetChannelList())
 			if not num then break end
 			if strlowerCache[name] == strlowerCache[eventSettings.Location] then
 				SendChatMessage(Text, eventSettings.Channel, nil, num)

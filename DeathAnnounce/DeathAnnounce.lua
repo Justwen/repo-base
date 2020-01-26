@@ -44,7 +44,7 @@ function DEATH_ANNOUNCE_Init()
     local originSetHyperlink_Origin = ItemRefTooltip.SetHyperlink;
     ItemRefTooltip.SetHyperlink = function(self,link)
         if(strsub(link, 1, 11)=="u1_deathann") then
-            HideUIPanel(self);
+            self:Hide();
             return;
         end
         return originSetHyperlink_Origin(self,link);
@@ -186,8 +186,8 @@ function DEATH_ANNOUNCE_CLEU(...)
     if ( subevent == "SPELL_INTERRUPT" ) then
         if not IsRaidMemberFlag(sourceFlags) then return end
         if sourceGUID == playerGUID and U1GetCfgValue and U1GetCfgValue("deathannounce/yell") then
-            SendChatMessage(string.format("我已打断%s的%s", destName, GetSpellLink(param4)), "YELL")
-        else
+            if IsInInstance() then SendChatMessage(string.format("我已打断%s的%s", destName, GetSpellLink(param4)), "YELL") end
+        elseif sourceName then
             if RaidAlerter_SET and RaidAlerter_SET.Break_Magic then return end
             --太刷屏了，加了个开关
             if sourceGUID == playerGUID or (U1GetCfgValue and U1GetCfgValue("deathannounce/othersir")) then
@@ -208,7 +208,7 @@ function DEATH_ANNOUNCE_CLEU(...)
         if DEATH_ANNOUNCE_IMPORTANT_SPELLS[spellId] then
             if sourceGUID == playerGUID and U1GetCfgValue and U1GetCfgValue("deathannounce/yell_spell") then
                 if destGUID ~= playerGUID then
-                    SendChatMessage(string.format("%s -> %s", GetSpellLink(spellId), destName), "YELL")
+                    if IsInInstance() then SendChatMessage(string.format("%s -> %s", GetSpellLink(spellId), destName), "YELL") end
                 end
             else
                 if RaidAlerter_SET and RaidAlerter_SET.Paladin_Intervention then return end
@@ -224,6 +224,7 @@ function DEATH_ANNOUNCE_CLEU(...)
 
     if ( subevent == "UNIT_DIED" ) then
         if not UnitIsFeignDeath(destName) then
+            if DEBUG_MODE then print(DEATH_ANNOUNCE_OVK[destName], ...) end
             local h,n = DEATH_ANNOUNCE_GetBossHealth()
             DEATH_ANNOUNCE_OVK[destName] = (DEATH_ANNOUNCE_OVK[destName] or " "):sub(2)..(h and "@"..h or "")
             DEATH_ANNOUNCE_Print(destName ..DEATH_ANNOUNCE_LOCALE_DIE .. DEATH_ANNOUNCE_OVK[destName], "DEFAULT", true, destName);
@@ -291,7 +292,7 @@ function DEATH_ANNOUNCE_Print(msg, announce, link, deadName)
         if (announce=="FORCE" or DEATH_ANNOUNCE_IsEnabled()) and IsInGroup() then
             local channel = (IsInGroup(LE_PARTY_CATEGORY_INSTANCE) and "INSTANCE_CHAT") or (IsInRaid() and "RAID") or "PARTY"
             msg = msg:gsub("\124cffff0000(.-)\124r", "%1");
-            SendChatMessage(advised and msg or ("【有爱】"..msg), channel);
+            SendChatMessage(advised and msg or ("【爱不易】"..msg), channel);
             advised = true
             if(ChatFrame2) then
                 ChatFrame2:AddMessage(printMsg, .6, .6, .6);

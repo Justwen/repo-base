@@ -106,6 +106,20 @@ local node_ids = {
 		[NL["Fever of Stormrays"]]				= 185,
 		[NL["Highmountain Salmon School"]]		= 186,
 		[NL["Mossgill Perch School"]]			= 187,
+		-- BfA Pools
+		[NL["Frenzied Fangtooth School"]]		= 188,
+		[NL["Great Sea Catfish School"]]		= 189,
+		[NL["Lane Snapper School"]]				= 190,
+		[NL["Rasboralus School"]]				= 191,
+		[NL["Redtail Loach School"]]			= 192,
+		[NL["Sand Shifter School"]]				= 193,
+		[NL["Slimy Mackerel School"]]			= 194,
+		[NL["Tiragarde Perch School"]]			= 195,
+		[NL["U'taka School"]]					= 196,
+		[NL["Mauve Stinger School"]]			= 197,
+		[NL["Viper Fish School"]]				= 198,
+		[NL["Ionized Minnows"]]					= 199,
+		[NL["Sentry Fish School"]]				= 1101,
 	},
 	["Mining"] = {
 		[NL["Copper Vein"]] 					= 201,
@@ -182,6 +196,9 @@ local node_ids = {
 		[NL["Storm Silver Deposit"]]			= 267,
 		[NL["Rich Storm Silver Deposit"]]		= 268,
 		[NL["Storm Silver Seam"]]				= 269,
+		[NL["Osmenite Deposit"]]				= 270,
+		[NL["Rich Osmenite Deposit"]]			= 271,
+		[NL["Osmenite Seam"]]					= 272,
 	},
 	["Extract Gas"] = {
 		[NL["Windy Cloud"]] 					= 301,
@@ -208,7 +225,7 @@ local node_ids = {
 		[NL["Fadeleaf"]] 						= 413,
 		[NL["Goldthorn"]] 						= 414,
 		[NL["Khadgar's Whisker"]] 				= 415,
-		--[NL["Wintersbite"]] 					= 416,
+		[NL["Wintersbite"]] 					= 416,
 		[NL["Firebloom"]] 						= 417,
 		[NL["Purple Lotus"]] 					= 418,
 		--[NL["Wildvine"]] 						= 419, -- found in purple lotus nodes
@@ -220,7 +237,7 @@ local node_ids = {
 		[NL["Golden Sansam"]] 					= 425,
 		[NL["Dreamfoil"]] 						= 426,
 		[NL["Mountain Silversage"]] 			= 427,
-		--[NL["Plaguebloom"]] 					= 428,
+		[NL["Plaguebloom"]] 					= 428,
 		[NL["Icecap"]] 							= 429,
 		--[NL["Bloodvine"]] 					= 430, -- zg bush loot
 		[NL["Black Lotus"]] 					= 431,
@@ -289,6 +306,7 @@ local node_ids = {
 		[NL["Siren's Sting"]]					= 489,
 		[NL["Star Moss"]]						= 490,
 		[NL["Winter's Kiss"]]					= 491,
+		[NL["Zin'anthid"]]						= 492,
 	},
 	["Treasure"] = {
 		[NL["Giant Clam"]] 						= 501,
@@ -351,6 +369,13 @@ local node_ids = {
 		[NL["Glowing Tome"]]					= 557,
 		[NL["Mana-Infused Gem"]]				= 558,
 		[NL["Twice-Fortified Arcwine"]]			= 559,
+		-- bfa 8.2 treasures
+		[NL["Mechanized Chest"]]				= 560,
+		[NL["Glimmering Chest"]]				= 561,
+		[NL["Prismatic Crystal"]]				= 562,
+		-- 8.2.5
+		[NL["Jelly Deposit"]]					= 563,
+		[NL["Large Jelly Deposit"]]				= 564,
 	},
 	["Archaeology"] = {
 		-- cata archeolgy objects
@@ -376,6 +401,9 @@ local node_ids = {
 		[NL["Demonic Archaeology Find"]]		= 617,
 		[NL["Highborne Archaeology Find"]]		= 618,
 		[NL["Highmountain Tauren Archaeology Find"]]	= 619,
+		-- bfa
+		[NL["Drust Archaeology Find"]]			= 620,
+		[NL["Zandalari Archaeology Find"]]		= 621,
 	},
 	["Logging"] = {
 		[NL["Small Timber"]]					= 701,
@@ -432,6 +460,9 @@ local rare_spawns = {
 	[263] = {[262]=true}, -- rich monelite deposit
 	[266] = {[265]=true}, -- rich platinum deposit
 	[268] = {[267]=true}, -- rich storm silver deposit
+	[486] = {[485]=true,[487]=true,[488]=true,[491]=true,[492]=true}, -- anchor weed
+	[271] = {[270]=true}, -- rich osmenite deposit
+	[564] = {[563]=true}, -- large jelly deposit
 }
 Collector.rareNodes = rare_spawns
 -- Format zone = { "Database", "new node id"}
@@ -552,6 +583,19 @@ local node_textures = {
 		[185] = icon_path.."Fish\\fish_hook.tga",
 		[186] = icon_path.."Fish\\fish_hook.tga",
 		[187] = icon_path.."Fish\\fish_hook.tga",
+		[188] = icon_path.."Fish\\frenzied_fangtooth.tga",
+		[189] = icon_path.."Fish\\great_sea_catfish.tga",
+		[190] = icon_path.."Fish\\lane_snapper.tga",
+		[191] = icon_path.."Fish\\rasboralus.tga",
+		[192] = icon_path.."Fish\\redtail_loach.tga",
+		[193] = icon_path.."Fish\\sand_shifter.tga",
+		[194] = icon_path.."Fish\\slimy_mackerel.tga",
+		[195] = icon_path.."Fish\\tiragarde_perch.tga",
+		[196] = icon_path.."Fish\\utaka.tga",
+		[197] = icon_path.."Fish\\mauvestinger.tga",
+		[198] = icon_path.."Fish\\viperfish.tga",
+		[199] = icon_path.."Fish\\ionizedminnow.tga",
+		[1101] = icon_path.."Fish\\sentryfish.tga",
 	},
 	["Mining"] = {
 		[201] = icon_path.."Mine\\copper.tga",
@@ -615,14 +659,17 @@ local node_textures = {
 		[259] = icon_path.."Mine\\empyrium.tga",
 		[260] = icon_path.."Mine\\empyrium.tga",
 		[261] = icon_path.."Mine\\empyrium.tga",
-		[262] = icon_path.."Mine\\empyrium.tga", -- todo
-		[263] = icon_path.."Mine\\empyrium.tga", -- todo
-		[264] = icon_path.."Mine\\empyrium.tga", -- todo
-		[265] = icon_path.."Mine\\empyrium.tga", -- todo
-		[266] = icon_path.."Mine\\empyrium.tga", -- todo
-		[267] = icon_path.."Mine\\empyrium.tga", -- todo
-		[268] = icon_path.."Mine\\empyrium.tga", -- todo
-		[269] = icon_path.."Mine\\empyrium.tga", -- todo
+		[262] = icon_path.."Mine\\monelite.tga",
+		[263] = icon_path.."Mine\\monelite.tga",
+		[264] = icon_path.."Mine\\monelite.tga",
+		[265] = icon_path.."Mine\\platinum.tga",
+		[266] = icon_path.."Mine\\platinum.tga",
+		[267] = icon_path.."Mine\\stormsilver.tga",
+		[268] = icon_path.."Mine\\stormsilver.tga",
+		[269] = icon_path.."Mine\\stormsilver.tga",
+		[270] = icon_path.."Mine\\osmenite.tga",
+		[271] = icon_path.."Mine\\osmenite.tga",
+		[272] = icon_path.."Mine\\osmenite.tga",
 	},
 	["Extract Gas"] = {
 		[301] = icon_path.."Gas\\windy_cloud.tga",
@@ -649,7 +696,7 @@ local node_textures = {
 		[413] = icon_path.."Herb\\fadeleaf.tga",
 		[414] = icon_path.."Herb\\goldthorn.tga",
 		[415] = icon_path.."Herb\\khadgars_whisker.tga",
-		--[416] = icon_path.."Herb\\wintersbite.tga",
+		[416] = icon_path.."Herb\\wintersbite.tga",
 		[417] = icon_path.."Herb\\firebloom.tga",
 		[418] = icon_path.."Herb\\purple_lotus.tga",
 		[419] = icon_path.."Herb\\purple_lotus.tga",
@@ -661,7 +708,7 @@ local node_textures = {
 		[425] = icon_path.."Herb\\golden_sansam.tga",
 		[426] = icon_path.."Herb\\dreamfoil.tga",
 		[427] = icon_path.."Herb\\mountain_silversage.tga",
-		--[428] = icon_path.."Herb\\plaguebloom.tga",
+		[428] = icon_path.."Herb\\plaguebloom.tga",
 		[429] = icon_path.."Herb\\icecap.tga",
 		--[430] = icon_path.."Herb\\purple_lotus.tga",
 		[431] = icon_path.."Herb\\black_lotus.tga",
@@ -718,13 +765,14 @@ local node_textures = {
 		[482] = icon_path.."Herb\\felherb.tga",
 		[483] = icon_path.."Herb\\felherb.tga",
 		[484] = icon_path.."Herb\\astralglory.tga",
-		[485] = icon_path.."Herb\\astralglory.tga", -- todo
-		[486] = icon_path.."Herb\\astralglory.tga", -- todo
-		[487] = icon_path.."Herb\\astralglory.tga", -- todo
-		[488] = icon_path.."Herb\\astralglory.tga", -- todo
-		[489] = icon_path.."Herb\\astralglory.tga", -- todo
-		[490] = icon_path.."Herb\\astralglory.tga", -- todo
-		[491] = icon_path.."Herb\\astralglory.tga", -- todo
+		[485] = icon_path.."Herb\\akundas_bite.tga",
+		[486] = icon_path.."Herb\\anchor_weed.tga",
+		[487] = icon_path.."Herb\\riverbud.tga",
+		[488] = icon_path.."Herb\\seastalk.tga",
+		[489] = icon_path.."Herb\\sirens_pollen.tga",
+		[490] = icon_path.."Herb\\star_moss.tga",
+		[491] = icon_path.."Herb\\winters_kiss.tga",
+		[492] = icon_path.."Herb\\zinanthid.tga",
 	},
 	["Treasure"] = {
 		[501] = icon_path.."Treasure\\clam.tga",
@@ -786,6 +834,11 @@ local node_textures = {
 		[557] = icon_path.."Treasure\\ancient_mana.tga",
 		[558] = icon_path.."Treasure\\ancient_mana.tga",
 		[559] = icon_path.."Treasure\\ancient_mana.tga",
+		[560] = icon_path.."Treasure\\treasure.tga",
+		[561] = icon_path.."Treasure\\treasure.tga",
+		[562] = icon_path.."Treasure\\ancient_mana.tga",
+		[563] = icon_path.."Treasure\\honey.tga",
+		[564] = icon_path.."Treasure\\honey.tga",
 	},
 	["Archaeology"] = {
 		[601] = icon_path.."Archaeology\\shovel.tga",
@@ -807,6 +860,8 @@ local node_textures = {
 		[617] = icon_path.."Archaeology\\shovel.tga",
 		[618] = icon_path.."Archaeology\\shovel.tga",
 		[619] = icon_path.."Archaeology\\shovel.tga",
+		[620] = icon_path.."Archaeology\\shovel.tga",
+		[621] = icon_path.."Archaeology\\shovel.tga",
 	},
 	["Logging"] = {
 		[701] = icon_path.."Logging\\timber.tga",
@@ -895,6 +950,9 @@ local node_expansion = {
 		[267] = BFA,
 		[268] = BFA,
 		[269] = BFA,
+		[270] = BFA,
+		[271] = BFA,
+		[272] = BFA,
 	},
 	["Herb Gathering"] = {
 		[401] = CLASSIC,
@@ -912,7 +970,7 @@ local node_expansion = {
 		[413] = CLASSIC,
 		[414] = CLASSIC,
 		[415] = CLASSIC,
-		--[416] = CLASSIC,
+		[416] = CLASSIC,
 		[417] = CLASSIC,
 		[418] = CLASSIC,
 		[419] = CLASSIC,
@@ -924,7 +982,7 @@ local node_expansion = {
 		[425] = CLASSIC,
 		[426] = CLASSIC,
 		[427] = CLASSIC,
-		--[428] = CLASSIC,
+		[428] = CLASSIC,
 		[429] = CLASSIC,
 		--[430] = CLASSIC,
 		[431] = CLASSIC,
@@ -988,6 +1046,7 @@ local node_expansion = {
 		[489] = BFA,
 		[490] = BFA,
 		[491] = BFA,
+		[492] = BFA,
 	},
 }
 GatherMate.nodeExpansion = node_expansion

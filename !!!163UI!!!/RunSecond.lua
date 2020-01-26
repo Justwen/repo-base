@@ -1,5 +1,8 @@
 EnableAddOn("!!!Libs") LoadAddOn("!!!Libs") --不能在CoreLibs之前，不能在163UIUI之后。之后根据有没有软件用库来决定是否加载
 
+--TODO aby8
+GuildControlUIRankSettingsFrameRosterLabel = GuildControlUIRankSettingsFrameRosterLabel or CreateFrame("Frame")
+
 function U1RemovedAddOn(...)
     local removed = {}
     for i=1, select('#', ...) do
@@ -53,7 +56,7 @@ if QueueStatusMinimapButton then
     QueueStatusMinimapButton:SetFrameStrata("HIGH")
 end
 
---按ESC时, AceConfigDialog先关闭, 并阻止界面窗口和有爱关闭
+--按ESC时, AceConfigDialog先关闭, 并阻止界面窗口和爱不易关闭
 hooksecurefunc("StaticPopup_EscapePressed", function()
     if LibStub("AceConfigDialog-3.0"):CloseAll() then
         GameMenuFrame:Show()
@@ -110,6 +113,7 @@ CoreDependCall("Blizzard_ObjectiveTracker", function()
     CoreOnEvent("PLAYER_REGEN_ENABLED", hook_Scenario_AddSpells)
     CoreOnEvent("PLAYER_REGEN_DISABLED", hook_Scenario_AddSpells)
 
+    ---[=[
     local wqItems163 = {} --物品按钮定时刷新隐藏, 不能setparent，也不能SetAllPoints()
     local function update_WorldQuestItemButtons()
         if InCombatLockdown() then return end
@@ -138,32 +142,36 @@ CoreDependCall("Blizzard_ObjectiveTracker", function()
             end
         end
     end
-    local hook_WorldQuest_Update = function(self)
-        --if not IsAddOnLoaded("!KalielsTracker") then return end
-        self = self or WORLD_QUEST_TRACKER_MODULE
-        if not self.ShowWorldQuests then return end
+    local hook_WorldQuest_Update = function(module, isWorldQuests)
+        return function(self)
+            --if not IsAddOnLoaded("!KalielsTracker") then return end
+            self = self or module
+            if isWorldQuests and not self.ShowWorldQuests then return end
+            if _G.AbyQuestWatchSortUpdate then return end
 
-        -- 除了watches之外，还有一个当前区域的世界任务，所以不循环GetNumWorldQuestWatches直接循环usedBlocks
-        --- @see Blizzard_ObjectiveTracker\Blizzard_BonusObjectiveTracker.lua   UpdateTrackedWorldQuests(module)
-        --- @see Blizzard_ObjectiveTracker\Blizzard_BonusObjectiveTracker.lua   AddBonusObjectiveQuest
-        --- @see Blizzard_ObjectiveTracker\Blizzard_ObjectiveTracker.lua        DEFAULT_OBJECTIVE_TRACKER_MODULE:GetBlock(id)
-        for questID, block in pairs(WORLD_QUEST_TRACKER_MODULE.usedBlocks) do
-            if block and block.itemButton and block.itemButton:IsShown() then
-                local questLogIndex = GetQuestLogIndexByID(questID);
-                local link, item, charges, showItemWhenComplete = GetQuestLogSpecialItemInfo(questLogIndex);
-                if link then
-                    local blizBtn = block.itemButton
-                    if wqItems163[blizBtn] and type(wqItems163[blizBtn])=="table" then wqItems163[blizBtn].link = link else wqItems163[blizBtn] = link end
+            -- 除了watches之外，还有一个当前区域的世界任务，所以不循环GetNumWorldQuestWatches直接循环usedBlocks
+            --- @see Blizzard_ObjectiveTracker\Blizzard_BonusObjectiveTracker.lua   UpdateTrackedWorldQuests(module)
+            --- @see Blizzard_ObjectiveTracker\Blizzard_BonusObjectiveTracker.lua   AddBonusObjectiveQuest
+            --- @see Blizzard_ObjectiveTracker\Blizzard_ObjectiveTracker.lua        DEFAULT_OBJECTIVE_TRACKER_MODULE:GetBlock(id)
+            for questID, block in pairs(module.usedBlocks) do
+                if block and block.itemButton and block.itemButton:IsShown() then
+                    local questLogIndex = GetQuestLogIndexByID(questID);
+                    local link, item, charges, showItemWhenComplete = GetQuestLogSpecialItemInfo(questLogIndex);
+                    if link then
+                        local blizBtn = block.itemButton
+                        if wqItems163[blizBtn] and type(wqItems163[blizBtn])=="table" then wqItems163[blizBtn].link = link else wqItems163[blizBtn] = link end
+                    end
                 end
             end
+            update_WorldQuestItemButtons()
         end
-
-        update_WorldQuestItemButtons()
     end
-    hooksecurefunc(WORLD_QUEST_TRACKER_MODULE, "Update", hook_WorldQuest_Update)
+    hooksecurefunc(WORLD_QUEST_TRACKER_MODULE, "Update", hook_WorldQuest_Update(WORLD_QUEST_TRACKER_MODULE, true))
+    hooksecurefunc(QUEST_TRACKER_MODULE, "Update", hook_WorldQuest_Update(QUEST_TRACKER_MODULE, false))
     CoreOnEvent("PLAYER_REGEN_ENABLED", update_WorldQuestItemButtons)
     CoreOnEvent("PLAYER_REGEN_DISABLED", update_WorldQuestItemButtons)
     CoreScheduleTimer(true, 0.5, update_WorldQuestItemButtons)
+    --]=]
 end)
 
 CoreDependCall("Blizzard_InspectUI", function()
@@ -284,6 +292,7 @@ function U1FakeAchi(id,d,m,y)
     if not d then d,m,y = 4,1,17 end
 	local link = format("\124cffffff00\124Hachievement:%d:%s:1:%d:%d:%d:4294967295:4294967295:4294967295:4294967295\124h[%s]\124h\124r", id, UnitGUID("player"), d, m, y, select(2, GetAchievementInfo(id)))
 	print((link))
+    return link
 end
 
 --[[7.2 ChallengesUI
@@ -434,6 +443,12 @@ CoreDependCall("Blizzard_ArtifactUI", function()
     end
 end)
 
+hooksecurefunc("ChatFrame_OpenChat", function(text, ...)
+    if text == "/INSTANCE_CHAT" then
+        ChatFrame_OpenChat("/INSTANCE", ...)
+    end
+end)
+
 --[[
 CoreOnEvent("COMBAT_LOG_EVENT_UNFILTERED", function(event, ...)
     do return end
@@ -446,3 +461,14 @@ CoreOnEvent("COMBAT_LOG_EVENT_UNFILTERED", function(event, ...)
     end
 end)
 --]]
+
+--[[------------------------------------------------------------
+8.0 recursive
+---------------------------------------------------------------]]
+hooksecurefunc(GameTooltip, "SetOwner", function(self, parent, anchor)
+    if parent == UIParent and anchor == "ANCHOR_NONE" then
+        local tip
+        tip = ShoppingTooltip1; if select(2, tip:GetPoint()) == self then tip:ClearAllPoints() end
+        tip = ShoppingTooltip2; if select(2, tip:GetPoint()) == self then tip:ClearAllPoints() end
+    end
+end)

@@ -15,6 +15,7 @@ end
 local statformat
 local multiplier
 local notexactlyzero
+local hidemastery
 --hideatzero gets used in DCSLayouts, so there's small use to make faster access to it here.
 
 local function DCS_Decimals()
@@ -71,7 +72,7 @@ local function DCS_Decimals()
 		-- PaperDollFrame_SetLabelAndText Format Change
 			if notexactlyzero then
 				PaperDollFrame_SetLabelAndText(statFrame, STAT_CRITICAL_STRIKE, dcs_format(statformat, critChance), false, round(multiplier*critChance)/multiplier);
-			else
+			else --in PaperDollFrame.lua true instead of false
 				PaperDollFrame_SetLabelAndText(statFrame, STAT_CRITICAL_STRIKE, dcs_format(statformat, critChance), false, critChance);
 			end
 			--PaperDollFrame_SetLabelAndText(statFrame, STAT_CRITICAL_STRIKE, format(statformat1, critChance), true, format(statformat1, critChance)); --can't do it because PaperDollFrame_SetLabelAndText converts to integer
@@ -97,7 +98,7 @@ local function DCS_Decimals()
 			local rating = CR_HASTE_MELEE;
 
 			local hasteFormatString;
-			if (haste < 0) then
+			if (haste < 0 and not GetPVPGearStatRules()) then
 				hasteFormatString = RED_FONT_COLOR_CODE.."%s"..font_color_close;
 			else
 				hasteFormatString = "+%s";
@@ -165,6 +166,13 @@ local function DCS_Decimals()
 			end
 			local color_format = statformat
 			if (UnitLevel("player") < SHOW_MASTERY_LEVEL) then
+				if not namespace.configMode then
+					if hidemastery then
+						statFrame:Hide();
+						--print("hiding")
+						return;
+					end
+				end
 				color_mastery = "|cff7f7f7f" .. color_mastery .. "|r"
 				color_format = "|cff7f7f7f" .. color_format .. "|r"
 			end
@@ -281,7 +289,16 @@ local function DCS_Decimals()
 				PaperDollFrame_SetLabelAndText(statFrame, STAT_BLOCK, dcs_format(statformat, chance), false, chance);
 			end
 			statFrame.tooltip = highlight_code..dcs_format(doll_tooltip_format, BLOCK_CHANCE).." "..dcs_format("%.2f", chance).."%"..font_color_close;
-			statFrame.tooltip2 = dcs_format(CR_BLOCK_TOOLTIP, GetShieldBlock());
+			local shieldBlockArmor = GetShieldBlock();
+			local blockArmorReduction = PaperDollFrame_GetArmorReduction(shieldBlockArmor, UnitEffectiveLevel(unit));
+			local blockArmorReductionAgainstTarget = PaperDollFrame_GetArmorReductionAgainstTarget(shieldBlockArmor);
+			statFrame.tooltip2 = CR_BLOCK_TOOLTIP:format(blockArmorReduction);
+			--statFrame.tooltip2 = dcs_format(CR_BLOCK_TOOLTIP, GetShieldBlock());
+			if (blockArmorReductionAgainstTarget) then
+				statFrame.tooltip3 = format(STAT_BLOCK_TARGET_TOOLTIP, blockArmorReductionAgainstTarget);
+			else
+				statFrame.tooltip3 = nil;
+			end
 			statFrame:Show();
 		end
 		--PaperDollFrame_UpdateStats() -- needs to get called for checkbox Decimals; will get called for clicks in checkboxes but not during login
@@ -331,6 +348,37 @@ local DCS_DecimalCheck = CreateFrame("CheckButton", "DCS_DecimalCheck", DejaChar
 		PaperDollFrame_UpdateStats() --for Enhancements to have updated accuracy and visibility
 	end)
 
+		gdbprivate.gdbdefaults.gdbdefaults.dejacharacterstatsHideMasteryChecked = {
+		SetChecked = true,
+	}	
+
+local DCS_MasteryCheck = CreateFrame("CheckButton", "DCS_MasteryCheck", DejaCharacterStatsPanel, "InterfaceOptionsCheckButtonTemplate")
+	DCS_MasteryCheck:RegisterEvent("PLAYER_LOGIN")
+	DCS_MasteryCheck:ClearAllPoints()
+	--DCS_DecimalCheck:SetPoint("TOPLEFT", 30, -205)
+	DCS_MasteryCheck:SetPoint("TOPLEFT", "dcsStatsPanelcategoryFS", 7, -75) 
+	DCS_MasteryCheck:SetScale(1)
+	--DCS_MasteryCheck.tooltipText = L["Hides mastery stat till the character starts to have benefit from it. Unselected mastery stat in PaperDollFrame takes priority over this setting."] --Creates a tooltip on mouseover.
+	DCS_MasteryCheck.tooltipText = L["Hides Mastery stat until the character starts to have benefit from it. Hiding Mastery with Select-A-Stat™ in the character panel has priority over this setting."] --Creates a tooltip on mouseover. 
+	_G[DCS_MasteryCheck:GetName() .. "Text"]:SetText(L["Hide low level mastery"])
+	
+	DCS_MasteryCheck:SetScript("OnEvent", function(self, event, arg1)
+		if event == "PLAYER_LOGIN" then
+			hidemastery= gdbprivate.gdb.gdbdefaults.dejacharacterstatsHideMasteryChecked.SetChecked
+			namespace.hidemastery = hidemastery
+			self:SetChecked(hidemastery)
+			DCS_Decimals() --PaperDollFrame_UpdateStats() here isn't needed
+		end
+	end)
+
+	DCS_MasteryCheck:SetScript("OnClick", function(self,event,arg1) 
+		hidemastery = self:GetChecked(true) --hidemastery = not hidemastery
+		namespace.hidemastery = hidemastery
+		gdbprivate.gdb.gdbdefaults.dejacharacterstatsHideMasteryChecked.SetChecked = hidemastery
+		DCS_Decimals()
+		PaperDollFrame_UpdateStats() --refresh of mastery visibility
+	end)
+	
 	gdbprivate.gdbdefaults.gdbdefaults.dejacharacterstatsHideAtZeroChecked = {
 		SetChecked = true,
 	}

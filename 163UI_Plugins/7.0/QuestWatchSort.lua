@@ -1,5 +1,3 @@
-do return end --TODO aby8
-
 local QuestPOIGetIconInfo, GetNumQuestWatches, GetSuperTrackedQuestID, GetDistanceSqToQuest, QuestHasPOIInfo = QuestPOIGetIconInfo, GetNumQuestWatches, GetSuperTrackedQuestID, GetDistanceSqToQuest, QuestHasPOIInfo
 local questsDis, orderedIndexes, GetQuestWatchInfo_old = {}, {}, GetQuestWatchInfo
 
@@ -69,18 +67,24 @@ local function UpdateQuestsDistance()
             local currDist = GetDistanceSqToQuest(GetQuestLogIndexByID(GetSuperTrackedQuestID()))
             if currDist and currDist - nearest > nearest * 0.07 + 1000 then
                 SetSuperTrackedQuestID(questID)
-                PlaySoundFile("Sound\\Interface\\UI_BonusLootRoll_End_01.ogg")
+                PlaySound(31581) --"Sound\\Interface\\UI_BonusLootRoll_End_01.ogg"
                 --PlaySoundFile("Sound\\Interface\\UI_BonusLootRoll_Start_01.ogg", "master")
-                --PlaySound163("UI_WorldQuest_Map_Select", "master")
-                --PlaySound163("KeyRingClose", "master")
-                WorldMapFrame_OnUserChangedSuperTrackedQuest(questID)
+                --PlaySound(73276, "master") --"UI_WorldQuest_Map_Select"
+                --PlaySound(8939, "master") --"KeyRingClose"
+                --WorldMapFrame_OnUserChangedSuperTrackedQuest(questID)
             end
         end
 
         -- force update
         if ObjectiveTrackerFrame and ObjectiveTrackerFrame:IsVisible() and not InCombatLockdown() then
+            AbyQuestWatchSortUpdate = 1
             ObjectiveTracker_Update(OBJECTIVE_TRACKER_UPDATE_MODULE_QUEST);
-            QuestObjectiveTracker_UpdatePOIs()
+            AbyQuestWatchSortUpdate = nil
+            if QuestObjectiveTracker_UpdatePOIs then
+                QuestObjectiveTracker_UpdatePOIs()
+            else
+                QUEST_TRACKER_MODULE:UpdatePOIs()
+            end
         end
     end
 end
@@ -130,7 +134,8 @@ frame:SetScript("OnEvent", function(self, event)
         EnableOrDisable()
     else
         if (event == "NEW_WMO_CHUNK" and not WorldMapFrame:IsVisible()) then
-            SetMapToCurrentZone() --Entering Dalaran Guardian Hall, map is not updated.
+            local mapId = C_Map.GetBestMapForUnit("player")
+            if mapId and WorldMapFrame.ScrollContainer.currentScale and WorldMapFrame.ScrollContainer.currentScale > 0 then WorldMapFrame:SetMapID(mapId) end
         end
         UpdateQuestsDistance()
     end
@@ -175,7 +180,7 @@ checkbox:SetScript("OnClick", function(self, button)
     U1DB.configs[CONFIG] = self:GetChecked()
     EnableOrDisable()
 end)
-CoreUIEnableTooltip(checkbox, "任务排序", "按任务远近进行排序\n\n暴雪的任务排序功能失效很久了,有爱为您临时提供解决方案")
+CoreUIEnableTooltip(checkbox, "任务排序", "按任务远近进行排序\n\n暴雪的任务排序功能失效很久了,爱不易为您临时提供解决方案")
 
 
 --[[------------------------------------------------------------

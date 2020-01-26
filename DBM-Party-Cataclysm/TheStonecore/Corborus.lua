@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod(110, "DBM-Party-Cataclysm", 7, 67)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 190 $"):sub(12, -3))
+mod:SetRevision("20190417010024")
 mod:SetCreatureID(43438)
 mod:SetEncounterID(1056)
 mod:SetZone()
@@ -19,16 +19,15 @@ local warnDampening					= mod:NewSpellAnnounce(82415, 2)
 local warnSubmerge					= mod:NewAnnounce("WarnSubmerge", 2, "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendBurrow.blp")
 local warnEmerge					= mod:NewAnnounce("WarnEmerge", 2, "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendUnBurrow.blp")
 
-local specWarnCrystalBarrage		= mod:NewSpecialWarningYou(81634)
-local specWarnCrystalBarrageClose	= mod:NewSpecialWarningClose(81634)
+local specWarnCrystalBarrage		= mod:NewSpecialWarningYou(81634, nil, nil, nil, 1, 2)
+local specWarnCrystalBarrageClose	= mod:NewSpecialWarningClose(81634, nil, nil, nil, 1, 2)
 
-local timerDampening				= mod:NewCDTimer(10, 82415)
+local timerDampening				= mod:NewCDTimer(10, 82415, nil, nil, nil, 3, nil, DBM_CORE_MAGIC_ICON)
 local timerSubmerge					= mod:NewTimer(80, "TimerSubmerge", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendBurrow.blp", nil, nil, 6)
 local timerEmerge					= mod:NewTimer(30, "TimerEmerge", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendUnBurrow.blp", nil, nil, 6)
 
 local crystalTargets = {}
 
-mod:AddBoolOption("CrystalArrow")
 mod:AddBoolOption("RangeFrame")
 
 function mod:OnCombatStart(delay)
@@ -50,16 +49,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnCrystalBarrage:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnCrystalBarrage:Show()
+			specWarnCrystalBarrage:Play("targetyou")
 		else
 			local uId = DBM:GetRaidUnitId(args.destName)
 			if uId then--May also not work right if same spellid is applied to people near the target, then will need more work.
 				local inRange = DBM.RangeCheck:GetDistance("player", uId)
 				if inRange and inRange < 6 then
 					specWarnCrystalBarrageClose:CombinedShow(0.3, args.destName)
-					if self.Options.CrystalArrow then
-						local x, y = UnitPosition(uId)
-						DBM.Arrow:ShowRunAway(x, y, 8, 5)
-					end
+					specWarnCrystalBarrageClose:ScheduleVoice(0.3, "runaway")
 				end
 			end
 		end

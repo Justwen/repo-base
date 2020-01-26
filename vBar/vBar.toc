@@ -1,4 +1,4 @@
-﻿## Interface: 80000
+﻿## Interface: 80300
 ## Title: [界面]vBar动作条
 ## Notes: 增加额外动作条.
 ## Author: 老V
@@ -8,5 +8,5 @@
 vBar.lua
 vBar.xml
 
-## Title-zhCN: |cff880303[有爱]|r vBar 额外动作条
+## Title-zhCN: |cff880303[爱不易]|r vBar 额外动作条
 ## X-Vendor: AbyUI

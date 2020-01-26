@@ -64,7 +64,7 @@ function U1CT_PlaySound(enter)
         local ogg = U1GetCfgValue(addon, "enter_sound/ogg")
         PlaySoundFile(ogg)
     else
-        PlaySoundFile("Sound\\Character\\EmoteCatCallWhistle02.ogg")
+        PlaySound(7963) --("Sound\\Character\\EmoteCatCallWhistle02.ogg")
     end
 end
 
@@ -121,8 +121,8 @@ U1CT:SetScript("OnEvent", function(self, event)
     end
 end)
 
-U1CT.tooltipTitle = "有爱战斗计时"
-U1CT.tooltipLines = "有爱战斗计时`进入/离开战斗提示`记录战斗持续时间`<右键点击>进行设置"
+U1CT.tooltipTitle = "爱不易战斗计时"
+U1CT.tooltipLines = "爱不易战斗计时`进入/离开战斗提示`记录战斗持续时间`<右键点击>进行设置"
 U1CT:SetScript("OnEnter", function()
     if InCombatLockdown() then return end
     CoreUIShowTooltip(U1CT, "ANCHOR_BOTTOM")

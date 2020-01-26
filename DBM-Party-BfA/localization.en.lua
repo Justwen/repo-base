@@ -45,13 +45,28 @@ L= DBM:GetModLocalization(2102)
 -----------------------
 L= DBM:GetModLocalization(2093)
 
+L:SetWarningLocalization({
+	warnGoodBrew		= "Casting %s: 3 sec",
+	specWarnBrewOnBoss	= "Good Brew - move %s"
+})
+
+L:SetOptionLocalization({
+	warnGoodBrew		= "Show warning when good brew is being cast",
+	specWarnBrewOnBoss	= "Show special warning when good brew is under boss"
+})
+
+L:SetMiscLocalization({
+	critBrew		= "Crit Brew",
+	hasteBrew		= "Haste Brew"
+})
+
 -----------------------
 -- Ring of Booty --
 -----------------------
 L= DBM:GetModLocalization(2094)
 
 L:SetMiscLocalization({
-	openingRP = "Gather 'round and place yer bets! We got a new set of vict-- uh... competitors! Take it away, Gurthok and Wodin!"
+	openingRP = "Gather 'round and place yer bets! We got a new set of vict-- uh... competitors! Take it away, Gurgthock and Wodin!"
 })
 
 -----------------------
@@ -203,7 +218,7 @@ L:SetGeneralLocalization({
 })
 
 -----------------------
--- <<<The Undermine>>> --
+-- <<<MOTHERLOAD>>> --
 -----------------------
 -----------------------
 -- Coin-operated Crowd Pummeler --
@@ -231,7 +246,7 @@ L= DBM:GetModLocalization(2116)
 L = DBM:GetModLocalization("UndermineTrash")
 
 L:SetGeneralLocalization({
-	name =	"The Undermine Trash"
+	name =	"The MOTHERLODE!! Trash"
 })
 
 -----------------------
@@ -333,4 +348,56 @@ L = DBM:GetModLocalization("WaycrestTrash")
 
 L:SetGeneralLocalization({
 	name =	"Waycrest Manor Trash"
+})
+
+-----------------------
+-- <<<Operation: Mechagon>>> --
+-----------------------
+-----------------------
+-- King Gobbamak --
+-----------------------
+L= DBM:GetModLocalization(2357)
+
+-----------------------
+-- Gunker --
+-----------------------
+L= DBM:GetModLocalization(2358)
+
+-----------------------
+-- Trixie & Naeno --
+-----------------------
+L= DBM:GetModLocalization(2360)
+
+-----------------------
+-- HK-8 Aerial Oppression Unit --
+-----------------------
+L= DBM:GetModLocalization(2355)
+
+-----------------------
+-- Tussle Tonks --
+-----------------------
+L= DBM:GetModLocalization(2336)
+
+-----------------------
+-- K.U.-J.0. --
+-----------------------
+L= DBM:GetModLocalization(2339)
+
+-----------------------
+-- Machinist's Garden --
+-----------------------
+L= DBM:GetModLocalization(2348)
+
+-----------------------
+-- King Mechagon --
+-----------------------
+L= DBM:GetModLocalization(2331)
+
+---------
+--Trash--
+---------
+L = DBM:GetModLocalization("MechagonTrash")
+
+L:SetGeneralLocalization({
+	name =	"Mechagon Trash"
 })
